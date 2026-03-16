@@ -38,10 +38,11 @@ export default function Insurances() {
   const desktopRows = getDesktopRows();
 
   const largeLogos = [
-    "https://nethingso.xyz/insurances/insurance-17-preferred-care-network.webp",
+    "https://nethingso.xyz/insurances/insurance-13-preferred.webp",
     "https://nethingso.xyz/insurances/insurance-9-medicaid.webp",
     "https://nethingso.xyz/insurances/insurance-10-medicare.webp",
     "https://nethingso.xyz/insurances/insurance-4-avmed.webp",
+    "https://nethingso.xyz/insurances/insurance-15-united.webp",
   ];
 
   const isLarge = (url: string) => largeLogos.includes(url);
@@ -113,13 +114,13 @@ export default function Insurances() {
                 <motion.div
                   key={logoIndex}
                   whileHover={{ y: -3 }}
-                  className={`${isLarge(logo) ? 'w-64 h-28' : 'w-48 h-20'} flex items-center justify-center transition-all duration-300`}
+                  className={`${isLarge(logo) ? 'w-80 h-32' : 'w-48 h-20'} flex items-center justify-center transition-all duration-300`}
                 >
                   <img
                     src={logo}
                     alt="Insurance Provider"
                     loading="lazy"
-                    className="max-w-full max-h-full object-contain object-center transition-transform duration-300"
+                    className={`${isLarge(logo) ? 'scale-125' : 'scale-100'} max-w-full max-h-full object-contain object-center transition-transform duration-300`}
                     referrerPolicy="no-referrer"
                   />
                 </motion.div>
@@ -134,13 +135,13 @@ export default function Insurances() {
             <motion.div
               key={index}
               whileHover={{ y: -3 }}
-              className={`${isLarge(logo) ? 'w-56 h-24' : 'w-40 h-16'} flex items-center justify-center`}
+              className={`${isLarge(logo) ? 'w-64 h-28' : 'w-40 h-16'} flex items-center justify-center`}
             >
               <img
                 src={logo}
                 alt="Insurance Provider"
                 loading="lazy"
-                className="max-w-full max-h-full object-contain object-center"
+                className={`${isLarge(logo) ? 'scale-115' : 'scale-100'} max-w-full max-h-full object-contain object-center`}
                 referrerPolicy="no-referrer"
               />
             </motion.div>
@@ -153,13 +154,13 @@ export default function Insurances() {
             <motion.div
               key={index}
               whileHover={{ y: -3 }}
-              className={`${isLarge(logo) ? 'w-44 h-18' : 'w-32 h-12'} flex items-center justify-center`}
+              className={`${isLarge(logo) ? 'w-48 h-20' : 'w-32 h-12'} flex items-center justify-center`}
             >
               <img
                 src={logo}
                 alt="Insurance Provider"
                 loading="lazy"
-                className="max-w-full max-h-full object-contain object-center"
+                className={`${isLarge(logo) ? 'scale-110' : 'scale-100'} max-w-full max-h-full object-contain object-center`}
                 referrerPolicy="no-referrer"
               />
             </motion.div>
