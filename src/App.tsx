@@ -16,6 +16,7 @@ import Providers from "./components/Providers";
 import Specialists from "./components/Specialists";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   const showParticles = true;
@@ -38,6 +39,8 @@ export default function App() {
         </main>
         <Footer />
       </div>
+
+      <ScrollToTop />
 
       {/* Global SVG Filter for Fluid Distortion */}
       <svg className="fixed pointer-events-none opacity-0 h-0 w-0">

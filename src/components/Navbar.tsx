@@ -19,7 +19,7 @@ export default function Navbar() {
     { name: "Providers", href: "#providers" },
     { name: "Locations", href: "#locations" },
     { name: "Services", href: "#services" },
-    { name: "Patient Portal", href: "#portal" },
+    { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
   ];
 
   return (
@@ -51,6 +51,8 @@ export default function Navbar() {
               <ChromaticLink
                 key={link.name}
                 href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
                 className="text-base font-medium text-white/70 hover:text-accent-400"
               >
                 {link.name}
@@ -106,6 +108,8 @@ export default function Navbar() {
                 <ChromaticLink
                   key={link.name}
                   href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
                   className="text-base font-medium text-white py-2 border-b border-white/5"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

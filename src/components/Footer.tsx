@@ -33,22 +33,20 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a
-                href="#"
+                href="https://www.facebook.com/p/Primary-Medical-Physicians-100092598885612/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/5 hover:bg-accent-500 flex items-center justify-center text-white hover:text-primary-900 transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/primarymedicalphysicians/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/5 hover:bg-accent-500 flex items-center justify-center text-white hover:text-primary-900 transition-colors"
               >
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-accent-500 flex items-center justify-center text-white hover:text-primary-900 transition-colors"
-              >
-                <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -58,19 +56,20 @@ export default function Footer() {
             <h4 className="font-bold text-lg mb-6 text-white">Quick Links</h4>
             <ul className="space-y-4">
               {[
-                "About Us",
-                "Our Providers",
-                "Services",
-                "Patient Portal",
-                "Careers",
-                "Contact Us",
+                { name: "About Us", href: "#about" },
+                { name: "Our Providers", href: "#providers" },
+                { name: "Services", href: "#services" },
+                { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
+                { name: "Contact Us", href: "#contact" },
               ].map((link) => (
-                <li key={link}>
+                <li key={link.name}>
                   <ChromaticLink
-                    href="#"
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
                     className="text-white/70 hover:text-accent-400 transition-colors text-sm font-medium"
                   >
-                    {link}
+                    {link.name}
                   </ChromaticLink>
                 </li>
               ))}
@@ -82,12 +81,13 @@ export default function Footer() {
             <h4 className="font-bold text-lg mb-6 text-white">Our Locations</h4>
             <ul className="space-y-4">
               {[
-                "Hollywood Main",
+                "Hollywood Taft (Main)",
+                "Hollywood Johnson",
                 "Pembroke Pines",
-                "Fort Lauderdale",
+                "Davie Manor",
+                "Davie",
                 "Plantation",
-                "Coral Springs",
-                "Weston",
+                "Aventura",
               ].map((location) => (
                 <li key={location}>
                   <ChromaticLink

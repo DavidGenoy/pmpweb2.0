@@ -7,42 +7,42 @@ const specialists = [
   {
     title: "Pulmonologist",
     description: "Expert care for respiratory and lung-related conditions.",
-    image: "https://images.unsplash.com/photo-1584362946444-1e7c4f94e847?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/pulmonologist.png",
   },
   {
     title: "Cardiologist",
     description: "Comprehensive heart health and cardiovascular diagnostics.",
-    image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/cardiologist.png",
   },
   {
     title: "Clinical Research",
     description: "Advancing medicine through dedicated clinical trials.",
-    image: "https://images.unsplash.com/photo-1579152276507-595d268c4222?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/reserch.avif",
   },
   {
     title: "Dentist",
     description: "Complete oral health and aesthetic dental solutions.",
-    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/dentist.png",
   },
   {
     title: "Gastroenterologist",
     description: "Specialized treatment for digestive system disorders.",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/gastroenterologist.webp",
   },
   {
     title: "Pain Management",
     description: "Innovative therapies for chronic and acute pain relief.",
-    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/pain-management.webp",
   },
   {
     title: "Psychotherapist",
     description: "Compassionate mental health and emotional support.",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/psychotherapist.webp",
   },
   {
     title: "Podiatrist",
     description: "Expert foot and ankle care for all ages.",
-    image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=800&auto=format&fit=crop",
+    image: "https://nethingso.xyz/specialists/podiatrist.png",
   },
 ];
 
