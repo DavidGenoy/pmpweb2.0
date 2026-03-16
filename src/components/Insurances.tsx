@@ -89,7 +89,7 @@ export default function Insurances() {
         />
       </div>
       
-      <div className="relative z-20 pt-72 pb-80 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="relative z-20 pt-[480px] pb-[480px] px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-24 reveal-up">
           <h2 className="text-sm font-bold tracking-[0.2em] text-accent-500 uppercase mb-4">
