@@ -14,6 +14,7 @@ import Services from "./components/Services";
 import Locations from "./components/Locations";
 import Providers from "./components/Providers";
 import Specialists from "./components/Specialists";
+import Insurances from "./components/Insurances";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -34,6 +35,7 @@ export default function App() {
           <Locations />
           <Providers />
           <Specialists />
+          <Insurances />
           <Services />
           <Testimonials />
         </main>
