@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import TiltCard from "./TiltCard";
 
 const logos = [
   "https://nethingso.xyz/insurances/insurance-1-aarp.webp",
@@ -111,10 +112,9 @@ export default function Insurances() {
               className="flex justify-center items-center gap-16 xl:gap-24 w-full"
             >
               {row.map((logo, logoIndex) => (
-                <motion.div
+                <TiltCard
                   key={logoIndex}
-                  whileHover={{ y: -3 }}
-                  className={`${isLarge(logo) ? 'w-80 h-32' : 'w-48 h-20'} flex items-center justify-center transition-all duration-300`}
+                  className={`${isLarge(logo) ? 'w-80 h-32' : 'w-48 h-20'} flex items-center justify-center`}
                 >
                   <img
                     src={logo}
@@ -123,7 +123,7 @@ export default function Insurances() {
                     className={`${isLarge(logo) ? 'scale-125' : 'scale-100'} max-w-full max-h-full object-contain object-center transition-transform duration-300`}
                     referrerPolicy="no-referrer"
                   />
-                </motion.div>
+                </TiltCard>
               ))}
             </div>
           ))}
@@ -132,9 +132,8 @@ export default function Insurances() {
         {/* Tablet Layout (3 per row) */}
         <div className="hidden sm:grid lg:hidden grid-cols-3 gap-y-16 gap-x-12 items-center justify-items-center reveal-stagger">
           {logos.map((logo, index) => (
-            <motion.div
+            <TiltCard
               key={index}
-              whileHover={{ y: -3 }}
               className={`${isLarge(logo) ? 'w-64 h-28' : 'w-40 h-16'} flex items-center justify-center`}
             >
               <img
@@ -144,16 +143,15 @@ export default function Insurances() {
                 className={`${isLarge(logo) ? 'scale-115' : 'scale-100'} max-w-full max-h-full object-contain object-center`}
                 referrerPolicy="no-referrer"
               />
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
 
         {/* Mobile Layout (2 per row) */}
         <div className="grid sm:hidden grid-cols-2 gap-y-12 gap-x-8 items-center justify-items-center reveal-stagger">
           {logos.map((logo, index) => (
-            <motion.div
+            <TiltCard
               key={index}
-              whileHover={{ y: -3 }}
               className={`${isLarge(logo) ? 'w-48 h-20' : 'w-32 h-12'} flex items-center justify-center`}
             >
               <img
@@ -163,7 +161,7 @@ export default function Insurances() {
                 className={`${isLarge(logo) ? 'scale-110' : 'scale-100'} max-w-full max-h-full object-contain object-center`}
                 referrerPolicy="no-referrer"
               />
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </div>
