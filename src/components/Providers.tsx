@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Star, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import TiltCard from "./TiltCard";
 
 const allProviders = [
   {
@@ -166,43 +167,50 @@ export default function Providers() {
                   delay: isExpanded && index >= initialCount ? (index - initialCount) * 0.05 : 0,
                   ease: [0.23, 1, 0.32, 1]
                 }}
-                className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)] group bg-white/5 border border-white/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 backdrop-blur-sm"
+                className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]"
               >
-                <div className="relative w-full aspect-[4/5] overflow-hidden reveal-scale">
-                  <img
-                    src={provider.image}
-                    alt={provider.name}
-                    className="absolute inset-0 w-full h-full object-cover object-[50%_20%] max-sm:object-[50%_28%] group-hover:scale-105 transition-transform duration-700 opacity-90"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
-                    <div className="flex items-center gap-1 text-accent-400 bg-primary-900/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium">
-                      <Star className="w-4 h-4 fill-current" />
-                      <span>4.9</span>
+                <TiltCard 
+                  maxRotation={4} 
+                  scale={1.02} 
+                  perspective={1200}
+                  className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 backdrop-blur-sm h-full"
+                >
+                  <div className="relative w-full aspect-[4/5] overflow-hidden reveal-scale">
+                    <img
+                      src={provider.image}
+                      alt={provider.name}
+                      className="absolute inset-0 w-full h-full object-cover object-[50%_20%] max-sm:object-[50%_28%] group-hover:scale-105 transition-transform duration-700 opacity-90"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
+                      <div className="flex items-center gap-1 text-accent-400 bg-primary-900/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium">
+                        <Star className="w-4 h-4 fill-current" />
+                        <span>4.9</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="p-6">
-                  <h4 className="text-xl font-bold text-white mb-1">
-                    {provider.name}
-                  </h4>
-                  <p className="text-accent-400 font-medium text-sm mb-3">
-                    {provider.degree}
-                  </p>
-                  <div className="flex items-center gap-2 text-white/50 text-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
-                    {provider.specialty}
+                  <div className="p-6">
+                    <h4 className="text-xl font-bold text-white mb-1">
+                      {provider.name}
+                    </h4>
+                    <p className="text-accent-400 font-medium text-sm mb-3">
+                      {provider.degree}
+                    </p>
+                    <div className="flex items-center gap-2 text-white/50 text-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
+                      {provider.specialty}
+                    </div>
+                    <a 
+                      href={provider.bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full mt-6 bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-3 rounded-xl font-medium transition-colors text-sm inline-flex items-center justify-center"
+                    >
+                      Book Appointment
+                    </a>
                   </div>
-                  <a 
-                    href={provider.bookingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full mt-6 bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-3 rounded-xl font-medium transition-colors text-sm inline-flex items-center justify-center"
-                  >
-                    Book Appointment
-                  </a>
-                </div>
+                </TiltCard>
               </motion.div>
             ))}
           </AnimatePresence>
