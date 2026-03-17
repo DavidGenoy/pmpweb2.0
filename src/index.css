@@ -157,6 +157,10 @@ body {
   @apply border-accent-500/20 bg-white/10;
 }
 
+.location-card {
+  @apply rounded-3xl overflow-hidden;
+}
+
 /* Lenis Smooth Scroll Styles */
 html.lenis, html.lenis body {
   height: auto;

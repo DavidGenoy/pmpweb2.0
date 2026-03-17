@@ -39,7 +39,7 @@ function LocationCard({ location, index }: { location: Location; index: number; 
     <motion.div 
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[3/4] w-full cursor-pointer glow-card"
+      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[3/4] w-full cursor-pointer glow-card location-card"
       onClick={handleFlip}
       onKeyDown={handleKeyDown}
       tabIndex={0}
