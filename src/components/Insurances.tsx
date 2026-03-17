@@ -61,36 +61,8 @@ export default function Insurances() {
           backgroundSize: '40px 40px'
         }} 
       />
-
-      {/* Top Halftone/Dotted Transition */}
-      <div className="absolute top-0 left-0 right-0 h-80 z-10 pointer-events-none">
-        {/* Solid dark base to match previous section */}
-        <div className="absolute top-0 left-0 right-0 h-24 bg-[#02040a]" />
-        
-        {/* Dotted Fade Layer 1 (Dense) */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(#02040a 1px, transparent 0)`,
-            backgroundSize: '4px 4px',
-            maskImage: 'linear-gradient(to bottom, black 30%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 100%)'
-          }}
-        />
-        
-        {/* Dotted Fade Layer 2 (Larger, sparser dots for organic feel) */}
-        <div 
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: `radial-gradient(#02040a 1.5px, transparent 0)`,
-            backgroundSize: '12px 12px',
-            maskImage: 'linear-gradient(to bottom, black 10%, transparent 80%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 10%, transparent 80%)'
-          }}
-        />
-      </div>
       
-      <div className="relative z-20 pt-[480px] pb-[480px] px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="relative z-20 py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-24 reveal-up">
           <h2 className="text-sm font-bold tracking-[0.2em] text-accent-500 uppercase mb-4">
@@ -164,34 +136,6 @@ export default function Insurances() {
             </TiltCard>
           ))}
         </div>
-      </div>
-
-      {/* Bottom Halftone/Dotted Transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-80 z-10 pointer-events-none">
-        {/* Solid dark base for next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-[#02040a]" />
-        
-        {/* Dotted Fade Layer 1 (Dense) */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(#02040a 1px, transparent 0)`,
-            backgroundSize: '4px 4px',
-            maskImage: 'linear-gradient(to top, black 30%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to top, black 30%, transparent 100%)'
-          }}
-        />
-        
-        {/* Dotted Fade Layer 2 (Larger dots) */}
-        <div 
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: `radial-gradient(#02040a 1.5px, transparent 0)`,
-            backgroundSize: '12px 12px',
-            maskImage: 'linear-gradient(to top, black 10%, transparent 80%)',
-            WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 80%)'
-          }}
-        />
       </div>
     </section>
   );

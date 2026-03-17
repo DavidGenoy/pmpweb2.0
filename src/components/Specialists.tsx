@@ -89,7 +89,7 @@ export default function Specialists() {
 
   return (
     <section 
-      className="pt-32 pb-16 bg-transparent relative overflow-visible group/section"
+      className="py-32 bg-transparent relative overflow-visible group/section"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
