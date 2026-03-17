@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { MapPin, Phone, Clock, ArrowRight, RotateCw } from "lucide-react";
 
@@ -13,9 +13,19 @@ interface Location {
 function LocationCard({ location, index }: { location: Location; index: number; key?: string }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty('--x', `${x}px`);
+    cardRef.current.style.setProperty('--y', `${y}px`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -27,7 +37,9 @@ function LocationCard({ location, index }: { location: Location; index: number; 
 
   return (
     <motion.div 
-      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[3/4] w-full cursor-pointer"
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[3/4] w-full cursor-pointer glow-card"
       onClick={handleFlip}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -50,7 +62,7 @@ function LocationCard({ location, index }: { location: Location; index: number; 
       >
         {/* Front Side */}
         <div className="absolute inset-0 h-full w-full backface-hidden">
-          <div className="h-full w-full bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors duration-300 flex flex-col shadow-lg">
+          <div className="h-full w-full glass-card p-8 rounded-3xl flex flex-col">
             <div className="flex justify-between items-start mb-6">
               <h4 className="text-2xl font-bold text-white">
                 {location.name}
@@ -97,7 +109,7 @@ function LocationCard({ location, index }: { location: Location; index: number; 
           className="absolute inset-0 h-full w-full backface-hidden"
           style={{ transform: "rotateY(180deg)" }}
         >
-            <div className="h-full w-full relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl group/back reveal-scale bg-white/10">
+            <div className="h-full w-full relative rounded-3xl overflow-hidden glass-card group/back reveal-scale">
             <motion.img
               src={location.image}
               alt={`Exterior of ${location.name} location`}

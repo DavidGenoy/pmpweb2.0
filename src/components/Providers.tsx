@@ -173,7 +173,8 @@ export default function Providers() {
                   maxRotation={4} 
                   scale={1.02} 
                   perspective={1200}
-                  className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 backdrop-blur-sm h-full"
+                  showGlow={true}
+                  className="glass-card rounded-3xl overflow-hidden h-full"
                 >
                   <div className="relative w-full aspect-[4/5] overflow-hidden reveal-scale">
                     <img

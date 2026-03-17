@@ -117,6 +117,46 @@ body {
   object-fit: cover;
 }
 
+/* Glow Card Effect */
+.glow-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--x, 0) var(--y, 0),
+    rgba(0, 168, 150, 0.15),
+    transparent 40%
+  );
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* Glassmorphism Refinement */
+.glass-card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl;
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.01)
+  );
+}
+
+.glass-card:hover {
+  @apply border-accent-500/20 bg-white/10;
+}
+
 /* Lenis Smooth Scroll Styles */
 html.lenis, html.lenis body {
   height: auto;

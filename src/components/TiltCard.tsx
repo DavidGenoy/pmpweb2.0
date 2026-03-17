@@ -6,6 +6,7 @@ interface TiltCardProps {
   maxRotation?: number;
   scale?: number;
   perspective?: number;
+  showGlow?: boolean;
 }
 
 const TiltCard: React.FC<TiltCardProps> = ({ 
@@ -13,7 +14,8 @@ const TiltCard: React.FC<TiltCardProps> = ({
   className = "", 
   maxRotation = 25, 
   scale = 1.1, 
-  perspective = 800 
+  perspective = 800,
+  showGlow = false
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState(`perspective(${perspective}px) rotateX(0deg) rotateY(0deg) scale(1)`);
@@ -36,6 +38,11 @@ const TiltCard: React.FC<TiltCardProps> = ({
     const rotateY = ((x - centerX) / centerX) * maxRotation;
 
     setTransform(`perspective(${perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`);
+
+    if (showGlow) {
+      card.style.setProperty('--x', `${x}px`);
+      card.style.setProperty('--y', `${y}px`);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -53,7 +60,7 @@ const TiltCard: React.FC<TiltCardProps> = ({
         transformStyle: 'preserve-3d',
         willChange: 'transform'
       }}
-      className={`tilt-card ${className}`}
+      className={`tilt-card ${showGlow ? 'glow-card' : ''} ${className}`}
     >
       {children}
     </div>
