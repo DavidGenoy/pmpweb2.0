@@ -10,8 +10,8 @@ const specialists = [
     description: "Every breath, expertly cared for. We have a pulmonologist on site for comprehensive respiratory care.",
     image: "https://nethingso.xyz/specialists/pulmonologist.png",
     locations: [
-      { office: "Taft Office", schedule: "Mondays, 8:30 AM – 1:00 PM" },
-      { office: "Johnson Office", schedule: "Tuesdays, 1:30 PM – 4:30 PM" }
+      { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mondays, 8:30 AM – 1:00 PM" },
+      { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Tuesdays, 1:30 PM – 4:30 PM" }
     ]
   },
   {
@@ -55,9 +55,9 @@ const specialists = [
     description: "Feel seen. Feel supported. Feel better. On-site psychiatric care for your mental well-being.",
     image: "https://nethingso.xyz/specialists/psychotherapist.webp",
     locations: [
-      { office: "Taft", schedule: "Fri, 9:00 AM – 5:00 PM" },
-      { office: "Johnson", schedule: "Wed, 9:00 AM – 5:00 PM" },
-      { office: "Davie Manor", schedule: "Thu, 9:00 AM – 5:00 PM" }
+      { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Fri, 9:00 AM – 5:00 PM" },
+      { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Wed, 9:00 AM – 5:00 PM" },
+      { office: "7630 Southwest 34 Manor, Suite 400, Davie, FL 33328", schedule: "Thu, 9:00 AM – 5:00 PM" }
     ]
   },
   {
@@ -66,7 +66,7 @@ const specialists = [
     description: "Caring for every step. Meet Dr. Lesley on site for expert foot and ankle care for all ages.",
     image: "https://nethingso.xyz/specialists/podiatrist.png",
     locations: [
-      { office: "Taft Office", schedule: "Wednesday" }
+      { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Wednesday" }
     ]
   },
   {
@@ -75,9 +75,9 @@ const specialists = [
     description: "In-clinic retinal imaging. Early detection can prevent most diabetes-related vision loss.",
     image: "https://nethingso.xyz/specialists/DRE.png",
     locations: [
-      { office: "Davie Manor", schedule: "Mon, 8:30 AM – 4:30 PM" },
-      { office: "Taft Office", schedule: "Mon & Wed, 8:30 AM – 4:30 PM" },
-      { office: "Johnson Office", schedule: "Tue & Thu, 8:30 AM – 4:30 PM" }
+      { office: "7630 Southwest 34 Manor, Suite 400, Davie, FL 33328", schedule: "Mon, 8:30 AM – 4:30 PM" },
+      { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mon & Wed, 8:30 AM – 4:30 PM" },
+      { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Tue & Thu, 8:30 AM – 4:30 PM" }
     ]
   }
 ];
