@@ -25,7 +25,7 @@ export default function Hero() {
             </h1>
             
             <p className="text-lg text-white/70 mb-10 max-w-xl leading-relaxed reveal-text-scrub">
-              Comprehensive, compassionate primary care with 16 expert providers across 7 convenient locations in Broward County. We're here for you, every step of the way.
+              Comprehensive, compassionate primary care with 16 expert providers across 7 convenient locations in Broward and Dade County. We're here for you, every step of the way.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 reveal-up">

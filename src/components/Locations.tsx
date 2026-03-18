@@ -198,14 +198,17 @@ export default function Locations() {
               7 Convenient Locations
             </h2>
             <h3 className="text-4xl md:text-5xl font-serif font-medium mb-6">
-              Find a Provider Near You in Broward County
+              Find a Provider Near You in Broward and Dade County
             </h3>
             <p className="text-lg text-white/70 reveal-text-scrub">
-              With seven state-of-the-art facilities across Broward, high-quality
-              primary care is never far from home.
+              With seven convenient locations across Broward and Dade County, 
+              high-quality primary care is always within reach for you and your family.
             </p>
           </div>
-          <button className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-8 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2 group whitespace-nowrap">
+          <button 
+            onClick={() => window.open('https://www.google.com/maps/d/viewer?mid=1-OgaPIOv8xBftbm--NiCQitndDny7f4&ehbc=2E312F', '_blank')}
+            className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-8 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2 group whitespace-nowrap"
+          >
             View All Locations on Map
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
