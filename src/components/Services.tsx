@@ -4,12 +4,26 @@ import {
   Stethoscope,
   Activity,
   ShieldPlus,
-  Pill,
-  Baby,
+  CalendarCheck,
+  Droplets,
+  Syringe,
+  TestTube2,
+  ClipboardCheck,
+  Scale,
+  Zap,
+  Heart,
+  FlaskConical,
+  Gauge,
 } from "lucide-react";
 
 export default function Services() {
   const services = [
+    {
+      title: "Primary Care",
+      description:
+        "Comprehensive medical care for patients of all ages, focusing on overall health and wellness.",
+      icon: Stethoscope,
+    },
     {
       title: "Preventative Care",
       description:
@@ -17,34 +31,76 @@ export default function Services() {
       icon: ShieldPlus,
     },
     {
-      title: "Chronic Disease Management",
+      title: "Annual Exams",
       description:
-        "Expert care for diabetes, hypertension, asthma, and other chronic conditions.",
-      icon: Activity,
+        "Thorough yearly physical examinations to monitor health status and detect potential issues early.",
+      icon: CalendarCheck,
     },
     {
-      title: "Women's Health",
+      title: "Women's Health Care",
       description:
-        "Comprehensive care including Pap smears, breast exams, and family planning.",
+        "Comprehensive care including Pap smears, breast exams, and reproductive health services.",
       icon: HeartPulse,
     },
     {
-      title: "Men's Health",
+      title: "Diabetes Management",
       description:
-        "Prostate screenings, testosterone management, and general wellness.",
-      icon: Stethoscope,
+        "Expert monitoring and treatment plans to help manage blood sugar levels and prevent complications.",
+      icon: Activity,
     },
     {
-      title: "Pediatric Care",
+      title: "Cholesterol Management",
       description:
-        "Well-child visits, vaccinations, and sick visits for your little ones.",
-      icon: Baby,
+        "Testing and personalized strategies to maintain healthy cholesterol levels and heart health.",
+      icon: Droplets,
     },
     {
-      title: "Medication Management",
+      title: "Vaccines",
       description:
-        "Prescription refills, medication reviews, and pharmacy coordination.",
-      icon: Pill,
+        "Essential immunizations for children and adults to protect against preventable diseases.",
+      icon: Syringe,
+    },
+    {
+      title: "Blood Work",
+      description:
+        "On-site laboratory services for quick and accurate diagnostic testing and monitoring.",
+      icon: TestTube2,
+    },
+    {
+      title: "Pre-OP",
+      description:
+        "Comprehensive medical clearances and evaluations before surgical procedures.",
+      icon: ClipboardCheck,
+    },
+    {
+      title: "Weight Loss Management",
+      description:
+        "Medically supervised programs to help you achieve and maintain a healthy weight.",
+      icon: Scale,
+    },
+    {
+      title: "Pain Management",
+      description:
+        "Integrated approaches to treat and manage chronic pain for improved quality of life.",
+      icon: Zap,
+    },
+    {
+      title: "Chronic Disease Management",
+      description:
+        "Expert care for diabetes, hypertension, asthma, and other chronic conditions.",
+      icon: Heart,
+    },
+    {
+      title: "IV Therapy",
+      description:
+        "Intravenous hydration and nutrient therapy for optimal wellness and recovery.",
+      icon: FlaskConical,
+    },
+    {
+      title: "Hypertension",
+      description:
+        "Specialized care for high blood pressure management to reduce cardiovascular risks.",
+      icon: Gauge,
     },
   ];
 
