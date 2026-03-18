@@ -1,49 +1,85 @@
 import { motion, useScroll, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import ChromaticLink from "./ChromaticLink";
 
 const specialists = [
   {
-    title: "Pulmonologist",
-    description: "Expert care for respiratory and lung-related conditions.",
+    title: "Pulmonology",
+    name: "Dr. Ronald Gup, MD",
+    description: "Every breath, expertly cared for. We have a pulmonologist on site for comprehensive respiratory care.",
     image: "https://nethingso.xyz/specialists/pulmonologist.png",
+    locations: [
+      { office: "Taft Office", schedule: "Mondays, 8:30 AM – 1:00 PM" },
+      { office: "Johnson Office", schedule: "Tuesdays, 1:30 PM – 4:30 PM" }
+    ]
   },
   {
-    title: "Cardiologist",
-    description: "Comprehensive heart health and cardiovascular diagnostics.",
+    title: "Cardiology",
+    name: "Mark Sabbota, DO",
+    description: "Cardio Vascular Specialists of South Florida. Providing cardiology services at Primary Medical Physicians.",
     image: "https://nethingso.xyz/specialists/cardiologist.png",
+    locations: [
+      { address: "6517 Taft St, Suite 211, Hollywood" },
+      { address: "10650 W State Rd 84, Suite 104, Davie" }
+    ]
   },
   {
     title: "Clinical Research",
-    description: "Advancing medicine through dedicated clinical trials.",
+    name: "Zenith Clinical Research (ZCR)",
+    description: "Daniel Goldfarb, Ph.D — President. Discover our Clinical Research On-Site and enroll in our studies today.",
     image: "https://nethingso.xyz/specialists/reserch.avif",
+    locations: [{ note: "Clinical Research On-Site" }]
   },
   {
-    title: "Dentist",
-    description: "Complete oral health and aesthetic dental solutions.",
+    title: "Dental Surgery",
+    name: "Nicolas Hernandez, DDS",
+    description: "Radiant Smiles, Lasting Impressions. Discover on-site primary dental care with Dr. Nicolas.",
     image: "https://nethingso.xyz/specialists/dentist.png",
+    locations: [{ address: "6517 Taft St, Suite 201, Hollywood" }]
   },
   {
-    title: "Gastroenterologist",
-    description: "Specialized treatment for digestive system disorders.",
+    title: "Gastroenterology",
+    name: "Dr. Gonzalez & Dr. Dabul",
+    description: "Our on-site gastroenterology team provides expert, comprehensive care for all digestive health conditions.",
     image: "https://nethingso.xyz/specialists/gastroenterologist.webp",
+    locations: [
+      { office: "Lilly M. Gonzalez, MD", schedule: "Thursday mornings" },
+      { office: "Elias E. Dabul, MD, FACG", schedule: "Monday afternoons" },
+      { address: "6517 Taft St, Suite 102, Hollywood" }
+    ]
   },
   {
-    title: "Pain Management",
-    description: "Innovative therapies for chronic and acute pain relief.",
-    image: "https://nethingso.xyz/specialists/pain-management.webp",
-  },
-  {
-    title: "Psychotherapist",
-    description: "Compassionate mental health and emotional support.",
+    title: "Psychiatric Care",
+    name: "Violet Health Corp",
+    description: "Feel seen. Feel supported. Feel better. On-site psychiatric care for your mental well-being.",
     image: "https://nethingso.xyz/specialists/psychotherapist.webp",
+    locations: [
+      { office: "Taft", schedule: "Fri, 9:00 AM – 5:00 PM" },
+      { office: "Johnson", schedule: "Wed, 9:00 AM – 5:00 PM" },
+      { office: "Davie Manor", schedule: "Thu, 9:00 AM – 5:00 PM" }
+    ]
   },
   {
-    title: "Podiatrist",
-    description: "Expert foot and ankle care for all ages.",
+    title: "Podiatry",
+    name: "Dr. Lesley A Warren, DPM",
+    description: "Caring for every step. Meet Dr. Lesley on site for expert foot and ankle care for all ages.",
     image: "https://nethingso.xyz/specialists/podiatrist.png",
+    locations: [
+      { office: "Taft Office", schedule: "Wednesday" }
+    ]
   },
+  {
+    title: "DRE",
+    name: "Diabetic Retinal Exam",
+    description: "In-clinic retinal imaging. Early detection can prevent most diabetes-related vision loss.",
+    image: "https://nethingso.xyz/specialists/DRE.png",
+    locations: [
+      { office: "Davie Manor", schedule: "Mon, 8:30 AM – 4:30 PM" },
+      { office: "Taft Office", schedule: "Mon & Wed, 8:30 AM – 4:30 PM" },
+      { office: "Johnson Office", schedule: "Tue & Thu, 8:30 AM – 4:30 PM" }
+    ]
+  }
 ];
 
 export default function Specialists() {
@@ -144,7 +180,7 @@ export default function Specialists() {
         >
           {specialists.map((specialist) => (
             <div
-              key={specialist.title}
+              key={specialist.name}
               className="flex-none w-[300px] md:w-[400px] snap-center"
             >
               <div 
@@ -161,17 +197,40 @@ export default function Specialists() {
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 z-10 p-8 flex flex-col justify-end bg-gradient-to-t from-primary-900 via-primary-900/20 to-transparent">
-                  <h4 className="text-2xl md:text-3xl font-serif font-medium text-white mb-3 group-hover:text-accent-400 transition-colors">
-                    {specialist.title}
-                  </h4>
-                  <p className="text-white/60 text-sm md:text-base leading-relaxed transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    {specialist.description}
-                  </p>
-                  <ChromaticLink href="#services" className="mt-6 flex items-center gap-2 text-accent-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    Learn More <ArrowRight className="w-4 h-4" />
-                  </ChromaticLink>
-                  <div className="mt-4 w-12 h-1 bg-accent-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                <div className="absolute inset-0 z-10 p-8 flex flex-col justify-between bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent">
+                  {/* Top Area: Specialty Title */}
+                  <div className="transform -translate-y-2">
+                    <span className="text-[12px] font-bold tracking-[0.2em] text-white group-hover:text-accent-400 uppercase transition-all duration-300 inline-block group-hover:-translate-y-1">
+                      {specialist.title}
+                    </span>
+                  </div>
+
+                  {/* Bottom Area: Content */}
+                  <div className="flex flex-col">
+                    <h4 className="text-2xl md:text-3xl font-serif font-medium mb-3 text-accent-400 group-hover:text-white transition-all duration-300 transform group-hover:-translate-y-1">
+                      {specialist.name}
+                    </h4>
+                    <p className="text-white/70 text-sm leading-relaxed mb-6 line-clamp-3">
+                      {specialist.description}
+                    </p>
+                    
+                    {/* Location/Schedule Block */}
+                    <div className="space-y-2.5 border-t border-white/10 pt-5">
+                      {specialist.locations.map((loc, i) => (
+                        <div key={i} className="flex items-start gap-2 text-[11px] text-white/50">
+                          <MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5 text-accent-400/70" />
+                          <div className="flex flex-col leading-tight">
+                             {loc.office && <span className="text-white/90 font-semibold">{loc.office}</span>}
+                             {loc.address && <span className="text-white/90 font-semibold">{loc.address}</span>}
+                             {loc.schedule && <span className="text-[10px] italic text-white/40 mt-0.5">{loc.schedule}</span>}
+                             {loc.note && <span className="text-accent-400/90 font-bold uppercase tracking-wider text-[9px] mt-0.5">{loc.note}</span>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-6 w-12 h-1 bg-accent-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                  </div>
                 </div>
               </div>
             </div>
