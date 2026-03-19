@@ -9,20 +9,19 @@ gsap.registerPlugin(ScrollTrigger);
 export default function ScrollManager() {
   useEffect(() => {
     // 1. Initialize Lenis Smooth Scroll
+    const isMobile = window.innerWidth < 768;
+    
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: isMobile ? 1.0 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: isMobile ? 1.2 : 1.5, // Lower multiplier on mobile to prevent "runaway" scrolling
+      infinite: false,
+      syncTouch: true, // Sync touch scroll with Lenis
     });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
 
     // Sync ScrollTrigger with Lenis
     lenis.on('scroll', ScrollTrigger.update);

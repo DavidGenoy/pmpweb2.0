@@ -55,26 +55,6 @@ body {
   background-color: var(--color-sand-50);
   color: var(--color-primary-900);
   font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  /* Fix for iOS momentum scrolling and layout thrashing */
-  overflow-x: hidden;
-  position: relative;
-  width: 100%;
-}
-
-/* iOS Viewport Fix */
-@supports (-webkit-touch-callout: none) {
-  .min-h-screen {
-    min-height: 100dvh;
-  }
-}
-
-/* Smooth Scrolling Momentum for iOS */
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-  -webkit-overflow-scrolling: touch;
 }
 
 .text-balance {
@@ -99,7 +79,31 @@ body {
 .reveal-stagger > *, 
 .reveal-text {
   opacity: 0;
-  will-change: transform, opacity;
+  /* Force GPU for initial state to prevent flickering on iOS */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Only use will-change where strictly necessary on desktop */
+@media (min-width: 1024px) {
+  .reveal-up, 
+  .reveal-stagger > *, 
+  .reveal-text,
+  .reveal-scale,
+  .parallax-column {
+    will-change: transform, opacity;
+  }
+}
+
+/* On mobile, we avoid will-change as it can cause memory issues and "stuck" scrolling on iOS */
+@media (max-width: 1023px) {
+  .reveal-up, 
+  .reveal-stagger > *, 
+  .reveal-text,
+  .reveal-scale,
+  .parallax-column {
+    will-change: auto;
+  }
 }
 
 .reveal-text-scrub {
@@ -112,7 +116,6 @@ body {
 }
 
 .reveal-scale {
-  will-change: transform;
   overflow: hidden;
 }
 
@@ -121,7 +124,6 @@ body {
 }
 
 .parallax-column {
-  will-change: transform;
 }
 
 @media (min-width: 768px) {
@@ -165,12 +167,23 @@ body {
 
 /* Glassmorphism Refinement */
 .glass-card {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl;
+  @apply bg-white/5 border border-white/10 shadow-xl;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   background-image: linear-gradient(
     to bottom right,
     rgba(255, 255, 255, 0.05),
     rgba(255, 255, 255, 0.01)
   );
+}
+
+/* Reduce backdrop-blur on mobile for performance */
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background-color: rgba(10, 25, 47, 0.8); /* Darker fallback */
+  }
 }
 
 .glass-card:hover {
@@ -179,6 +192,24 @@ body {
 
 .location-card {
   @apply rounded-3xl overflow-hidden;
+  /* Force hardware acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Lenis Smooth Scroll Styles */
