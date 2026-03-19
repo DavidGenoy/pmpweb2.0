@@ -24,7 +24,7 @@ export default function App() {
   const highContrast = false;
 
   return (
-    <div className={`min-h-screen selection:bg-accent-500/30 selection:text-primary-900 overflow-x-hidden ${highContrast ? 'contrast-125 grayscale-[0.2]' : ''}`}>
+    <div className={`selection:bg-accent-500/30 selection:text-primary-900 ${highContrast ? 'contrast-125 grayscale-[0.2]' : ''}`}>
       {showParticles && <ParticleBackground />}
       <ScrollManager />
       

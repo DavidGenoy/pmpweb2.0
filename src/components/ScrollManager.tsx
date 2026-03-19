@@ -58,6 +58,7 @@ export default function ScrollManager() {
             trigger: el,
             start: 'top 85%',
             toggleActions: 'play none none none',
+            onEnter: () => el.classList.add('is-visible'),
           }
         }
       );
@@ -80,6 +81,7 @@ export default function ScrollManager() {
               trigger: container,
               start: 'top 80%',
               toggleActions: 'play none none none',
+              onEnter: () => container.classList.add('is-visible'),
             }
           }
         );
@@ -118,6 +120,7 @@ export default function ScrollManager() {
             trigger: el,
             start: 'top 90%',
             toggleActions: 'play none none none',
+            onEnter: () => el.classList.add('is-visible'),
           }
         }
       );
@@ -157,6 +160,14 @@ export default function ScrollManager() {
     };
 
     initScrubText();
+
+    // Force a few refreshes to handle late-loading content and iOS layout shifts
+    const refreshDelays = [100, 500, 1500, 3000];
+    refreshDelays.forEach(delay => {
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, delay);
+    });
 
     // 4. Multi-Column Parallax
     const mm = gsap.matchMedia();

@@ -80,8 +80,18 @@ body {
 .reveal-text {
   opacity: 0;
   /* Force GPU for initial state to prevent flickering on iOS */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+  transform: translate3d(0, 20px, 0);
+  -webkit-transform: translate3d(0, 20px, 0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Fallback for when GSAP hasn't initialized or if ScrollTrigger fails */
+.reveal-up.is-visible,
+.reveal-stagger.is-visible > *,
+.reveal-text.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 /* Only use will-change where strictly necessary on desktop */
@@ -116,8 +126,9 @@ body {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     position: relative;
-    height: 100%;
-    min-height: -webkit-fill-available;
+    /* Remove fixed height which breaks ScrollTrigger on iOS */
+    height: auto;
+    min-height: 100%;
   }
   
   .glass-card {
@@ -125,6 +136,11 @@ body {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     background-color: rgba(10, 25, 47, 0.9);
+  }
+
+  .ios-navbar-fix {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
   }
 }
 

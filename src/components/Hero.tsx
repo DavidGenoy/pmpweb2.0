@@ -5,7 +5,7 @@ import ChromaticLink from "./ChromaticLink";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden bg-transparent">
+    <section className="relative min-h-[90dvh] flex items-center pt-24 pb-12 overflow-hidden bg-transparent">
       <HeroVideo 
         videoSrc="https://assets.mixkit.co/videos/preview/mixkit-medical-professional-working-with-a-microscope-40342-large.mp4"
         posterSrc="https://images.unsplash.com/photo-1638202993928-7267aad84c31?q=80&w=2574&auto=format&fit=crop"

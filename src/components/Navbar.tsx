@@ -28,7 +28,7 @@ export default function Navbar() {
         isScrolled
           ? "bg-primary-900/80 backdrop-blur-md shadow-lg py-3"
           : "bg-transparent py-5"
-      }`}
+      } ios-navbar-fix`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
