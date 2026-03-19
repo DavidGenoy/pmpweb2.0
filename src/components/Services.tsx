@@ -120,11 +120,11 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-stagger">
+        <div className="flex flex-wrap justify-center gap-8 reveal-stagger">
           {services.map((service) => (
             <div
               key={service.title}
-              className="group p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-accent-500 transition-all duration-300 cursor-pointer backdrop-blur-sm"
+              className="group p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-accent-500 transition-all duration-300 cursor-pointer backdrop-blur-sm w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]"
             >
               <div className="w-14 h-14 rounded-2xl bg-white/10 group-hover:bg-white flex items-center justify-center mb-6 shadow-sm transition-colors duration-300">
                 <service.icon className="w-7 h-7 text-accent-400 group-hover:text-accent-500" />

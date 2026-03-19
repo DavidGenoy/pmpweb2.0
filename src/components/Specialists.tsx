@@ -1,6 +1,6 @@
 import { motion, useScroll, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, User } from "lucide-react";
 import ChromaticLink from "./ChromaticLink";
 
 const specialists = [
@@ -25,13 +25,6 @@ const specialists = [
     ]
   },
   {
-    title: "Clinical Research",
-    name: "Zenith Clinical Research (ZCR)",
-    description: "Daniel Goldfarb, Ph.D — President. Discover our Clinical Research On-Site and enroll in our studies today.",
-    image: "https://nethingso.xyz/specialists/reserch.avif",
-    locations: [{ note: "Clinical Research On-Site" }]
-  },
-  {
     title: "Dental Surgery",
     name: "Nicolas Hernandez, DDS",
     description: "Radiant Smiles, Lasting Impressions. Discover on-site primary dental care with Dr. Nicolas.",
@@ -44,8 +37,8 @@ const specialists = [
     description: "Our on-site gastroenterology team provides expert, comprehensive care for all digestive health conditions.",
     image: "https://nethingso.xyz/specialists/gastroenterologist.webp",
     locations: [
-      { office: "Lilly M. Gonzalez, MD", schedule: "Thursday mornings" },
-      { office: "Elias E. Dabul, MD, FACG", schedule: "Monday afternoons" },
+      { office: "Lilly M. Gonzalez, MD", schedule: "Thursday mornings", isProvider: true },
+      { office: "Elias E. Dabul, MD, FACG", schedule: "Monday afternoons", isProvider: true },
       { address: "6517 Taft St, Suite 102, Hollywood" }
     ]
   },
@@ -79,6 +72,13 @@ const specialists = [
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mon & Wed, 8:30 AM – 4:30 PM" },
       { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Tue & Thu, 8:30 AM – 4:30 PM" }
     ]
+  },
+  {
+    title: "Clinical Research",
+    name: "Zenith Clinical Research (ZCR)",
+    description: "Daniel Goldfarb, Ph.D — President. Discover our Clinical Research On-Site and enroll in our studies today.",
+    image: "https://nethingso.xyz/specialists/reserch.avif",
+    locations: [{ note: "Clinical Research On-Site" }]
   }
 ];
 
@@ -197,33 +197,39 @@ export default function Specialists() {
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 z-10 p-8 flex flex-col justify-between bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent">
+                <div className="absolute inset-0 z-10 p-6 md:p-8 flex flex-col justify-between bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent">
                   {/* Top Area: Specialty Title */}
                   <div className="transform -translate-y-2">
-                    <span className="text-[12px] font-bold tracking-[0.2em] text-white group-hover:text-accent-400 uppercase transition-all duration-300 inline-block group-hover:-translate-y-1">
+                    <span className="text-[10px] md:text-[12px] font-bold tracking-[0.2em] text-white group-hover:text-accent-400 uppercase transition-all duration-300 inline-block group-hover:-translate-y-1">
                       {specialist.title}
                     </span>
                   </div>
 
                   {/* Bottom Area: Content */}
                   <div className="flex flex-col">
-                    <h4 className="text-2xl md:text-3xl font-serif font-medium mb-3 text-accent-400 group-hover:text-white transition-all duration-300 transform group-hover:-translate-y-1">
+                    <h4 className={`font-serif font-medium mb-2 text-accent-400 group-hover:text-white transition-all duration-300 transform group-hover:-translate-y-1 ${
+                      specialist.title === "DRE" ? "text-lg md:text-2xl" : "text-xl md:text-3xl"
+                    }`}>
                       {specialist.name}
                     </h4>
-                    <p className="text-white/70 text-sm leading-relaxed mb-6 line-clamp-3">
+                    <p className="text-white/70 text-[13px] md:text-sm leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
                       {specialist.description}
                     </p>
                     
                     {/* Location/Schedule Block */}
-                    <div className="space-y-2.5 border-t border-white/10 pt-5">
-                      {specialist.locations.map((loc, i) => (
-                        <div key={i} className="flex items-start gap-2 text-[11px] text-white/50">
-                          <MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5 text-accent-400/70" />
+                    <div className="space-y-2 border-t border-white/10 pt-4">
+                      {specialist.locations.map((loc: any, i) => (
+                        <div key={i} className="flex items-start gap-2 text-[10px] md:text-[11px] text-white/50">
+                          {loc.isProvider ? (
+                            <User className="w-3 h-3 md:w-3.5 md:h-3.5 shrink-0 mt-0.5 text-accent-400/70" />
+                          ) : (
+                            <MapPin className="w-3 h-3 md:w-3.5 md:h-3.5 shrink-0 mt-0.5 text-accent-400/70" />
+                          )}
                           <div className="flex flex-col leading-tight">
                              {loc.office && <span className="text-white/90 font-semibold">{loc.office}</span>}
                              {loc.address && <span className="text-white/90 font-semibold">{loc.address}</span>}
-                             {loc.schedule && <span className="text-[10px] italic text-white/40 mt-0.5">{loc.schedule}</span>}
-                             {loc.note && <span className="text-accent-400/90 font-bold uppercase tracking-wider text-[9px] mt-0.5">{loc.note}</span>}
+                             {loc.schedule && <span className="text-[9px] md:text-[10px] italic text-white/40 mt-0.5">{loc.schedule}</span>}
+                             {loc.note && <span className="text-accent-400/90 font-bold uppercase tracking-wider text-[8px] md:text-[9px] mt-0.5">{loc.note}</span>}
                           </div>
                         </div>
                       ))}
