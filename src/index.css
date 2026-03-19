@@ -55,6 +55,26 @@ body {
   background-color: var(--color-sand-50);
   color: var(--color-primary-900);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Fix for iOS momentum scrolling and layout thrashing */
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* iOS Viewport Fix */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+}
+
+/* Smooth Scrolling Momentum for iOS */
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 .text-balance {

@@ -59,9 +59,23 @@ function LocationCard({ location, index }: { location: Location; index: number; 
           damping: 25,
         }}
         className="relative h-full w-full transition-all duration-300 preserve-3d"
+        style={{ 
+          transformStyle: "preserve-3d",
+          WebkitTransformStyle: "preserve-3d",
+          transform: `rotateY(${isFlipped ? 180 : 0}deg) translateZ(0)`,
+          WebkitTransform: `rotateY(${isFlipped ? 180 : 0}deg) translateZ(0)`
+        }}
       >
         {/* Front Side */}
-        <div className="absolute inset-0 h-full w-full backface-hidden">
+        <div 
+          className="absolute inset-0 h-full w-full backface-hidden"
+          style={{ 
+            backfaceVisibility: "hidden", 
+            WebkitBackfaceVisibility: "hidden",
+            transform: "translateZ(0)",
+            WebkitTransform: "translateZ(0)"
+          }}
+        >
           <div className="h-full w-full glass-card p-8 rounded-3xl flex flex-col">
             <div className="flex justify-between items-start mb-6">
               <h4 className="text-2xl font-bold text-white">
@@ -107,7 +121,12 @@ function LocationCard({ location, index }: { location: Location; index: number; 
         {/* Back Side */}
         <div 
           className="absolute inset-0 h-full w-full backface-hidden"
-          style={{ transform: "rotateY(180deg)" }}
+          style={{ 
+            transform: "rotateY(180deg) translateZ(0)", 
+            WebkitTransform: "rotateY(180deg) translateZ(0)",
+            backfaceVisibility: "hidden", 
+            WebkitBackfaceVisibility: "hidden" 
+          }}
         >
             <div className="h-full w-full relative rounded-3xl overflow-hidden glass-card group/back reveal-scale">
             <motion.img
@@ -226,12 +245,15 @@ export default function Locations() {
       <style dangerouslySetInnerHTML={{ __html: `
         .perspective-1000 {
           perspective: 1000px;
+          -webkit-perspective: 1000px;
         }
         .preserve-3d {
           transform-style: preserve-3d;
+          -webkit-transform-style: preserve-3d;
         }
         .backface-hidden {
           backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
       `}} />
     </section>
