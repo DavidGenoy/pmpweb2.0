@@ -5,30 +5,40 @@ import Lenis from 'lenis';
 import SplitType from 'split-type';
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ 
+  limitCallbacks: true,
+  ignoreMobileResize: true // This is a huge help for iOS address bar issues
+});
 
 export default function ScrollManager() {
   useEffect(() => {
     // 1. Initialize Lenis Smooth Scroll
     const isMobile = window.innerWidth < 768;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     
-    const lenis = new Lenis({
-      duration: isMobile ? 1.0 : 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: isMobile ? 1.2 : 1.5, // Lower multiplier on mobile to prevent "runaway" scrolling
-      infinite: false,
-      syncTouch: true, // Sync touch scroll with Lenis
-    });
+    let lenis: Lenis | null = null;
 
-    // Sync ScrollTrigger with Lenis
-    lenis.on('scroll', ScrollTrigger.update);
+    // Only use Lenis on Desktop for maximum performance and native feel on mobile
+    if (!isMobile && !isIOS) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+        infinite: false,
+        syncTouch: false, // Never sync touch for better native performance
+      });
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+      // Sync ScrollTrigger with Lenis
+      lenis.on('scroll', ScrollTrigger.update);
+
+      gsap.ticker.add((time) => {
+        lenis?.raf(time * 1000);
+      });
+    }
 
     gsap.ticker.lagSmoothing(0);
 
@@ -122,6 +132,8 @@ export default function ScrollManager() {
       splitInstances = [];
       ScrollTrigger.getAll().filter(st => st.vars.id === 'scrub-text').forEach(st => st.kill());
 
+      if (isMobile || isIOS) return;
+
       const scrubElements = document.querySelectorAll('.reveal-text-scrub');
       scrubElements.forEach((el) => {
         const split = new SplitType(el as HTMLElement, { types: 'words' });
@@ -178,7 +190,13 @@ export default function ScrollManager() {
 
     // Handle Resize
     let resizeTimer: NodeJS.Timeout;
+    let lastWidth = window.innerWidth;
+    
     window.addEventListener('resize', () => {
+      // On mobile, ignore resize if only height changed (likely address bar)
+      if (isMobile && window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         initScrubText();
@@ -187,7 +205,7 @@ export default function ScrollManager() {
     });
 
     return () => {
-      lenis.destroy();
+      if (lenis) lenis.destroy();
       ScrollTrigger.getAll().forEach(t => t.kill());
       splitInstances.forEach(instance => instance.revert());
       window.removeEventListener('resize', initScrubText);

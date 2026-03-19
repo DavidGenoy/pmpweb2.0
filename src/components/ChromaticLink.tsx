@@ -22,6 +22,11 @@ export default function ChromaticLink({ href, children, className = "", ...props
     const link = linkRef.current;
     if (!link) return;
 
+    const isMobile = window.innerWidth < 768;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    if (isMobile || isIOS) return;
+
     const onMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
     };
@@ -118,7 +123,7 @@ export default function ChromaticLink({ href, children, className = "", ...props
       ref={linkRef}
       href={href}
       className={`chromatic-link group relative inline-block ${className}`}
-      style={{ filter: "url(#fluid-distort)" }}
+      style={{ filter: (typeof window !== 'undefined' && (window.innerWidth < 768 || /iPad|iPhone|iPod/.test(navigator.userAgent))) ? "none" : "url(#fluid-distort)" }}
       {...props}
     >
       <span ref={textRef} className="relative z-10 inline-flex items-center gap-[inherit] transition-opacity duration-200 group-hover:opacity-90">

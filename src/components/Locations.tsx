@@ -46,27 +46,37 @@ function LocationCard({ location, index }: { location: Location; index: number; 
       role="button"
       aria-pressed={isFlipped}
       aria-label={`Location card for ${location.name}. Click to flip and see photo.`}
-      whileTap={{ scale: 0.98 }}
+      whileTap={typeof window !== 'undefined' && window.innerWidth >= 768 ? { scale: 0.98 } : {}}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
       <motion.div
         initial={false}
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        animate={{ rotateY: isFlipped ? 180 : 0.01 }}
         transition={{
-          duration: shouldReduceMotion ? 0.1 : 0.6,
+          duration: shouldReduceMotion ? 0.1 : 0.5,
           type: "spring",
-          stiffness: 260,
-          damping: 20,
-          mass: 1
+          stiffness: isFlipped ? 200 : 240,
+          damping: 22,
+          mass: 0.8
         }}
-        className="relative h-full w-full transition-all duration-300 preserve-3d"
+        className="relative h-full w-full preserve-3d"
         style={{ 
           transform: `translateZ(0)`,
-          willChange: 'transform'
+          willChange: 'transform',
+          transformStyle: 'preserve-3d',
+          WebkitTransformStyle: 'preserve-3d'
         }}
       >
         {/* Front Side */}
-        <div className="absolute inset-0 h-full w-full backface-hidden">
+        <div 
+          className="absolute inset-0 h-full w-full backface-hidden"
+          style={{ 
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(2px)', // Increased for Safari layering
+            WebkitTransform: 'translateZ(2px)'
+          }}
+        >
           <div className="h-full w-full glass-card p-8 rounded-3xl flex flex-col">
             <div className="flex justify-between items-start mb-6">
               <h4 className="text-2xl font-bold text-white">
@@ -112,7 +122,12 @@ function LocationCard({ location, index }: { location: Location; index: number; 
         {/* Back Side */}
         <div 
           className="absolute inset-0 h-full w-full backface-hidden"
-          style={{ transform: "rotateY(180deg)" }}
+          style={{ 
+            transform: "rotateY(180deg) translateZ(2px)", // Increased for Safari layering
+            WebkitTransform: "rotateY(180deg) translateZ(2px)",
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility: 'hidden'
+          }}
         >
             <div className="h-full w-full relative rounded-3xl overflow-hidden glass-card group/back reveal-scale">
             <motion.img

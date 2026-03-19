@@ -97,10 +97,17 @@ export default function ParticleBackground() {
       }
     }
 
+    const isMobile = window.innerWidth < 768;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
     const init = () => {
       particles = [];
-      const numberOfParticles = (canvas.width * canvas.height) / 9000;
-      for (let i = 0; i < numberOfParticles; i++) {
+      const baseDensity = (isMobile || isIOS) ? 18000 : 9000;
+      const numberOfParticles = (canvas.width * canvas.height) / baseDensity;
+      const maxParticles = (isMobile || isIOS) ? 40 : 150;
+      const finalCount = Math.min(numberOfParticles, maxParticles);
+      
+      for (let i = 0; i < finalCount; i++) {
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
         particles.push(new Particle(x, y));
@@ -135,7 +142,7 @@ export default function ParticleBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-20 bg-[#02040a] overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 -z-20 bg-[#02040a] overflow-hidden pointer-events-none" style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}>
       {/* Fallback Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#02040a] via-[#0a0e1a] to-[#02040a] opacity-100" />
       
