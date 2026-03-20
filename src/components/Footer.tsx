@@ -21,7 +21,7 @@ export default function Footer() {
                 <img 
                   src="https://nethingso.xyz/logo/white_pmp_logo.png" 
                   alt="Primary Medical Physicians" 
-                  className="h-10 w-auto relative z-10 brightness-0 invert"
+                  className="h-14 w-auto relative z-10 brightness-0 invert"
                   referrerPolicy="no-referrer"
                 />
               </div>

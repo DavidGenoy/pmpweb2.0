@@ -39,7 +39,7 @@ export default function Navbar() {
               <img 
                 src="https://nethingso.xyz/logo/white_pmp_logo.png" 
                 alt="Primary Medical Physicians" 
-                className="h-12 w-auto relative z-10 brightness-0 invert"
+                className="h-16 w-auto relative z-10 brightness-0 invert"
                 referrerPolicy="no-referrer"
               />
             </div>
