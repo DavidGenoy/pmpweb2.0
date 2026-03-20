@@ -233,7 +233,7 @@ export default function Locations() {
             </p>
           </div>
           <button 
-            onClick={() => window.open('https://www.google.com/maps/d/viewer?mid=1-OgaPIOv8xBftbm--NiCQitndDny7f4&ehbc=2E312F', '_blank')}
+            onClick={() => window.open('https://www.google.com/maps/d/viewer?mid=1r_dL3AYKjtcP9mC05XpfOe0RshAIklM&ehbc=2E312F', '_blank')}
             className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-8 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2 group whitespace-nowrap"
           >
             View All Locations on Map

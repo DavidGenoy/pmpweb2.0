@@ -4,57 +4,57 @@ import { Quote, Star } from "lucide-react";
 export default function Testimonials() {
   const testimonials = [
     {
-      name: "Maria G.",
-      location: "Hollywood",
-      text: "I've been coming to Primary Medical Physicians for 5 years. Dr. Jenkins is incredibly thorough and always takes the time to listen to my concerns. The staff is friendly and the wait times are minimal.",
+      name: "Lauren Lee",
+      location: "Taft Office",
+      text: "I started with this practice as a new patient back in 2013. I love the staff and physicians they have always been the kindest most helpful office I have ever been with. Always pleasant and they always get the job done. They are in my eyes a blessing to have found an amazing practice that never let me down... I highly recommend this practice they do not forget your needs what so ever...",
       rating: 5,
     },
     {
-      name: "David R.",
+      name: "Sheree",
+      location: "Taft Office",
+      text: "The entire staff was attentive and courteous, from the front desk to the back office. I have been seeing Dr. Joseph Mascenik for eight years, and I will follow him wherever he goes. He is always precise, sincere, caring, and kind. I truly appreciate his knowledge and the care he provides as my doctor.",
+      rating: 5,
+    },
+    {
+      name: "Milena Sarmiento",
+      location: "Johnson Office",
+      text: "It was an incredible experience—everyone was so attentive and wonderful that they exceeded all my expectations. The front desk was friendly, efficient, and professional. The assistants felt like friends, guiding me through the entire process. And Dr. Pena Alcantara is one of the most understanding, caring, and empathetic doctors I’ve ever met. I truly couldn’t be happier to have found them.",
+      rating: 5,
+    },
+    {
+      name: "Luisa Santos",
+      location: "Pembroke Pines Office",
+      text: "I have never had such a great experience with doctor before I met Dr. Guadagna. He follows up with you after blood results, his staff is amazing and so caring and professional. I am so lucky to have this staff and Dr. Guadagna as my primary doctor. Highly recommend.",
+      rating: 5,
+    },
+    {
+      name: "Dina Dolan",
+      location: "Davie Manor Offices",
+      text: "Dr Sharon is simply wonderful. It has taken me years literally to find a doctor that listens and doesn't just want to push pills on me or just say things like they're reciting a script. Thank goodness I found her. I really felt heard and cared for. I highly recommend her and this office.",
+      rating: 5,
+    },
+    {
+      name: "Rosa Vasquez",
+      location: "Davie Office",
+      text: "It was an excellent experience. The front staff were warm and welcoming, which is rare to find these days. Nurse Practitioner Sharon Sabaitue, ARNP, has outstanding bedside manners—she is personable and genuinely invested in listening to her patients to determine the best treatment plan. I highly recommend her!",
+      rating: 5,
+    },
+    {
+      name: "Adriana Waldman",
+      location: "Plantation Office",
+      text: "I Love my new doctor Ramon B! What a great staff! The kindness starts with the smile and greetings at the reception. When you are ready to leave again your experience is kind and professional. Thanks a lot!! God bless you all!",
+      rating: 5,
+    },
+    {
+      name: "Berta Guillen",
+      location: "Johnson Office",
+      text: "Dr William Peña is wonderful, very knowledgeable and caring. He explains everything in detail and is extremely thorough. Looks at your last labs and compares it to the current. He listens and is compassionate to what you have to say. Been going to him for years and will travel to be able to be seen by him. 💖",
+      rating: 5,
+    },
+    {
+      name: "orly orlandi",
       location: "Pembroke Pines",
-      text: "Finding a good primary care doctor is hard, but I hit the jackpot here. The facility is modern, clean, and the patient portal makes managing my prescriptions so easy.",
-      rating: 5,
-    },
-    {
-      name: "Sarah T.",
-      location: "Fort Lauderdale",
-      text: "They truly care about preventative health. My provider caught an issue early during a routine screening that could have been serious. I am forever grateful to this team.",
-      rating: 5,
-    },
-    {
-      name: "Michael B.",
-      location: "Plantation",
-      text: "The best medical experience I've had in Florida. Professional, efficient, and they actually care about you as a person, not just a number.",
-      rating: 5,
-    },
-    {
-      name: "Elena V.",
-      location: "Weston",
-      text: "I love the convenience of having multiple locations. No matter where I am in Broward, I can see a provider who has my full medical history.",
-      rating: 5,
-    },
-    {
-      name: "James L.",
-      location: "Coral Springs",
-      text: "The specialists here are top-notch. I was referred internally and the transition was seamless. Highly recommend for comprehensive care.",
-      rating: 5,
-    },
-    {
-      name: "Linda K.",
-      location: "Hollywood",
-      text: "Excellent service from start to finish. The nurses are so kind and the doctors really know their stuff. 5 stars!",
-      rating: 5,
-    },
-    {
-      name: "Robert P.",
-      location: "Pembroke Pines",
-      text: "Very impressed with the technology they use. Everything is digital and fast. No more filling out the same forms every visit.",
-      rating: 5,
-    },
-    {
-      name: "Sofia M.",
-      location: "Fort Lauderdale",
-      text: "A healthcare provider that actually listens. They took the time to explain my treatment plan in detail. I feel very supported.",
+      text: "Dr. Ruth as always was very professional and very thorough. She had addressed my concerns and needs appropriately. Nicole was very skillful with drawing my blood and giving me my vaccination. The receptionist was also courteous and professional. Thank you very much for providing me with best care as always. God bless!!!",
       rating: 5,
     },
   ];
@@ -77,7 +77,7 @@ export default function Testimonials() {
         ))}
       </div>
 
-      <p className="text-white/80 leading-relaxed mb-8 relative z-10 text-lg italic font-serif">
+      <p className="text-white/80 leading-relaxed mb-8 relative z-10 text-base italic font-serif">
         "{testimonial.text}"
       </p>
 
@@ -106,8 +106,8 @@ export default function Testimonials() {
             Hear From Our Community
           </h3>
           <p className="text-lg text-white/70 reveal-text-scrub">
-            We are proud to serve the Broward County community and are honored
-            by the trust our patients place in us.
+            We are proud to serve the Broward and Dade County community and are
+            honored by the trust our patients place in us.
           </p>
         </div>
 
