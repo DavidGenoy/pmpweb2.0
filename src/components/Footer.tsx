@@ -28,7 +28,7 @@ export default function Footer() {
             </div>
             <p className="text-white/70 leading-relaxed text-sm">
               Providing comprehensive, compassionate primary care to the Broward
-              County community through our 16 expert providers across 7
+              and Dade County community through our 16 expert providers across 7
               convenient locations.
             </p>
             <div className="flex items-center gap-4">
@@ -81,21 +81,23 @@ export default function Footer() {
             <h4 className="font-bold text-lg mb-6 text-white">Our Locations</h4>
             <ul className="space-y-4">
               {[
-                "Hollywood Taft (Main)",
-                "Hollywood Johnson",
-                "Pembroke Pines",
-                "Davie Manor",
-                "Davie",
-                "Plantation",
-                "Aventura",
+                { name: "Hollywood Taft (Main)", href: "https://maps.app.goo.gl/wyLpLiDysZodzGH96" },
+                { name: "Hollywood Johnson", href: "https://maps.app.goo.gl/cykjZd8Sat7HysHj7" },
+                { name: "Pembroke Pines", href: "https://maps.app.goo.gl/jYy8nKjJT1ByxSwq7" },
+                { name: "Davie Manor", href: "https://maps.app.goo.gl/REEL5UjBenHyC8BC7" },
+                { name: "Davie", href: "https://maps.app.goo.gl/hTqVsDXbMJxnvVnh6" },
+                { name: "Plantation", href: "https://maps.app.goo.gl/BNsxwvesa3HoRZjy7" },
+                { name: "Aventura", href: "https://maps.app.goo.gl/7bX7q3JUDopi8ZAd9" },
               ].map((location) => (
-                <li key={location}>
+                <li key={location.name}>
                   <ChromaticLink
-                    href="#locations"
+                    href={location.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-white/70 hover:text-accent-400 transition-colors text-sm font-medium flex items-center gap-2 flex-nowrap"
                   >
                     <MapPin className="w-4 h-4 shrink-0 text-accent-500/50" />
-                    <span className="whitespace-nowrap">{location}</span>
+                    <span className="whitespace-nowrap">{location.name}</span>
                   </ChromaticLink>
                 </li>
               ))}

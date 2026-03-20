@@ -97,6 +97,13 @@ function LocationCard({ location, index }: { location: Location; index: number; 
                 <Clock className="w-5 h-5 text-accent-400 mt-0.5 shrink-0" />
                 <p className="text-white/70 whitespace-pre-line">{location.hours}</p>
               </div>
+
+              <div className="pt-2">
+                <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
+                  <RotateCw className="w-3 h-3" />
+                  Click to flip
+                </p>
+              </div>
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/10 flex gap-4">
@@ -194,7 +201,7 @@ export default function Locations() {
       name: "Plantation",
       address: "320 S State Rd 7\nSuite 100\nPlantation, FL 33317",
       hours: "Mon-Fri: 8:30am - 5:00pm",
-      direction: "https://maps.app.goo.gl/CBrtERZQd37qiMb39",
+      direction: "https://maps.app.goo.gl/BNsxwvesa3HoRZjy7",
       image: "https://nethingso.xyz/locations/locations-6-plantation.webp",
     },
     {

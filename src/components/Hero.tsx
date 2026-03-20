@@ -15,9 +15,9 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Content */}
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500/20 text-accent-400 font-medium text-sm mb-8 border border-accent-500/30 reveal-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500/20 text-accent-400 font-medium text-[10px] sm:text-sm mb-8 border border-accent-500/30 reveal-up">
               <Star className="w-4 h-4 fill-current" />
-              <span>Top-Rated Primary Care in Broward County</span>
+              <span>Top-Rated Primary Care in Broward and Dade County</span>
             </div>
             
             <h1 className="text-5xl lg:text-7xl font-serif font-medium text-white leading-[1.1] mb-6 text-balance reveal-text">
@@ -63,7 +63,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="font-bold text-white text-xl">7</p>
-                  <p className="text-sm text-white/50 font-medium">Broward Locations</p>
+                  <p className="text-sm text-white/50 font-medium">Locations</p>
                 </div>
               </div>
             </div>
@@ -109,11 +109,11 @@ export default function Hero() {
                   Working Hours
                 </h3>
                 <div className="space-y-4 text-white/80 ml-2">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-white/10 pb-3 hover:border-accent-500/50 transition-colors gap-1 sm:gap-4">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-white/10 pb-3 hover:border-accent-500/50 hover:text-accent-400 transition-colors gap-1 sm:gap-4">
                     <span className="font-medium uppercase tracking-wider text-xs sm:text-sm text-white/60 whitespace-nowrap">Monday - Friday</span>
-                    <span className="font-medium text-sm sm:text-base whitespace-nowrap">8:00 AM – 5:30 PM</span>
+                    <span className="font-medium text-sm sm:text-base whitespace-nowrap">8:00 AM – 6:00 PM</span>
                   </div>
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-white/10 pb-3 hover:border-accent-500/50 transition-colors gap-1 sm:gap-4">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-white/10 pb-3 hover:border-accent-500/50 hover:text-accent-400 transition-colors gap-1 sm:gap-4">
                     <span className="font-medium uppercase tracking-wider text-xs sm:text-sm text-white/60 whitespace-nowrap">Saturday</span>
                     <span className="font-medium text-sm sm:text-base whitespace-nowrap">8:30 AM – 1:00 PM</span>
                   </div>
