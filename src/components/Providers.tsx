@@ -175,46 +175,58 @@ export default function Providers() {
                   scale={1.02} 
                   perspective={1200}
                   showGlow={true}
-                  className="glass-card rounded-2xl lg:rounded-3xl overflow-hidden h-full flex flex-row lg:flex-col items-stretch min-h-[150px] sm:min-h-[170px] lg:min-h-0"
+                  className="glass-card rounded-2xl lg:rounded-3xl overflow-hidden h-full"
                 >
-                  {/* Image Container: Edge-to-edge on mobile/tablet, original vertical on desktop */}
-                  <div className="relative w-[35%] sm:w-[40%] lg:w-full lg:h-auto lg:aspect-[4/5] shrink-0 overflow-hidden reveal-scale">
-                    <img
-                      src={provider.image}
-                      alt={provider.name}
-                      className="absolute inset-0 w-full h-full object-cover object-[50%_20%] max-sm:object-[50%_25%] group-hover:scale-105 transition-transform duration-700 opacity-90"
-                      referrerPolicy="no-referrer"
-                    />
-                    {/* Desktop-only gradient overlay (global 4.9 badge removal) */}
-                    <div className="hidden lg:block absolute inset-0 bg-gradient-to-t from-primary-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                  
-                  {/* Content Container: Compact on mobile/tablet, original on desktop */}
-                  <div className="flex flex-col flex-grow p-4 sm:p-5 lg:p-6 min-w-0 justify-center z-10">
-                    <h4 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 lg:mb-1 max-lg:truncate">
-                      {provider.name}
-                    </h4>
-                    <p className="text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm mb-1 lg:mb-3 max-lg:truncate">
-                      {provider.degree}
-                    </p>
-                    <div className="flex items-center gap-1.5 lg:gap-2 text-white/60 lg:text-white/50 text-xs lg:text-sm mb-3 lg:mb-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#02c39a] lg:bg-accent-500 shrink-0" />
-                      <span className="truncate">{provider.specialty}</span>
+                  {/* mobile-only green touch/active card transition wrapper */}
+                  {/* iPhone/iOS-safe interaction handling via onTouch events */}
+                  {/* mobile-only card height increase: min-h-[170px] sm:min-h-[190px] */}
+                  {/* desktop-preservation safeguards: lg:min-h-0, lg:flex-col, max-lg: prefixes */}
+                  <div 
+                    onTouchStart={(e) => e.currentTarget.classList.add('is-card-pressed')}
+                    onTouchEnd={(e) => e.currentTarget.classList.remove('is-card-pressed')}
+                    onTouchCancel={(e) => e.currentTarget.classList.remove('is-card-pressed')}
+                    className="flex flex-row lg:flex-col items-stretch w-full h-full min-h-[170px] sm:min-h-[190px] lg:min-h-0 transition-colors duration-300 max-lg:[&.is-card-pressed]:bg-[#02c39a]/10"
+                  >
+                    {/* Image Container: Edge-to-edge on mobile/tablet, original vertical on desktop */}
+                    <div className="relative w-[35%] sm:w-[40%] lg:w-full lg:h-auto lg:aspect-[4/5] shrink-0 overflow-hidden reveal-scale">
+                      <img
+                        src={provider.image}
+                        alt={provider.name}
+                        className="absolute inset-0 w-full h-full object-cover object-[50%_20%] max-sm:object-[50%_25%] group-hover:scale-105 transition-transform duration-700 opacity-90"
+                        referrerPolicy="no-referrer"
+                      />
+                      {/* Desktop-only gradient overlay (global 4.9 badge removal) */}
+                      <div className="hidden lg:block absolute inset-0 bg-gradient-to-t from-primary-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                     
-                    {/* CTA Button: immediate button press feedback retained */}
-                    <div className="mt-auto pt-2 lg:pt-6">
-                      <a 
-                        href={provider.bookingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
-                        onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
-                        onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
-                        className="w-full bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-2 lg:py-3 rounded-lg lg:rounded-xl font-medium transition-all duration-300 text-sm inline-flex items-center justify-center active:bg-[#02c39a] active:text-primary-900 active:scale-[0.96] active:shadow-[0_0_20px_rgba(2,195,154,0.4)] active:border-[#02c39a] active:duration-0 border border-transparent touch-manipulation [&.is-pressed]:bg-[#02c39a] [&.is-pressed]:text-primary-900 [&.is-pressed]:scale-[0.96] [&.is-pressed]:shadow-[0_0_20px_rgba(2,195,154,0.4)] [&.is-pressed]:border-[#02c39a] [&.is-pressed]:duration-0"
-                      >
-                        Book Appointment
-                      </a>
+                    {/* Content Container: Compact on mobile/tablet, original on desktop */}
+                    <div className="flex flex-col flex-grow p-4 sm:p-5 lg:p-6 min-w-0 justify-center z-10">
+                      <h4 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 lg:mb-1 max-lg:truncate transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-[#02c39a]">
+                        {provider.name}
+                      </h4>
+                      {/* mobile-only text/dot color transition on touch */}
+                      <p className="text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm mb-1 lg:mb-3 max-lg:truncate transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white">
+                        {provider.degree}
+                      </p>
+                      <div className="flex items-center gap-1.5 lg:gap-2 text-white/60 lg:text-white/50 text-xs lg:text-sm mb-3 lg:mb-0 transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white/90">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#02c39a] lg:bg-accent-500 shrink-0 transition-colors duration-300 max-lg:[.is-card-pressed_&]:bg-white" />
+                        <span className="truncate">{provider.specialty}</span>
+                      </div>
+                      
+                      {/* CTA Button: immediate button press feedback retained */}
+                      <div className="mt-auto pt-2 lg:pt-6">
+                        <a 
+                          href={provider.bookingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onTouchStart={(e) => { e.stopPropagation(); e.currentTarget.classList.add('is-pressed'); }}
+                          onTouchEnd={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
+                          onTouchCancel={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
+                          className="w-full bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-2 lg:py-3 rounded-lg lg:rounded-xl font-medium transition-all duration-300 text-sm inline-flex items-center justify-center active:bg-[#02c39a] active:text-primary-900 active:scale-[0.96] active:shadow-[0_0_20px_rgba(2,195,154,0.4)] active:border-[#02c39a] active:duration-0 border border-transparent touch-manipulation [&.is-pressed]:bg-[#02c39a] [&.is-pressed]:text-primary-900 [&.is-pressed]:scale-[0.96] [&.is-pressed]:shadow-[0_0_20px_rgba(2,195,154,0.4)] [&.is-pressed]:border-[#02c39a] [&.is-pressed]:duration-0"
+                        >
+                          Book Appointment
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </TiltCard>
