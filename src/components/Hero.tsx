@@ -71,7 +71,7 @@ export default function Hero() {
 
           {/* Contact & Hours Card */}
           <div
-            className="relative lg:h-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 lg:p-12 pb-14 sm:pb-16 lg:pb-20 flex flex-col justify-between group hover:bg-white/10 transition-colors duration-500 reveal-up"
+            className="relative lg:h-auto rounded-3xl overflow-hidden shadow-2xl p-8 sm:p-10 lg:p-12 pb-14 sm:pb-16 lg:pb-20 flex flex-col justify-between group transition-colors duration-500 reveal-up glass-card"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -z-10 group-hover:bg-accent-500/20 transition-colors duration-700"></div>
             

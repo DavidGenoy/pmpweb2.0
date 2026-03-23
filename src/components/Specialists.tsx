@@ -184,7 +184,7 @@ export default function Specialists() {
               className="flex-none w-[300px] md:w-[400px] snap-center"
             >
               <div 
-                className="group relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                className="group relative aspect-[4/5] rounded-3xl overflow-hidden glass-card shadow-2xl transition-all duration-300 hover:-translate-y-2"
               >
                 {/* Parallax Image Effect */}
                 <div className="absolute inset-0 z-0 reveal-scale">

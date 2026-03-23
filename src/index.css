@@ -122,25 +122,30 @@ body {
 @supports (-webkit-touch-callout: none) {
   html, body {
     /* Prevent horizontal scroll while allowing smooth vertical momentum */
-    overflow-x: hidden;
+    /* Using clip instead of hidden prevents iOS scroll jank */
+    overflow-x: clip;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     position: relative;
-    /* Remove fixed height which breaks ScrollTrigger on iOS */
     height: auto;
     min-height: 100%;
   }
   
   .glass-card {
-    /* Safari handles backdrop-filter poorly with complex layers, simplify on iOS */
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-    background-color: rgba(10, 25, 47, 0.9);
+    /* Safari handles backdrop-filter poorly with complex layers, use a more optimized blur */
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background-color: rgba(10, 25, 47, 0.85);
+    /* Force hardware acceleration to prevent flickering */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
 
   .ios-navbar-fix {
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
 }
 
@@ -220,21 +225,42 @@ body {
 /* Reduce backdrop-blur on mobile for performance */
 @media (max-width: 768px) {
   .glass-card {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     background-color: rgba(10, 25, 47, 0.85); /* Darker fallback for readability */
   }
+}
+
+/* Touch Device Interactive States (Premium Feel) */
+@media (hover: none) {
+  /* Remove sticky hover */
+  .glass-card:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: none !important;
+  }
   
-  /* Prevent sticky hover states on touch devices */
-  @media (hover: none) {
-    .glass-card:hover {
-      @apply bg-white/5 border-white/10;
-      transform: none !important;
-    }
-    
-    button:hover:not(:disabled), .btn:hover:not(:disabled) {
-      @apply scale-100 shadow-none;
-    }
+  button:hover:not(:disabled), .btn:hover:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Add active (press) states for tactile feedback */
+  button:active:not(:disabled), .btn:active:not(:disabled), a:active {
+    transform: scale(0.98) !important;
+    opacity: 0.9;
+    transition: all 0.1s ease-out;
+  }
+  
+  .glass-card:active {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(2, 195, 154, 0.3);
+    transition: all 0.1s ease-out;
+  }
+  
+  /* Make sure links feel responsive */
+  .group\/link:active {
+    opacity: 0.7;
   }
 }
 

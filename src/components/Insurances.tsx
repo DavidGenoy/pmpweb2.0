@@ -62,9 +62,9 @@ export default function Insurances() {
         }} 
       />
       
-      <div className="relative z-20 py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="relative z-20 py-16 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center max-w-3xl mx-auto mb-24 reveal-up">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-24 reveal-up">
           <h2 className="text-sm font-bold tracking-[0.2em] text-accent-500 uppercase mb-4">
             INSURANCES WE ACCEPT
           </h2>
@@ -119,12 +119,12 @@ export default function Insurances() {
           ))}
         </div>
 
-        {/* Mobile Layout (2 per row) */}
-        <div className="grid sm:hidden grid-cols-2 gap-y-12 gap-x-8 items-center justify-items-center reveal-stagger">
+        {/* Mobile Layout (Denser, 3-4 column flex to center last row) */}
+        <div className="flex sm:hidden flex-wrap justify-center gap-y-8 gap-x-4 items-center reveal-stagger px-2">
           {logos.map((logo, index) => (
-            <TiltCard
+            <div
               key={index}
-              className={`${isLarge(logo) ? 'w-48 h-20' : 'w-32 h-12'} flex items-center justify-center`}
+              className="w-[calc(33.333%-12px)] min-[400px]:w-[calc(25%-12px)] h-10 flex items-center justify-center"
             >
               <img
                 src={logo}
@@ -133,7 +133,7 @@ export default function Insurances() {
                 className={`${isLarge(logo) ? 'scale-110' : 'scale-100'} max-w-full max-h-full object-contain object-center`}
                 referrerPolicy="no-referrer"
               />
-            </TiltCard>
+            </div>
           ))}
         </div>
       </div>

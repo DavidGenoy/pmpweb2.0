@@ -149,12 +149,11 @@ export default function ParticleBackground() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ mixBlendMode: 'screen' }}
       />
       
-      {/* Atmosphere Glows */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] -z-10" />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[150px] -z-10" />
+      {/* Atmosphere Glows (Optimized with radial gradients instead of CSS blur) */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full -z-10" style={{ background: 'radial-gradient(circle, rgba(30, 58, 138, 0.15) 0%, transparent 70%)', transform: 'translateZ(0)' }} />
+      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full -z-10" style={{ background: 'radial-gradient(circle, rgba(88, 28, 135, 0.15) 0%, transparent 70%)', transform: 'translateZ(0)' }} />
     </div>
   );
 }

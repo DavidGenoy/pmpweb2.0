@@ -54,6 +54,7 @@ export default function ScrollManager() {
           opacity: 1,
           duration: 1,
           ease: 'power3.out',
+          force3D: true,
           scrollTrigger: {
             trigger: el,
             start: 'top 85%',
@@ -77,6 +78,7 @@ export default function ScrollManager() {
             duration: 0.8,
             stagger: 0.15,
             ease: 'power3.out',
+            force3D: true,
             scrollTrigger: {
               trigger: container,
               start: 'top 80%',
@@ -96,6 +98,7 @@ export default function ScrollManager() {
         {
           scale: 1,
           ease: 'none',
+          force3D: true,
           scrollTrigger: {
             trigger: el,
             start: 'top bottom',
@@ -116,6 +119,7 @@ export default function ScrollManager() {
           opacity: 1,
           duration: 1.2,
           ease: 'power4.out',
+          force3D: true,
           scrollTrigger: {
             trigger: el,
             start: 'top 90%',
@@ -135,8 +139,6 @@ export default function ScrollManager() {
       splitInstances = [];
       ScrollTrigger.getAll().filter(st => st.vars.id === 'scrub-text').forEach(st => st.kill());
 
-      if (isMobile || isIOS) return;
-
       const scrubElements = document.querySelectorAll('.reveal-text-scrub');
       scrubElements.forEach((el) => {
         const split = new SplitType(el as HTMLElement, { types: 'words' });
@@ -150,8 +152,8 @@ export default function ScrollManager() {
             scrollTrigger: {
               id: 'scrub-text',
               trigger: el,
-              start: 'top 80%',
-              end: 'top 20%',
+              start: 'top 85%',
+              end: 'top 25%',
               scrub: true,
             }
           });
@@ -187,6 +189,7 @@ export default function ScrollManager() {
             {
               y: -movement,
               ease: 'none',
+              force3D: true,
               scrollTrigger: {
                 trigger: wrapper,
                 start: 'top bottom',

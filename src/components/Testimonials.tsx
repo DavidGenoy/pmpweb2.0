@@ -67,7 +67,7 @@ export default function Testimonials() {
   const renderTestimonial = (testimonial: any) => (
     <div
       key={testimonial.name}
-      className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-3xl relative group hover:bg-white/10 transition-colors duration-300 mb-8"
+      className="glass-card p-8 rounded-3xl relative group transition-colors duration-300 mb-8"
     >
       <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5 group-hover:text-accent-500/20 transition-colors duration-300" />
 

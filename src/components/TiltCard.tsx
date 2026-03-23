@@ -20,8 +20,11 @@ const TiltCard: React.FC<TiltCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState(`perspective(${perspective}px) rotateX(0deg) rotateY(0deg) scale(1)`);
 
+  const [isHovering, setIsHovering] = useState(false);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
+    setIsHovering(true);
 
     const card = cardRef.current;
     const rect = card.getBoundingClientRect();
@@ -46,6 +49,7 @@ const TiltCard: React.FC<TiltCardProps> = ({
   };
 
   const handleMouseLeave = () => {
+    setIsHovering(false);
     setTransform(`perspective(${perspective}px) rotateX(0deg) rotateY(0deg) scale(1)`);
   };
 
@@ -58,7 +62,7 @@ const TiltCard: React.FC<TiltCardProps> = ({
         transform: transform,
         transition: 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1)',
         transformStyle: 'preserve-3d',
-        willChange: 'transform'
+        willChange: isHovering ? 'transform' : 'auto'
       }}
       className={`tilt-card ${showGlow ? 'glow-card' : ''} ${className}`}
     >
