@@ -153,7 +153,8 @@ export default function Providers() {
           </button>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-8 reveal-stagger">
+        {/* Mobile/Tablet: Tighter gap (gap-4/gap-6), Desktop: Original gap (gap-8) */}
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 reveal-stagger">
           <AnimatePresence mode="popLayout">
             {visibleProviders.map((provider, index) => (
               <motion.div
@@ -167,49 +168,56 @@ export default function Providers() {
                   delay: isExpanded && index >= initialCount ? (index - initialCount) * 0.05 : 0,
                   ease: [0.23, 1, 0.32, 1]
                 }}
-                className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]"
+                className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.5rem)]"
               >
                 <TiltCard 
                   maxRotation={4} 
                   scale={1.02} 
                   perspective={1200}
                   showGlow={true}
-                  className="glass-card rounded-3xl overflow-hidden h-full"
+                  className="glass-card rounded-2xl lg:rounded-3xl overflow-hidden h-full flex flex-row lg:flex-col p-3 lg:p-0 gap-4 lg:gap-0 items-center lg:items-stretch"
                 >
-                  <div className="relative w-full aspect-[4/5] overflow-hidden reveal-scale">
+                  {/* Image Container: Horizontal on mobile/tablet, original vertical on desktop */}
+                  <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-full lg:h-auto lg:aspect-[4/5] rounded-xl lg:rounded-none overflow-hidden reveal-scale shrink-0">
                     <img
                       src={provider.image}
                       alt={provider.name}
-                      className="absolute inset-0 w-full h-full object-cover object-[50%_20%] max-sm:object-[50%_28%] group-hover:scale-105 transition-transform duration-700 opacity-90"
+                      className="absolute inset-0 w-full h-full object-cover object-[50%_20%] max-lg:object-[50%_28%] group-hover:scale-105 transition-transform duration-700 opacity-90"
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
-                      <div className="flex items-center gap-1 text-accent-400 bg-primary-900/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium">
-                        <Star className="w-4 h-4 fill-current" />
+                    <div className="absolute bottom-1.5 left-1.5 lg:bottom-4 lg:left-4 right-1.5 lg:right-4 flex justify-between items-end opacity-100 lg:opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-0 lg:translate-y-4 group-hover:translate-y-0">
+                      <div className="flex items-center gap-1 text-[#02c39a] lg:text-accent-400 bg-primary-900/80 backdrop-blur-sm px-1.5 py-0.5 lg:px-3 lg:py-1.5 rounded-full text-[10px] lg:text-sm font-medium">
+                        <Star className="w-2.5 h-2.5 lg:w-4 lg:h-4 fill-current" />
                         <span>4.9</span>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h4 className="text-xl font-bold text-white mb-1">
+                  
+                  {/* Content Container: Compact on mobile/tablet, original on desktop */}
+                  <div className="flex flex-col flex-grow py-1 lg:p-6 min-w-0">
+                    <h4 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 lg:mb-1 max-lg:truncate">
                       {provider.name}
                     </h4>
-                    <p className="text-accent-400 font-medium text-sm mb-3">
+                    <p className="text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm mb-1 lg:mb-3 max-lg:truncate">
                       {provider.degree}
                     </p>
-                    <div className="flex items-center gap-2 text-white/50 text-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
-                      {provider.specialty}
+                    <div className="flex items-center gap-1.5 lg:gap-2 text-white/60 lg:text-white/50 text-xs lg:text-sm mb-3 lg:mb-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#02c39a] lg:bg-accent-500 shrink-0" />
+                      <span className="truncate">{provider.specialty}</span>
                     </div>
-                    <a 
-                      href={provider.bookingUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full mt-6 bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-3 rounded-xl font-medium transition-colors text-sm inline-flex items-center justify-center"
-                    >
-                      Book Appointment
-                    </a>
+                    
+                    {/* CTA Button: Premium touch interaction on mobile/tablet, original hover on desktop */}
+                    <div className="mt-auto pt-2 lg:pt-6">
+                      <a 
+                        href={provider.bookingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-2 lg:py-3 rounded-lg lg:rounded-xl font-medium transition-all duration-300 active:duration-75 text-sm inline-flex items-center justify-center active:bg-[#02c39a] active:text-primary-900 active:scale-[0.96] active:shadow-[0_0_20px_rgba(2,195,154,0.4)] active:border-[#02c39a] border border-transparent touch-manipulation"
+                      >
+                        Book Appointment
+                      </a>
+                    </div>
                   </div>
                 </TiltCard>
               </motion.div>
