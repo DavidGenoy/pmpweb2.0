@@ -39,7 +39,7 @@ function LocationCard({ location, index }: { location: Location; index: number; 
     <motion.div 
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[3/4] w-full cursor-pointer glow-card location-card"
+      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[4/5] w-full cursor-pointer glow-card location-card"
       onClick={handleFlip}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -77,9 +77,9 @@ function LocationCard({ location, index }: { location: Location; index: number; 
             WebkitTransform: 'translateZ(2px)'
           }}
         >
-          <div className="h-full w-full glass-card p-8 rounded-3xl flex flex-col">
-            <div className="flex justify-between items-start mb-6">
-              <h4 className="text-2xl font-bold text-white">
+          <div className="h-full w-full glass-card p-6 sm:p-8 rounded-3xl flex flex-col">
+            <div className="flex justify-between items-start mb-4 sm:mb-6">
+              <h4 className="text-xl sm:text-2xl font-bold text-white">
                 {location.name}
               </h4>
               <RotateCw className="w-5 h-5 text-white/30 group-hover:text-accent-400 transition-colors" />

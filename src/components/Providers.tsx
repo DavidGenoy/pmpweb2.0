@@ -179,13 +179,13 @@ export default function Providers() {
                 >
                   {/* mobile-only green touch/active card transition wrapper */}
                   {/* iPhone/iOS-safe interaction handling via onTouch events */}
-                  {/* mobile-only card height increase: min-h-[170px] sm:min-h-[190px] */}
+                  {/* mobile-only card height increase: min-h-[190px] sm:min-h-[210px] */}
                   {/* desktop-preservation safeguards: lg:min-h-0, lg:flex-col, max-lg: prefixes */}
                   <div 
                     onTouchStart={(e) => e.currentTarget.classList.add('is-card-pressed')}
                     onTouchEnd={(e) => e.currentTarget.classList.remove('is-card-pressed')}
                     onTouchCancel={(e) => e.currentTarget.classList.remove('is-card-pressed')}
-                    className="flex flex-row lg:flex-col items-stretch w-full h-full min-h-[170px] sm:min-h-[190px] lg:min-h-0 transition-colors duration-300 max-lg:[&.is-card-pressed]:bg-[#02c39a]/10"
+                    className="flex flex-row lg:flex-col items-stretch w-full h-full min-h-[190px] sm:min-h-[210px] lg:min-h-0 transition-colors duration-300 max-lg:[&.is-card-pressed]:bg-[#02c39a]/10"
                   >
                     {/* Image Container: Edge-to-edge on mobile/tablet, original vertical on desktop */}
                     <div className="relative w-[35%] sm:w-[40%] lg:w-full lg:h-auto lg:aspect-[4/5] shrink-0 overflow-hidden reveal-scale">

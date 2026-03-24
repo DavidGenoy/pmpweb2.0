@@ -120,11 +120,14 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-8 reveal-stagger">
+        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 reveal-stagger">
           {services.map((service) => (
             <div
               key={service.title}
-              className="group p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-accent-500 transition-all duration-300 cursor-pointer w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]"
+              onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
+              onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
+              onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
+              className="group p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 hover:bg-accent-500 transition-all duration-300 cursor-pointer w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] touch-manipulation [&.is-pressed]:bg-accent-500"
               style={{
                 backdropFilter: 'blur(8px)',
                 WebkitBackdropFilter: 'blur(8px)',
@@ -132,13 +135,13 @@ export default function Services() {
                 WebkitTransform: 'translateZ(0)'
               }}
             >
-              <div className="w-14 h-14 rounded-2xl bg-white/10 group-hover:bg-white flex items-center justify-center mb-6 shadow-sm transition-colors duration-300">
-                <service.icon className="w-7 h-7 text-accent-400 group-hover:text-accent-500" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/10 group-hover:bg-white [.is-pressed_&]:bg-white flex items-center justify-center mb-4 sm:mb-6 shadow-sm transition-colors duration-300">
+                <service.icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent-400 group-hover:text-accent-500 [.is-pressed_&]:text-accent-500" />
               </div>
-              <h4 className="text-xl font-bold text-white group-hover:text-primary-900 mb-3 transition-colors duration-300">
+              <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-primary-900 [.is-pressed_&]:text-primary-900 mb-2 sm:mb-3 transition-colors duration-300">
                 {service.title}
               </h4>
-              <p className="text-white/60 group-hover:text-primary-900/80 leading-relaxed transition-colors duration-300">
+              <p className="text-sm sm:text-base text-white/60 group-hover:text-primary-900/80 [.is-pressed_&]:text-primary-900/80 leading-relaxed transition-colors duration-300">
                 {service.description}
               </p>
             </div>
