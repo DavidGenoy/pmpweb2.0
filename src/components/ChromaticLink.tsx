@@ -138,7 +138,7 @@ export default function ChromaticLink({ href, children, className = "", ...props
       </span>
       <span
         ref={blueRef}
-        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 select-none inline-flex items-center gap-[inherit]"
+        className="absolute inset-0 z-0 pointer-events-none opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 select-none inline-flex items-center gap-[inherit]"
         style={{ color: "#0a192f", mixBlendMode: "screen" }}
       >
         {children}

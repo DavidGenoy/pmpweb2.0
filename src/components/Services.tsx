@@ -14,6 +14,8 @@ import {
   Heart,
   FlaskConical,
   Gauge,
+  Microscope,
+  Dna,
 } from "lucide-react";
 
 export default function Services() {
@@ -101,6 +103,24 @@ export default function Services() {
       description:
         "Specialized care for high blood pressure management to reduce cardiovascular risks.",
       icon: Gauge,
+    },
+    {
+      title: "Peptides",
+      description:
+        "Advanced peptide therapies to optimize cellular function, enhance recovery, and support overall vitality.",
+      icon: Droplets,
+    },
+    {
+      title: "Cancer Screening",
+      description:
+        "Early detection and comprehensive cancer screenings provided through NATERA for peace of mind.",
+      icon: Microscope,
+    },
+    {
+      title: "Hormone Replacement",
+      description:
+        "Personalized hormone replacement therapy using pellet technology for consistent and effective results.",
+      icon: Dna,
     },
   ];
 

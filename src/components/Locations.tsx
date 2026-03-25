@@ -163,16 +163,16 @@ function LocationCard({ location, index }: { location: Location; index: number; 
 export default function Locations() {
   const locations = [
     {
-      name: "Hollywood Taft (Main)",
+      name: "Hollywood Taft",
       address: "6517 Taft St\nSuite 102\nHollywood, FL 33024",
-      hours: "Mon-Fri: 8:00am - 5:30pm\nSat: 8:30am - 1:00pm\nSunday: 9:00am - 3:30pm",
+      hours: "Mon-Fri: 8:00am - 6:00pm\nSat: 8:30am - 1:00pm\nSunday: 9:00am - 4:00pm",
       direction: "https://maps.app.goo.gl/wyLpLiDysZodzGH96",
       image: "https://nethingso.xyz/locations/locations-2-taft-6517.webp",
     },
     {
       name: "Hollywood Johnson",
       address: "3800 Johnson St\nSuite E\nHollywood, FL 33021",
-      hours: "Mon-Fri: 8:30am - 5:00pm",
+      hours: "8:00am - 6:00pm",
       direction: "https://maps.app.goo.gl/cykjZd8Sat7HysHj7",
       image: "https://nethingso.xyz/locations/locations-1-johnson.webp",
     },
@@ -186,7 +186,7 @@ export default function Locations() {
     {
       name: "Davie Manor",
       address: "7630 SW 34 Manor\nSuite 400\nDavie, FL 33328",
-      hours: "Mon-Fri: 8:00am - 5:30pm",
+      hours: "8:00am - 6:00pm",
       direction: "https://maps.app.goo.gl/REEL5UjBenHyC8BC7",
       image: "https://nethingso.xyz/locations/locations-4-davie2.webp",
     },
