@@ -39,7 +39,10 @@ function LocationCard({ location, index }: { location: Location; index: number; 
     <motion.div 
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[4/5] w-full cursor-pointer glow-card location-card"
+      onTouchStart={(e) => e.currentTarget.classList.add('is-card-pressed')}
+      onTouchEnd={(e) => e.currentTarget.classList.remove('is-card-pressed')}
+      onTouchCancel={(e) => e.currentTarget.classList.remove('is-card-pressed')}
+      className="group perspective-1000 h-[420px] max-sm:h-auto max-sm:aspect-[4/5] w-full cursor-pointer glow-card location-card transition-colors duration-300"
       onClick={handleFlip}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -77,25 +80,25 @@ function LocationCard({ location, index }: { location: Location; index: number; 
             WebkitTransform: 'translateZ(2px)'
           }}
         >
-          <div className="h-full w-full glass-card p-6 sm:p-8 rounded-3xl flex flex-col">
+          <div className="h-full w-full glass-card p-6 sm:p-8 rounded-3xl flex flex-col transition-colors duration-300 max-lg:[.is-card-pressed_&]:bg-[#02c39a]/10">
             <div className="flex justify-between items-start mb-4 sm:mb-6">
-              <h4 className="text-xl sm:text-2xl font-bold text-white">
+              <h4 className="text-xl sm:text-2xl font-bold text-white transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-[#02c39a]">
                 {location.name}
               </h4>
-              <RotateCw className="w-5 h-5 text-white/30 group-hover:text-accent-400 transition-colors" />
+              <RotateCw className="w-5 h-5 text-white/30 group-hover:text-accent-400 transition-colors max-lg:[.is-card-pressed_&]:text-[#02c39a]" />
             </div>
 
             <div className="space-y-4 flex-grow">
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-accent-400 mt-0.5 shrink-0" />
+                <MapPin className="w-5 h-5 text-accent-400 mt-0.5 shrink-0 transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white" />
                 <div>
-                  <p className="text-white/90 whitespace-pre-line">{location.address}</p>
+                  <p className="text-white/90 whitespace-pre-line transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white">{location.address}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-accent-400 mt-0.5 shrink-0" />
-                <p className="text-white/70 whitespace-pre-line">{location.hours}</p>
+                <Clock className="w-5 h-5 text-accent-400 mt-0.5 shrink-0 transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white" />
+                <p className="text-white/70 whitespace-pre-line transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white/90">{location.hours}</p>
               </div>
 
               <div className="pt-2">

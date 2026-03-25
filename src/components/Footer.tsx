@@ -81,7 +81,7 @@ export default function Footer() {
             <h4 className="font-bold text-lg mb-6 text-white">Our Locations</h4>
             <ul className="space-y-4">
               {[
-                { name: "Hollywood Taft (Main)", href: "https://maps.app.goo.gl/wyLpLiDysZodzGH96" },
+                { name: "Hollywood Taft", href: "https://maps.app.goo.gl/wyLpLiDysZodzGH96" },
                 { name: "Hollywood Johnson", href: "https://maps.app.goo.gl/cykjZd8Sat7HysHj7" },
                 { name: "Pembroke Pines", href: "https://maps.app.goo.gl/jYy8nKjJT1ByxSwq7" },
                 { name: "Davie Manor", href: "https://maps.app.goo.gl/REEL5UjBenHyC8BC7" },

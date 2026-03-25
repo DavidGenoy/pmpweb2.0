@@ -16,6 +16,9 @@ import {
   Gauge,
   Microscope,
   Dna,
+  Pill,
+  Weight,
+  UserRound,
 } from "lucide-react";
 
 export default function Services() {
@@ -29,7 +32,7 @@ export default function Services() {
     {
       title: "Preventative Care",
       description:
-        "Annual wellness exams, screenings, and immunizations to keep you healthy.",
+        "Proactive health screenings, immunizations, and lifestyle guidance to identify risks and maintain long-term wellness.", // Preventative Care description update
       icon: ShieldPlus,
     },
     {
@@ -41,25 +44,25 @@ export default function Services() {
     {
       title: "Women's Health Care",
       description:
-        "Comprehensive care including Pap smears, breast exams, and reproductive health services.",
-      icon: HeartPulse,
+        "Comprehensive primary care support for women, including routine screenings, pap smears, and pregnancy testing.", // Women's Health Care description update
+      icon: UserRound, // Women's Health icon replacement
     },
     {
       title: "Diabetes Management",
       description:
         "Expert monitoring and treatment plans to help manage blood sugar levels and prevent complications.",
-      icon: Activity,
+      icon: Droplets, // Diabetes icon replacement
     },
     {
       title: "Cholesterol Management",
       description:
         "Testing and personalized strategies to maintain healthy cholesterol levels and heart health.",
-      icon: Droplets,
+      icon: HeartPulse,
     },
     {
       title: "Vaccines",
       description:
-        "Essential immunizations for children and adults to protect against preventable diseases.",
+        "Essential immunizations for adults to protect against preventable diseases.", // Vaccines description update
       icon: Syringe,
     },
     {
@@ -78,7 +81,7 @@ export default function Services() {
       title: "Weight Loss Management",
       description:
         "Medically supervised programs to help you achieve and maintain a healthy weight.",
-      icon: Scale,
+      icon: Weight, // Weight Loss icon replacement
     },
     {
       title: "Pain Management",
@@ -102,13 +105,13 @@ export default function Services() {
       title: "Hypertension",
       description:
         "Specialized care for high blood pressure management to reduce cardiovascular risks.",
-      icon: Gauge,
+      icon: Activity, // Hypertension icon replacement
     },
     {
       title: "Peptides",
       description:
         "Advanced peptide therapies to optimize cellular function, enhance recovery, and support overall vitality.",
-      icon: Droplets,
+      icon: Pill, // Peptides icon replacement
     },
     {
       title: "Cancer Screening",
