@@ -3,21 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import ParticleBackground from "./components/ParticleBackground";
 import ScrollManager from "./components/ScrollManager";
-
-// Version 1 Components
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Locations from "./components/Locations";
-import Providers from "./components/Providers";
-import Specialists from "./components/Specialists";
-import Insurances from "./components/Insurances";
-import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import Home from "./pages/Home";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+
+function ScrollToTopOnPathChange() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 export default function App() {
   const showParticles = true;
@@ -27,18 +30,15 @@ export default function App() {
     <div className={`selection:bg-accent-500/30 selection:text-primary-900 ${highContrast ? 'contrast-125 grayscale-[0.2]' : ''}`}>
       {showParticles && <ParticleBackground />}
       <ScrollManager />
+      <ScrollToTopOnPathChange />
       
       <div className="font-sans text-white relative z-10">
         <Navbar />
-        <main>
-          <Hero />
-          <Locations />
-          <Providers />
-          <Specialists />
-          <Insurances />
-          <Services />
-          <Testimonials />
-        </main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        </Routes>
         <Footer />
       </div>
 

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Phone, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ChromaticLink from "./ChromaticLink";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +25,19 @@ export default function Navbar() {
     { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
   ];
 
+  const handleNavClick = (href: string, external?: boolean) => {
+    if (external) return;
+    setIsMobileMenuOpen(false);
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: href } });
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -33,7 +49,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-accent-500/20 blur-lg rounded-full group-hover:bg-accent-500/40 transition-colors" />
               <img 
@@ -43,7 +59,7 @@ export default function Navbar() {
                 referrerPolicy="no-referrer"
               />
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
@@ -54,6 +70,12 @@ export default function Navbar() {
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
                 className="text-base font-medium text-white/70 hover:text-accent-400"
+                onClick={(e) => {
+                  if (!link.external) {
+                    e.preventDefault();
+                    handleNavClick(link.href);
+                  }
+                }}
               >
                 {link.name}
               </ChromaticLink>
@@ -111,7 +133,14 @@ export default function Navbar() {
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
                   className="text-base font-medium text-white py-2 border-b border-white/5"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    if (!link.external) {
+                      e.preventDefault();
+                      handleNavClick(link.href);
+                    } else {
+                      setIsMobileMenuOpen(false);
+                    }
+                  }}
                 >
                   {link.name}
                 </ChromaticLink>

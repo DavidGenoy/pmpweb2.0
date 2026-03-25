@@ -6,6 +6,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import ChromaticLink from "./ChromaticLink";
 
 export default function Footer() {
@@ -136,12 +137,12 @@ export default function Footer() {
             reserved.
           </p>
           <div className="flex items-center gap-6">
-            <ChromaticLink href="#" className="hover:text-white transition-colors">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
-            </ChromaticLink>
-            <ChromaticLink href="#" className="hover:text-white transition-colors">
+            </Link>
+            <Link to="/terms-of-service" className="hover:text-white transition-colors">
               Terms of Service
-            </ChromaticLink>
+            </Link>
             <ChromaticLink href="#" className="hover:text-white transition-colors">
               HIPAA Notice
             </ChromaticLink>
