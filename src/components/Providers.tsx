@@ -177,15 +177,12 @@ export default function Providers() {
                   showGlow={true}
                   className="glass-card rounded-2xl lg:rounded-3xl overflow-hidden h-full"
                 >
-                  {/* mobile-only green touch/active card transition wrapper */}
-                  {/* iPhone/iOS-safe interaction handling via onTouch events */}
-                  {/* mobile-only card height increase: min-h-[190px] sm:min-h-[210px] */}
-                  {/* desktop-preservation safeguards: lg:min-h-0, lg:flex-col, max-lg: prefixes */}
+                  {/* provider-card mobile touch effect restoration: immediate green feedback on press */}
                   <div 
-                    onTouchStart={(e) => e.currentTarget.classList.add('is-card-pressed')}
-                    onTouchEnd={(e) => e.currentTarget.classList.remove('is-card-pressed')}
-                    onTouchCancel={(e) => e.currentTarget.classList.remove('is-card-pressed')}
-                    className="flex flex-row lg:flex-col items-stretch w-full h-full min-h-[190px] sm:min-h-[210px] lg:min-h-0 transition-colors duration-300 max-lg:[&.is-card-pressed]:bg-[#02c39a]/10"
+                    onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
+                    onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
+                    onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
+                    className="group/provider flex flex-row lg:flex-col items-stretch w-full h-full min-h-[190px] sm:min-h-[210px] lg:min-h-0 transition-all duration-300 max-lg:[&.is-pressed]:bg-[#02c39a]/10 max-lg:[&.is-pressed]:transition-none"
                   >
                     {/* Image Container: Edge-to-edge on mobile/tablet, original vertical on desktop */}
                     <div className="relative w-[35%] sm:w-[40%] lg:w-full lg:h-auto lg:aspect-[4/5] shrink-0 overflow-hidden reveal-scale">
@@ -201,15 +198,15 @@ export default function Providers() {
                     
                     {/* Content Container: Compact on mobile/tablet, original on desktop */}
                     <div className="flex flex-col flex-grow p-4 sm:p-5 lg:p-6 min-w-0 justify-center z-10">
-                      <h4 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 lg:mb-1 max-lg:truncate transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-[#02c39a]">
+                      <h4 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 lg:mb-1 max-lg:truncate transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-[#02c39a] max-lg:group-[.is-pressed]/provider:transition-none">
                         {provider.name}
                       </h4>
                       {/* mobile-only text/dot color transition on touch */}
-                      <p className="text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm mb-1 lg:mb-3 max-lg:truncate transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white">
+                      <p className="text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm mb-1 lg:mb-3 max-lg:truncate transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-white max-lg:group-[.is-pressed]/provider:transition-none">
                         {provider.degree}
                       </p>
-                      <div className="flex items-center gap-1.5 lg:gap-2 text-white/60 lg:text-white/50 text-xs lg:text-sm mb-3 lg:mb-0 transition-colors duration-300 max-lg:[.is-card-pressed_&]:text-white/90">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#02c39a] lg:bg-accent-500 shrink-0 transition-colors duration-300 max-lg:[.is-card-pressed_&]:bg-white" />
+                      <div className="flex items-center gap-1.5 lg:gap-2 text-white/60 lg:text-white/50 text-xs lg:text-sm mb-3 lg:mb-0 transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-white/90 max-lg:group-[.is-pressed]/provider:transition-none">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#02c39a] lg:bg-accent-500 shrink-0 transition-colors duration-300 max-lg:group-[.is-pressed]/provider:bg-white max-lg:group-[.is-pressed]/provider:transition-none" />
                         <span className="truncate">{provider.specialty}</span>
                       </div>
                       

@@ -26,7 +26,7 @@ export default function Services() {
     {
       title: "Primary Care",
       description:
-        "Comprehensive medical care for patients of all ages, focusing on overall health and wellness.",
+        "Comprehensive medical care focusing on long-term health, wellness, and the management of acute and chronic conditions.",
       icon: Stethoscope,
     },
     {
@@ -81,7 +81,7 @@ export default function Services() {
       title: "Weight Loss Management",
       description:
         "Medically supervised programs to help you achieve and maintain a healthy weight.",
-      icon: Weight, // Weight Loss icon replacement
+      icon: Gauge, // Weight Loss icon correction: using Gauge as a body-weight scale dial
     },
     {
       title: "Pain Management",

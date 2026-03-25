@@ -135,7 +135,7 @@ body {
     /* Safari handles backdrop-filter poorly with complex layers, use a more optimized blur */
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    background-color: rgba(10, 25, 47, 0.85);
+    background-color: rgba(255, 255, 255, 0.05);
     /* Force hardware acceleration to prevent flickering */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
@@ -227,7 +227,7 @@ body {
   .glass-card {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    background-color: rgba(10, 25, 47, 0.85); /* Darker fallback for readability */
+    background-color: rgba(255, 255, 255, 0.05);
   }
 }
 
