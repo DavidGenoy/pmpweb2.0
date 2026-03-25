@@ -6,10 +6,12 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ChromaticLink from "./ChromaticLink";
 
 export default function Footer() {
+  const navigate = useNavigate();
+
   return (
     <footer className="bg-transparent text-white pt-24 pb-12 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal-up">
@@ -137,12 +139,30 @@ export default function Footer() {
             reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link to="/privacy-policy" className="hover:text-white transition-colors">
+            {/* Privacy Policy: desktop hover effect matched via ChromaticLink, mobile touch transition added */}
+            <ChromaticLink 
+              href="/privacy-policy" 
+              className="hover:text-white transition-colors max-lg:[&.is-pressed]:text-accent-400 max-lg:[&.is-pressed]:duration-0"
+              onClick={(e) => { e.preventDefault(); navigate("/privacy-policy"); }}
+              onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
+              onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
+              onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
+            >
               Privacy Policy
-            </Link>
-            <Link to="/terms-of-service" className="hover:text-white transition-colors">
+            </ChromaticLink>
+            
+            {/* Terms of Service: desktop hover effect matched via ChromaticLink, mobile touch transition added */}
+            <ChromaticLink 
+              href="/terms-of-service" 
+              className="hover:text-white transition-colors max-lg:[&.is-pressed]:text-accent-400 max-lg:[&.is-pressed]:duration-0"
+              onClick={(e) => { e.preventDefault(); navigate("/terms-of-service"); }}
+              onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
+              onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
+              onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
+            >
               Terms of Service
-            </Link>
+            </ChromaticLink>
+            
             <ChromaticLink href="#" className="hover:text-white transition-colors">
               HIPAA Notice
             </ChromaticLink>

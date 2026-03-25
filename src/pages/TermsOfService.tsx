@@ -88,8 +88,9 @@ export default function TermsOfService() {
               <Scale className="w-6 h-6 text-accent-400" />
               4. Limitation of Liability
             </h2>
+            {/* Refined for clarity and patient-friendly legal language */}
             <p>
-              Primary Medical Physicians and its components, as well as its providers and staff, shall not be responsible or liable for the accuracy, usefulness, or availability of any information transmitted or made available via the site, and shall not be responsible or liable for any error or omissions in that information.
+              We make reasonable efforts to keep the information on this website accurate and up to date, but we cannot guarantee that all content will always be complete, current, error-free, or continuously available. Primary Medical Physicians, its providers, and staff are not responsible for any loss or damage resulting from reliance on information provided on this website or from temporary interruptions in website availability.
             </p>
           </section>
 
