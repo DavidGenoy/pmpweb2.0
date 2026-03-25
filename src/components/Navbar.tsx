@@ -19,6 +19,7 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
+    { name: "Home", href: "/" },
     { name: "Providers", href: "#providers" },
     { name: "Locations", href: "#locations" },
     { name: "Services", href: "#services" },
@@ -28,6 +29,17 @@ export default function Navbar() {
   const handleNavClick = (href: string, external?: boolean) => {
     if (external) return;
     setIsMobileMenuOpen(false);
+    
+    // Home link handling
+    if (href === "/") {
+      if (location.pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        navigate("/");
+      }
+      return;
+    }
+
     if (location.pathname !== "/") {
       navigate("/", { state: { scrollTo: href } });
     } else {
