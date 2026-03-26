@@ -16,10 +16,13 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
 
 function ScrollToTopOnPathChange() {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   useEffect(() => {
+    // iOS-safe route/scroll handling: 
+    // Do not scroll to top if we are navigating to a specific section on the homepage
+    if (state && (state as any).scrollTo) return;
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, state]);
   return null;
 }
 

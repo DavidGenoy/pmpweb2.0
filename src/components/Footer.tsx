@@ -16,20 +16,27 @@ export default function Footer() {
   const handleNavClick = (href: string, external?: boolean) => {
     if (external) return;
     
-    // Internal page handling
+    // Internal page handling (e.g., /about-us)
     if (href.startsWith("/")) {
       navigate(href);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
-    // Section handling
+    // Section handling (e.g., #providers, #services, #contact)
     if (location.pathname !== "/") {
+      // internal-page footer Services link fix / internal-page footer Our Providers link fix
+      // When navigating from an internal page (About Us, TOS, Privacy),
+      // we navigate to the homepage and pass the target section ID in the state.
+      // This is handled by the useEffect in Home.tsx to ensure a smooth transition.
       navigate("/", { state: { scrollTo: href } });
     } else {
+      // main-page footer Contact Us behavior:
+      // When already on the main page, we perform a smooth scroll to the target section.
+      // For "Contact Us", this targets the #contact ID added to the Hero contact card.
       const element = document.querySelector(href);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
   };

@@ -71,6 +71,7 @@ export default function Hero() {
 
           {/* Contact & Hours Card */}
           <div
+            id="contact"
             className="relative lg:h-auto rounded-3xl overflow-hidden shadow-2xl p-8 sm:p-10 lg:p-12 pb-14 sm:pb-16 lg:pb-20 flex flex-col justify-between reveal-up glass-card"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -z-10"></div>
