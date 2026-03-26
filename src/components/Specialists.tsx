@@ -84,6 +84,14 @@ const specialists = [
     description: "Daniel Goldfarb, Ph.D — President. Discover our Clinical Research On-Site and enroll in our studies today.",
     image: "https://nethingso.xyz/specialists/research.webp", // Updated image URL
     locations: [{ note: "Clinical Research On-Site" }]
+  },
+  {
+    title: "IV Therapy",
+    name: "LVM Health",
+    href: "https://liquidvmobile.com/", // Specialist card external-link assignment
+    description: "Advanced, personalized health, wellness, and anti-aging solutions through both mobile and in-clinic services.",
+    image: "https://nethingso.xyz/specialists/lvm.webp", // Specialist card image URL
+    locations: [{ note: "Mobile & In-Clinic Services" }]
   }
 ];
 
