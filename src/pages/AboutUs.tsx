@@ -101,7 +101,7 @@ export default function AboutUs() {
             </span>
             <h2 className="text-4xl md:text-6xl font-serif font-medium mb-8">
               A Comprehensive <br />
-              <span className="text-accent-400 italic">Specialist Network.</span>
+              <span className="reveal-color italic">Specialist Network.</span>
             </h2>
             <p className="text-lg text-white/60">
               We have cultivated strategic partnerships with leading specialists to provide a seamless healthcare experience. From cardiology to dental surgery, our on-site services eliminate the complexity of modern medicine.
@@ -128,24 +128,25 @@ export default function AboutUs() {
             <div className="max-w-2xl">
               <h2 className="text-4xl md:text-6xl font-serif font-medium mb-6">
                 Accessible <br />
-                <span className="text-accent-400 italic">Across the Region.</span>
+                <span className="reveal-color italic">Across the Region.</span>
               </h2>
               <p className="text-lg text-white/60">
                 With 7 modern facilities across Broward and Dade County, expert medical care is always within reach.
               </p>
             </div>
-            <div className="flex gap-4">
-              <div className="px-6 py-3 rounded-full border border-white/10 text-sm font-medium">7 Locations</div>
-              <div className="px-6 py-3 rounded-full border border-white/10 text-sm font-medium">Broward & Dade</div>
-            </div>
+            {/* Removal of "7 Locations" and "Broward & Dade" buttons as requested */}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+          {/* Centering the last row on desktop only using flex-wrap and justify-center */}
+          <div className="flex flex-wrap justify-center gap-6 reveal-stagger">
             {[
               "Hollywood Taft", "Hollywood Johnson", "Pembroke Pines",
               "Davie Manor", "Davie", "Plantation", "Aventura"
             ].map((loc, i) => (
-              <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-between group hover:bg-accent-500 transition-all duration-500">
+              <div 
+                key={i} 
+                className="glass-card p-8 rounded-3xl flex items-center justify-between group hover:bg-accent-500 transition-all duration-500 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+              >
                 <div>
                   <h4 className="text-xl font-serif font-medium group-hover:text-primary-950 transition-colors">{loc}</h4>
                   <p className="text-sm text-white/40 group-hover:text-primary-950/60 transition-colors">Primary Care Center</p>

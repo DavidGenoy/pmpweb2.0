@@ -162,6 +162,25 @@ export default function ScrollManager() {
         }
       });
 
+      // Color Reveal (Premium Transition for About Us headers)
+      // This adds the "waking up" color effect requested for iOS and other platforms
+      const colorRevealElements = document.querySelectorAll('.reveal-color');
+      colorRevealElements.forEach((el) => {
+        gsap.fromTo(el,
+          { color: '#ffffff' },
+          {
+            color: '#02c39a', // accent-400
+            duration: 1.5,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            }
+          }
+        );
+      });
+
       // Multi-Column Parallax
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
