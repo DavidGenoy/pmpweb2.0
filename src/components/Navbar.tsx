@@ -48,7 +48,8 @@ export default function Navbar() {
     } else {
       const element = document.querySelector(href);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        // Use block: "start" for more consistent alignment across devices
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
   };
