@@ -20,6 +20,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
+    { name: "About Us", href: "/about-us" },
     { name: "Providers", href: "#providers" },
     { name: "Locations", href: "#locations" },
     { name: "Services", href: "#services" },
@@ -30,16 +31,18 @@ export default function Navbar() {
     if (external) return;
     setIsMobileMenuOpen(false);
     
-    // Home link handling
-    if (href === "/") {
-      if (location.pathname === "/") {
+    // Internal page handling (e.g., /about-us)
+    if (href.startsWith("/")) {
+      if (location.pathname === href) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        navigate("/");
+        navigate(href);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
       return;
     }
 
+    // Section handling
     if (location.pathname !== "/") {
       navigate("/", { state: { scrollTo: href } });
     } else {

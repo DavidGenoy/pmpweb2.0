@@ -13,6 +13,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AboutUs from "./pages/AboutUs";
 
 function ScrollToTopOnPathChange() {
   const { pathname } = useLocation();
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Routes>
         <Footer />
       </div>

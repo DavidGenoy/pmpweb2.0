@@ -6,11 +6,33 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import ChromaticLink from "./ChromaticLink";
 
 export default function Footer() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavClick = (href: string, external?: boolean) => {
+    if (external) return;
+    
+    // Internal page handling
+    if (href.startsWith("/")) {
+      navigate(href);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    // Section handling
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: href } });
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <footer className="bg-transparent text-white pt-24 pb-12 border-t border-white/10">
@@ -59,7 +81,7 @@ export default function Footer() {
             <h4 className="font-bold text-lg mb-6 text-white">Quick Links</h4>
             <ul className="space-y-4">
               {[
-                { name: "About Us", href: "#about" },
+                { name: "About Us", href: "/about-us" },
                 { name: "Our Providers", href: "#providers" },
                 { name: "Services", href: "#services" },
                 { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
@@ -71,6 +93,12 @@ export default function Footer() {
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
                     className="text-white/70 hover:text-accent-400 transition-colors text-sm font-medium"
+                    onClick={(e) => {
+                      if (!link.external) {
+                        e.preventDefault();
+                        handleNavClick(link.href);
+                      }
+                    }}
                   >
                     {link.name}
                   </ChromaticLink>
