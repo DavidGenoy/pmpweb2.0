@@ -1,5 +1,5 @@
 import { motion, useScroll, AnimatePresence } from "motion/react";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, MouseEvent, TouchEvent } from "react";
 import { ChevronLeft, ChevronRight, MapPin, User } from "lucide-react";
 import ChromaticLink from "./ChromaticLink";
 
@@ -17,6 +17,7 @@ const specialists = [
   {
     title: "Cardiology",
     name: "Mark Sabbota, DO",
+    href: "https://southflcardio.com/", // Specialist card external-link assignment
     description: "Cardio Vascular Specialists of South Florida. Providing cardiology services at Primary Medical Physicians.",
     image: "https://nethingso.xyz/specialists/cardiologist.png",
     locations: [
@@ -27,6 +28,7 @@ const specialists = [
   {
     title: "Dental Surgery",
     name: "Nicolas Hernandez, DDS",
+    href: "https://www.primarydentalcarefl.com/index.html", // Specialist card external-link assignment
     description: "Radiant Smiles, Lasting Impressions. Discover on-site primary dental care with Dr. Nicolas.",
     image: "https://nethingso.xyz/specialists/dentist.png",
     locations: [{ address: "6517 Taft St, Suite 201, Hollywood" }]
@@ -34,6 +36,7 @@ const specialists = [
   {
     title: "Gastroenterology",
     name: "Dr. Gonzalez & Dr. Dabul",
+    href: "https://gastrohealth.com/", // Specialist card external-link assignment
     description: "Our on-site gastroenterology team provides expert, comprehensive care for all digestive health conditions.",
     image: "https://nethingso.xyz/specialists/gastroenterologist.webp",
     locations: [
@@ -45,6 +48,7 @@ const specialists = [
   {
     title: "Psychiatric Care",
     name: "Violet Health Corp",
+    href: "https://violethealthcorp.com/", // Specialist card external-link assignment
     description: "Feel seen. Feel supported. Feel better. On-site psychiatric care for your mental well-being.",
     image: "https://nethingso.xyz/specialists/psychotherapist.webp",
     locations: [
@@ -76,6 +80,7 @@ const specialists = [
   {
     title: "Clinical Research",
     name: "Zenith Clinical Research (ZCR)",
+    href: "https://zenithcr.com/", // Specialist card external-link assignment
     description: "Daniel Goldfarb, Ph.D — President. Discover our Clinical Research On-Site and enroll in our studies today.",
     image: "https://nethingso.xyz/specialists/reserch.avif",
     locations: [{ note: "Clinical Research On-Site" }]
@@ -85,9 +90,33 @@ const specialists = [
 export default function Specialists() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [pressedCardIndex, setPressedCardIndex] = useState<number | null>(null);
+  const startPos = useRef({ x: 0, y: 0 });
   const { scrollXProgress } = useScroll({
     container: containerRef,
   });
+
+  // iOS/mobile-safe interaction handling: track drag distance to distinguish between swipe and tap
+  const handleMouseDown = (e: MouseEvent | TouchEvent) => {
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+    startPos.current = { x: clientX, y: clientY };
+  };
+
+  const handleMouseUp = (e: MouseEvent | TouchEvent, href?: string, index?: number) => {
+    if (!href) return;
+    const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : (e as MouseEvent).clientX;
+    const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : (e as MouseEvent).clientY;
+    
+    const dist = Math.sqrt(Math.pow(clientX - startPos.current.x, 2) + Math.pow(clientY - startPos.current.y, 2));
+    
+    if (dist < 10) { // It's a click/tap
+      // Specialist card press/touch feedback behavior: slight delay to show feedback before redirect
+      setTimeout(() => {
+        window.open(href, '_blank', 'noopener,noreferrer');
+      }, 150);
+    }
+  };
 
   const scroll = useCallback((direction: 'left' | 'right') => {
     if (containerRef.current) {
@@ -178,13 +207,40 @@ export default function Specialists() {
           className="flex gap-8 overflow-x-auto pt-16 pb-12 px-4 scrollbar-hide snap-x snap-mandatory relative z-10 overflow-y-visible reveal-stagger"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {specialists.map((specialist) => (
+          {specialists.map((specialist, index) => (
             <div
               key={specialist.name}
               className="flex-none w-[300px] md:w-[400px] snap-center"
             >
               <div 
-                className="group relative aspect-[4/5] rounded-3xl overflow-hidden glass-card shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                className={`group relative aspect-[4/5] rounded-3xl overflow-hidden glass-card shadow-2xl transition-all duration-300 ${
+                  specialist.href ? 'cursor-pointer' : ''
+                } ${
+                  pressedCardIndex === index 
+                    ? 'scale-[0.98] brightness-110 ring-2 ring-accent-500/30' 
+                    : 'hover:-translate-y-2'
+                }`}
+                onMouseDown={() => specialist.href && setPressedCardIndex(index)}
+                onMouseUp={(e) => {
+                  if (specialist.href) {
+                    handleMouseUp(e, specialist.href, index);
+                    setPressedCardIndex(null);
+                  }
+                }}
+                onMouseLeave={() => setPressedCardIndex(null)}
+                onTouchStart={(e) => {
+                  if (specialist.href) {
+                    handleMouseDown(e);
+                    setPressedCardIndex(index);
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  if (specialist.href) {
+                    handleMouseUp(e, specialist.href, index);
+                    setPressedCardIndex(null);
+                  }
+                }}
+                onTouchCancel={() => setPressedCardIndex(null)}
               >
                 {/* Parallax Image Effect */}
                 <div className="absolute inset-0 z-0 reveal-scale">
@@ -200,14 +256,18 @@ export default function Specialists() {
                 <div className="absolute inset-0 z-10 p-6 md:p-8 flex flex-col justify-between bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent">
                   {/* Top Area: Specialty Title */}
                   <div className="transform -translate-y-2">
-                    <span className="text-[10px] md:text-[12px] font-bold tracking-[0.2em] text-white group-hover:text-accent-400 uppercase transition-all duration-300 inline-block group-hover:-translate-y-1">
+                    <span className={`text-[10px] md:text-[12px] font-bold tracking-[0.2em] uppercase transition-all duration-300 inline-block ${
+                      pressedCardIndex === index ? 'text-accent-400 -translate-y-1' : 'text-white group-hover:text-accent-400 group-hover:-translate-y-1'
+                    }`}>
                       {specialist.title}
                     </span>
                   </div>
 
                   {/* Bottom Area: Content */}
                   <div className="flex flex-col">
-                    <h4 className={`font-serif font-medium mb-2 text-accent-400 group-hover:text-white transition-all duration-300 transform group-hover:-translate-y-1 ${
+                    <h4 className={`font-serif font-medium mb-2 transition-all duration-300 transform ${
+                      pressedCardIndex === index ? 'text-white -translate-y-1' : 'text-accent-400 group-hover:text-white group-hover:-translate-y-1'
+                    } ${
                       specialist.title === "DRE" ? "text-lg md:text-2xl" : "text-xl md:text-3xl"
                     }`}>
                       {specialist.name}

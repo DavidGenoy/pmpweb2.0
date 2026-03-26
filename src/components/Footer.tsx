@@ -138,7 +138,8 @@ export default function Footer() {
             © {new Date().getFullYear()} Primary Medical Physicians. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-6">
+          {/* Legal Links: HIPAA Notice removed, remaining links centered cleanly */}
+          <div className="flex items-center justify-center gap-6">
             {/* Privacy Policy: desktop hover effect matched via ChromaticLink, mobile touch transition added */}
             <ChromaticLink 
               href="/privacy-policy" 
@@ -161,10 +162,6 @@ export default function Footer() {
               onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
             >
               Terms of Service
-            </ChromaticLink>
-            
-            <ChromaticLink href="#" className="hover:text-white transition-colors">
-              HIPAA Notice
             </ChromaticLink>
           </div>
         </div>
