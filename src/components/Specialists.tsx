@@ -8,7 +8,7 @@ const specialists = [
     title: "Pulmonology",
     name: "Dr. Ronald Gup, MD",
     description: "Every breath, expertly cared for. We have a pulmonologist on site for comprehensive respiratory care.",
-    image: "https://nethingso.xyz/specialists/pulmonologist.png",
+    image: "https://nethingso.xyz/specialists/pulmonologist.webp", // Updated image URL
     locations: [
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mondays, 8:30 AM – 1:00 PM" },
       { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Tuesdays, 1:30 PM – 4:30 PM" }
@@ -19,7 +19,7 @@ const specialists = [
     name: "Mark Sabbota, DO",
     href: "https://southflcardio.com/", // Specialist card external-link assignment
     description: "Cardio Vascular Specialists of South Florida. Providing cardiology services at Primary Medical Physicians.",
-    image: "https://nethingso.xyz/specialists/cardiologist.png",
+    image: "https://nethingso.xyz/specialists/cardiologist.webp", // Updated image URL
     locations: [
       { address: "6517 Taft St, Suite 211, Hollywood" },
       { address: "10650 W State Rd 84, Suite 104, Davie" }
@@ -30,7 +30,7 @@ const specialists = [
     name: "Nicolas Hernandez, DDS",
     href: "https://www.primarydentalcarefl.com/index.html", // Specialist card external-link assignment
     description: "Radiant Smiles, Lasting Impressions. Discover on-site primary dental care with Dr. Nicolas.",
-    image: "https://nethingso.xyz/specialists/dentist.png",
+    image: "https://nethingso.xyz/specialists/dentist.webp", // Updated image URL
     locations: [{ address: "6517 Taft St, Suite 201, Hollywood" }]
   },
   {
@@ -38,7 +38,7 @@ const specialists = [
     name: "Dr. Gonzalez & Dr. Dabul",
     href: "https://gastrohealth.com/", // Specialist card external-link assignment
     description: "Our on-site gastroenterology team provides expert, comprehensive care for all digestive health conditions.",
-    image: "https://nethingso.xyz/specialists/gastroenterologist.webp",
+    image: "https://nethingso.xyz/specialists/gastroenterologist.webp", // Updated image URL
     locations: [
       { office: "Lilly M. Gonzalez, MD", schedule: "Thursday mornings", isProvider: true },
       { office: "Elias E. Dabul, MD, FACG", schedule: "Monday afternoons", isProvider: true },
@@ -50,7 +50,7 @@ const specialists = [
     name: "Violet Health Corp",
     href: "https://violethealthcorp.com/", // Specialist card external-link assignment
     description: "Feel seen. Feel supported. Feel better. On-site psychiatric care for your mental well-being.",
-    image: "https://nethingso.xyz/specialists/psychotherapist.webp",
+    image: "https://nethingso.xyz/specialists/psychotherapist.webp", // Updated image URL
     locations: [
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Fri, 9:00 AM – 5:00 PM" },
       { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Wed, 9:00 AM – 5:00 PM" },
@@ -61,7 +61,7 @@ const specialists = [
     title: "Podiatry",
     name: "Dr. Lesley A Warren, DPM",
     description: "Caring for every step. Meet Dr. Lesley on site for expert foot and ankle care for all ages.",
-    image: "https://nethingso.xyz/specialists/podiatrist.png",
+    image: "https://nethingso.xyz/specialists/podiatrist.webp", // Updated image URL
     locations: [
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Wednesday" }
     ]
@@ -70,7 +70,7 @@ const specialists = [
     title: "DRE",
     name: "Diabetic Retinal Exam",
     description: "In-clinic retinal imaging. Early detection can prevent most diabetes-related vision loss.",
-    image: "https://nethingso.xyz/specialists/DRE.png",
+    image: "https://nethingso.xyz/specialists/DRE.webp", // Updated image URL
     locations: [
       { office: "7630 Southwest 34 Manor, Suite 400, Davie, FL 33328", schedule: "Mon, 8:30 AM – 4:30 PM" },
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mon & Wed, 8:30 AM – 4:30 PM" },
@@ -82,7 +82,7 @@ const specialists = [
     name: "Zenith Clinical Research (ZCR)",
     href: "https://zenithcr.com/", // Specialist card external-link assignment
     description: "Daniel Goldfarb, Ph.D — President. Discover our Clinical Research On-Site and enroll in our studies today.",
-    image: "https://nethingso.xyz/specialists/reserch.avif",
+    image: "https://nethingso.xyz/specialists/research.webp", // Updated image URL
     locations: [{ note: "Clinical Research On-Site" }]
   }
 ];
