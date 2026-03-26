@@ -21,8 +21,11 @@ function ScrollToTopOnPathChange() {
     // iOS-safe route/scroll handling: 
     // Do not scroll to top if we are navigating to a specific section on the homepage
     if (state && (state as any).scrollTo) return;
+    
+    // We only scroll to top when the actual page changes, not when the state is cleared.
+    // This prevents the "jump back to top" bug on iOS when the scroll target is resolved.
     window.scrollTo(0, 0);
-  }, [pathname, state]);
+  }, [pathname]); // Only depend on pathname
   return null;
 }
 

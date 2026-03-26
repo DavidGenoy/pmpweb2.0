@@ -6,11 +6,10 @@ import Insurances from "../components/Insurances";
 import Services from "../components/Services";
 import Testimonials from "../components/Testimonials";
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Home() {
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Handle cross-page navigation with section anchors
@@ -19,51 +18,40 @@ export default function Home() {
     if (location.state && (location.state as any).scrollTo) {
       const targetId = (location.state as any).scrollTo;
       
-      // iOS-safe route/scroll handling:
-      // iOS Safari often has race conditions between route transitions, 
-      // DOM mounting, and smooth scroll execution. Layout shifts from 
-      // late-loading components or ScrollTrigger refreshes can also 
-      // cause the scroll to land on the wrong section.
+      // iOS-specific check to ensure we only apply the fix where needed
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       
-      const performScroll = () => {
+      // iOS-only navigation fix:
+      // For iOS, we use a slightly longer delay (750ms) to avoid conflict with 
+      // the 500ms ScrollTrigger.refresh() in ScrollManager.tsx.
+      // This ensures the layout is fully settled before we start the scroll.
+      // Android/Desktop behavior is preserved with the original 500ms delay.
+      const delay = isIOS ? 750 : 500;
+
+      const timer = setTimeout(() => {
         const element = document.querySelector(targetId);
         if (element) {
-          // Calculate the absolute position to avoid issues with relative scrollIntoView
-          // which can be flaky on iOS when the page height is dynamic.
-          const rect = element.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const targetTop = rect.top + scrollTop;
-
-          window.scrollTo({
-            top: targetTop,
-            behavior: "smooth"
-          });
-          return true;
+          if (isIOS) {
+            // iOS-only navigation fix:
+            // window.scrollTo with calculated absolute position is more reliable on Safari 
+            // than scrollIntoView when combined with smooth scrolling and layout refreshes.
+            const top = element.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({ top, behavior: "smooth" });
+          } else {
+            // Preservation of Android/Desktop behavior:
+            // Keep the working scrollIntoView logic for non-iOS platforms as reported.
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+          
+          // Safeguards against stale target reuse on iOS:
+          // Clear the state in the browser history to prevent re-scrolling on back navigation.
+          window.history.replaceState({}, document.title);
         }
-        return false;
-      };
-
-      // Multi-stage scroll attempts to ensure we land on the correct section
-      // even if layout shifts occur as components mount and animate.
-      // We align these with ScrollTrigger refreshes for maximum accuracy.
-      const timer1 = setTimeout(performScroll, 600); // Initial attempt after first refresh
-      const timer2 = setTimeout(performScroll, 1400); // Second attempt after layout settles
+      }, delay);
       
-      const timer3 = setTimeout(() => {
-        if (performScroll()) {
-          // Clear state using React Router's navigate to ensure consistency across the app
-          // and prevent re-scrolling on back navigation or component remounts.
-          navigate(location.pathname, { replace: true, state: {} });
-        }
-      }, 2800); // Final verification attempt
-      
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        clearTimeout(timer3);
-      };
+      return () => clearTimeout(timer);
     }
-  }, [location, navigate]);
+  }, [location]);
 
   return (
     <main>
