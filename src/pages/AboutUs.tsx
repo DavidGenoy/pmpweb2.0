@@ -140,19 +140,29 @@ export default function AboutUs() {
           {/* Centering the last row on desktop only using flex-wrap and justify-center */}
           <div className="flex flex-wrap justify-center gap-6 reveal-stagger">
             {[
-              "Hollywood Taft", "Hollywood Johnson", "Pembroke Pines",
-              "Davie Manor", "Davie", "Plantation", "Aventura"
+              { name: "Hollywood Taft", url: "https://maps.app.goo.gl/wyLpLiDysZodzGH96" },
+              { name: "Hollywood Johnson", url: "https://maps.app.goo.gl/cykjZd8Sat7HysHj7" },
+              { name: "Pembroke Pines", url: "https://maps.app.goo.gl/jYy8nKjJT1ByxSwq7" },
+              { name: "Davie Manor", url: "https://maps.app.goo.gl/REEL5UjBenHyC8BC7" },
+              { name: "Davie", url: "https://maps.app.goo.gl/hTqVsDXbMJxnvVnh6" },
+              { name: "Plantation", url: "https://maps.app.goo.gl/BNsxwvesa3HoRZjy7" },
+              { name: "Aventura", url: "https://maps.app.goo.gl/7bX7q3JUDopi8ZAd9" }
             ].map((loc, i) => (
-              <div 
+              <a 
                 key={i} 
-                className="glass-card p-8 rounded-3xl flex items-center justify-between group hover:bg-accent-500 transition-all duration-500 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+                href={loc.url}
+                target="_blank"
+                rel="noreferrer"
+                /* About Us location link assignments: Reusing main page location URLs */
+                /* Green interaction feedback addition: active:bg-accent-500 and active:scale-[0.98] for premium feel */
+                className="glass-card p-8 rounded-3xl flex items-center justify-between group hover:bg-white/[0.08] active:bg-accent-500 active:scale-[0.98] transition-all duration-300 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] cursor-pointer"
               >
                 <div>
-                  <h4 className="text-xl font-serif font-medium group-hover:text-primary-950 transition-colors">{loc}</h4>
-                  <p className="text-sm text-white/40 group-hover:text-primary-950/60 transition-colors">Primary Care Center</p>
+                  <h4 className="text-xl font-serif font-medium group-active:text-primary-950 transition-colors">{loc.name}</h4>
+                  <p className="text-sm text-white/40 group-active:text-primary-950/60 transition-colors">Primary Care Center</p>
                 </div>
-                <MapPin className="w-6 h-6 text-accent-500 group-hover:text-primary-950 transition-colors" />
-              </div>
+                <MapPin className="w-6 h-6 text-accent-500 group-active:text-primary-950 transition-colors" />
+              </a>
             ))}
           </div>
         </div>
