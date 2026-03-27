@@ -114,7 +114,8 @@ const allProviders = [
     degree: "PA",
     specialty: "Family Practice",
     image: "https://nethingso.xyz/providers/ramos_resized.webp",
-    bookingUrl: "https://healow.com/apps/practice/primary-medical-physicians-llc-hollywood-fl-23412?v=2&t=1",
+    /* Updated Book Appointment button URL for Yoel Ramos */
+    bookingUrl: "https://healow.com/apps/provider/yoel-ramosgomez-3950891",
   },
 ];
 
