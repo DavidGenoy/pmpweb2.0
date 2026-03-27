@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Home, ArrowLeft, Search } from "lucide-react";
+import { Home, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -40,21 +40,11 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* 404 Large Display - Elegant and abstract */}
+          {/* 404 Large Display - Refined: Magnifying glass removed, text lightened for elegance */}
           <div className="relative inline-block mb-12">
-            <span className="text-[12rem] md:text-[20rem] font-serif font-bold text-white/5 leading-none select-none">
+            <span className="text-[12rem] md:text-[20rem] font-serif font-bold text-white/10 leading-none select-none">
               404
             </span>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="bg-accent-500/10 backdrop-blur-xl border border-accent-500/20 p-8 rounded-full shadow-2xl shadow-accent-500/10"
-              >
-                <Search className="w-12 h-12 md:w-16 md:h-16 text-accent-400" />
-              </motion.div>
-            </div>
           </div>
 
           <h1 className="text-4xl md:text-7xl font-serif font-medium mb-6 leading-tight">
