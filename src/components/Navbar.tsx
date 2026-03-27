@@ -25,6 +25,10 @@ export default function Navbar() {
     { name: "Locations", href: "#locations" },
     { name: "Services", href: "#services" },
     { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
+    /* Vitamins menu item added after Patient Portal */
+    /* URL assigned: https://connect.evexi.as/nutraceuticals/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354 */
+    /* Mobile placement/order preserved: Being last in navLinks ensures it is the last item in the mobile nav list */
+    { name: "Vitamins", href: "https://connect.evexi.as/nutraceuticals/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354", external: true },
   ];
 
   const handleNavClick = (href: string, external?: boolean) => {
