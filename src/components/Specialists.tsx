@@ -228,10 +228,15 @@ export default function Specialists() {
                     ? 'scale-[0.98] brightness-110 ring-2 ring-accent-500/30' 
                     : 'hover:-translate-y-2'
                 }`}
-                onMouseDown={() => specialist.href && setPressedCardIndex(index)}
+                onMouseDown={(e) => {
+                  if (specialist.href) {
+                    handleMouseDown(e); // Fix: Call handleMouseDown on desktop to track start position
+                    setPressedCardIndex(index);
+                  }
+                }}
                 onMouseUp={(e) => {
                   if (specialist.href) {
-                    handleMouseUp(e, specialist.href, index);
+                    handleMouseUp(e, specialist.href, index); // Fix: handleMouseUp now has a valid start position on desktop
                     setPressedCardIndex(null);
                   }
                 }}
