@@ -107,7 +107,8 @@ const allProviders = [
     degree: "ARNP, FNP-C",
     specialty: "Family Practice",
     image: "https://nethingso.xyz/providers/morejon_resized.webp",
-    bookingUrl: "https://healow.com/apps/practice/primary-medical-physicians-llc-hollywood-fl-23412?v=2&t=1",
+    /* Updated Book Appointment button URL for Maria Morejon */
+    bookingUrl: "https://healow.com/apps/provider/mariarosario-morejon-3941702",
   },
   {
     name: "Yoel Ramos",
