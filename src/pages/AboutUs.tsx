@@ -69,7 +69,7 @@ export default function AboutUs() {
                   At Primary Medical Physicians, we believe that healthcare should be accessible, personalized, and deeply rooted in the community. Our journey began with a simple goal: to create a medical practice where patients feel seen, heard, and valued.
                 </p>
                 <p>
-                  Today, we have grown into a premier healthcare network, but our core philosophy remains unchanged. We combine state-of-the-art medical technology with a warm, human touch to ensure that every patient receives the highest standard of care.
+                  Today, we have grown into a premier healthcare network, but our core philosophy remains unchanged. We combine the latest medical advancements with a warm, human touch to ensure that every patient receives the highest standard of care.
                 </p>
               </div>
             </div>
