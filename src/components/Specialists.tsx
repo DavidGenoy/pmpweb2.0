@@ -2,6 +2,7 @@ import { motion, useScroll, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect, useCallback, MouseEvent, TouchEvent } from "react";
 import { ChevronLeft, ChevronRight, MapPin, User } from "lucide-react";
 import ChromaticLink from "./ChromaticLink";
+import SpecialistIntakeModal from "./SpecialistIntakeModal";
 
 const specialists = [
   {
@@ -9,6 +10,7 @@ const specialists = [
     name: "Dr. Ronald Gup, MD",
     description: "Every breath, expertly cared for. We have a pulmonologist on site for comprehensive respiratory care.",
     image: "https://nethingso.xyz/specialists/pulmonologist.webp", // Updated image URL
+    isPopup: true,
     locations: [
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mondays, 8:30 AM – 1:00 PM" },
       { office: "3800 Johnson Street E, Hollywood, FL 33021", schedule: "Tuesdays, 1:30 PM – 4:30 PM" }
@@ -17,7 +19,7 @@ const specialists = [
   {
     title: "Cardiology",
     name: "Mark Sabbota, DO",
-    href: "https://southflcardio.com/", // Specialist card external-link assignment
+    isPopup: true,
     description: "Cardio Vascular Specialists of South Florida. Providing cardiology services at Primary Medical Physicians.",
     image: "https://nethingso.xyz/specialists/cardiologist.webp", // Updated image URL
     locations: [
@@ -36,7 +38,7 @@ const specialists = [
   {
     title: "Gastroenterology",
     name: "Dr. Gonzalez & Dr. Dabul",
-    href: "https://gastrohealth.com/", // Specialist card external-link assignment
+    isPopup: true,
     description: "Our on-site gastroenterology team provides expert, comprehensive care for all digestive health conditions.",
     image: "https://nethingso.xyz/specialists/gastroenterologist.webp", // Updated image URL
     locations: [
@@ -48,7 +50,7 @@ const specialists = [
   {
     title: "Psychiatric Care",
     name: "Violet Health Corp",
-    href: "https://violethealthcorp.com/", // Specialist card external-link assignment
+    isPopup: true,
     description: "Feel seen. Feel supported. Feel better. On-site psychiatric care for your mental well-being.",
     image: "https://nethingso.xyz/specialists/psychotherapist.webp", // Updated image URL
     locations: [
@@ -62,6 +64,7 @@ const specialists = [
     name: "Dr. Lesley A Warren, DPM",
     description: "Caring for every step. Meet Dr. Lesley on site for expert foot and ankle care for all ages.",
     image: "https://nethingso.xyz/specialists/podiatrist.webp", // Updated image URL
+    isPopup: true,
     locations: [
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Wednesday" }
     ]
@@ -71,6 +74,7 @@ const specialists = [
     name: "Diabetic Retinal Exam",
     description: "In-clinic retinal imaging. Early detection can prevent most diabetes-related vision loss.",
     image: "https://nethingso.xyz/specialists/DRE.webp", // Updated image URL
+    isPopup: true,
     locations: [
       { office: "7630 Southwest 34 Manor, Suite 400, Davie, FL 33328", schedule: "Mon, 8:30 AM – 4:30 PM" },
       { office: "6517 Taft St, Suite 201, Hollywood, FL 33024", schedule: "Mon & Wed, 8:30 AM – 4:30 PM" },
@@ -99,6 +103,8 @@ export default function Specialists() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [pressedCardIndex, setPressedCardIndex] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSpecialty, setSelectedSpecialty] = useState("");
   const startPos = useRef({ x: 0, y: 0 });
   const { scrollXProgress } = useScroll({
     container: containerRef,
@@ -111,8 +117,8 @@ export default function Specialists() {
     startPos.current = { x: clientX, y: clientY };
   };
 
-  const handleMouseUp = (e: MouseEvent | TouchEvent, href?: string, index?: number) => {
-    if (!href) return;
+  const handleMouseUp = (e: MouseEvent | TouchEvent, specialist: any, index?: number) => {
+    if (!specialist.href && !specialist.isPopup) return;
     const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : (e as MouseEvent).clientX;
     const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : (e as MouseEvent).clientY;
     
@@ -121,7 +127,12 @@ export default function Specialists() {
     if (dist < 10) { // It's a click/tap
       // Specialist card press/touch feedback behavior: slight delay to show feedback before redirect
       setTimeout(() => {
-        window.open(href, '_blank', 'noopener,noreferrer');
+        if (specialist.isPopup) {
+          setSelectedSpecialty(specialist.title);
+          setIsModalOpen(true);
+        } else if (specialist.href) {
+          window.open(specialist.href, '_blank', 'noopener,noreferrer');
+        }
       }, 150);
     }
   };
@@ -222,34 +233,34 @@ export default function Specialists() {
             >
               <div 
                 className={`group relative aspect-[4/5] rounded-3xl overflow-hidden glass-card shadow-2xl transition-all duration-300 ${
-                  specialist.href ? 'cursor-pointer' : ''
+                  (specialist.href || specialist.isPopup) ? 'cursor-pointer' : ''
                 } ${
                   pressedCardIndex === index 
                     ? 'scale-[0.98] brightness-110 ring-2 ring-accent-500/30' 
                     : 'hover:-translate-y-2'
                 }`}
                 onMouseDown={(e) => {
-                  if (specialist.href) {
+                  if (specialist.href || specialist.isPopup) {
                     handleMouseDown(e); // Fix: Call handleMouseDown on desktop to track start position
                     setPressedCardIndex(index);
                   }
                 }}
                 onMouseUp={(e) => {
-                  if (specialist.href) {
-                    handleMouseUp(e, specialist.href, index); // Fix: handleMouseUp now has a valid start position on desktop
+                  if (specialist.href || specialist.isPopup) {
+                    handleMouseUp(e, specialist, index); // Fix: handleMouseUp now has a valid start position on desktop
                     setPressedCardIndex(null);
                   }
                 }}
                 onMouseLeave={() => setPressedCardIndex(null)}
                 onTouchStart={(e) => {
-                  if (specialist.href) {
+                  if (specialist.href || specialist.isPopup) {
                     handleMouseDown(e);
                     setPressedCardIndex(index);
                   }
                 }}
                 onTouchEnd={(e) => {
-                  if (specialist.href) {
-                    handleMouseUp(e, specialist.href, index);
+                  if (specialist.href || specialist.isPopup) {
+                    handleMouseUp(e, specialist, index);
                     setPressedCardIndex(null);
                   }
                 }}
@@ -329,6 +340,12 @@ export default function Specialists() {
           <p className="text-xs text-white/40 font-medium uppercase tracking-widest">Swipe to explore</p>
         </div>
       </div>
+
+      <SpecialistIntakeModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialSpecialty={selectedSpecialty}
+      />
     </section>
   );
 }
