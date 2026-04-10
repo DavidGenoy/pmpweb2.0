@@ -348,7 +348,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* added specialist appointment date field */}
                     <div className="pmp-spec-field">
-                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Appt Date (Optional)</label>
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Specialist Appointment Date (Optional)</label>
                       <input 
                         type="text" 
                         value={appointmentDate}
