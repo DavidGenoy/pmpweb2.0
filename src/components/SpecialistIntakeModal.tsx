@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { X, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { X, Loader2, CheckCircle2, AlertCircle, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface SpecialistIntakeModalProps {
@@ -20,8 +20,12 @@ const SPECIALTIES = [
 export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialty }: SpecialistIntakeModalProps) {
   const [specialty, setSpecialty] = useState(initialSpecialty);
   const [name, setName] = useState('');
+  const [dob, setDob] = useState(''); // added DOB field
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [pmpStatus, setPmpStatus] = useState(''); // added PMP patient-status dropdown
+  const [specialistStatus, setSpecialistStatus] = useState(''); // added specialist patient-status dropdown
+  const [appointmentDate, setAppointmentDate] = useState(''); // added specialist appointment date field
   const [callbackTime, setCallbackTime] = useState('');
   const [consent, setConsent] = useState(false);
   const [company, setCompany] = useState(''); // honeypot
@@ -37,22 +41,28 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       setSpecialty(mappedSpecialty);
       setStatus('idle');
       setName('');
+      setDob('');
       setPhone('');
       setEmail('');
+      setPmpStatus('');
+      setSpecialistStatus('');
+      setAppointmentDate('');
       setCallbackTime('');
       setConsent(false);
       setCompany('');
     }
   }, [isOpen, initialSpecialty]);
 
-  // Scroll lock handling for mobile/iPhone
+  // modal scroll container fix & background scroll lock while open
   useEffect(() => {
     if (isOpen) {
-      const originalOverflow = document.body.style.overflow;
-      const originalTouchAction = document.body.style.touchAction;
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
       
+      // Lock scroll on both body and html to prevent background scrolling
+      // Removed touchAction: 'none' as it breaks inner modal scrolling on iOS
       document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none'; // Prevent iOS background scroll
+      document.documentElement.style.overflow = 'hidden';
       
       // Handle ESC key
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -61,8 +71,9 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       window.addEventListener('keydown', handleKeyDown);
       
       return () => {
-        document.body.style.overflow = originalOverflow;
-        document.body.style.touchAction = originalTouchAction;
+        // scroll restoration on close
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
         window.removeEventListener('keydown', handleKeyDown);
       };
     }
@@ -88,6 +99,24 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
     if (match[2]) return `(${match[1]}) ${match[2]}`;
     if (match[1]) return `(${match[1]}`;
     return val;
+  };
+
+  // Date-only input constraints
+  const formatDate = (val: string) => {
+    const cleaned = val.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{0,2})(\d{0,2})(\d{0,4})$/);
+    if (!match) return '';
+    if (match[3]) return `${match[1]}/${match[2]}/${match[3]}`;
+    if (match[2]) return `${match[1]}/${match[2]}`;
+    return match[1];
+  };
+
+  const handleDobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDob(formatDate(e.target.value));
+  };
+
+  const handleApptDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAppointmentDate(formatDate(e.target.value));
   };
 
   // API submit logic
@@ -122,11 +151,16 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
         headers: {
           'Content-Type': 'application/json',
         },
+        // submit payload extension
         body: JSON.stringify({
           specialty,
           name,
+          dob, // added DOB field
           phone: formatPhone(phone),
           email,
+          pmp_patient_status: pmpStatus, // added PMP patient-status dropdown
+          specialist_patient_status: specialistStatus, // added specialist patient-status dropdown
+          appointment_date: appointmentDate || undefined, // added specialist appointment date field
           callback_time: callbackTime || undefined
         })
       });
@@ -153,7 +187,8 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       {isOpen && (
         /* Scoped modal markup/styles */
         <div 
-          className="pmp-spec-overlay fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/80 backdrop-blur-sm" 
+          // iPhone/iOS-specific scroll containment safeguard
+          className="pmp-spec-overlay fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/80 backdrop-blur-sm overscroll-none" 
           style={{ 
             paddingTop: 'max(1rem, env(safe-area-inset-top))',
             paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
@@ -199,7 +234,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                   <p className="text-white/70">We received your request and will contact you soon.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="pmp-spec-form space-y-5">
+                <form onSubmit={handleSubmit} className="pmp-spec-form space-y-4">
                   <input 
                     type="text" 
                     name="company" 
@@ -211,7 +246,8 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                   />
 
                   <div className="pmp-spec-field">
-                    <label className="block text-sm font-medium text-white/70 mb-1.5">Specialty</label>
+                    {/* phone/iPhone fit adjustments: text-[13px] sm:text-sm */}
+                    <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Specialty</label>
                     <select 
                       value={specialty}
                       onChange={e => setSpecialty(e.target.value)}
@@ -224,21 +260,37 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                     </select>
                   </div>
 
-                  <div className="pmp-spec-field">
-                    <label className="block text-sm font-medium text-white/70 mb-1.5">Full Name *</label>
-                    <input 
-                      type="text" 
-                      value={name}
-                      onChange={handleNameChange}
-                      required
-                      placeholder="Jane Doe"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="pmp-spec-field">
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Full Name *</label>
+                      <input 
+                        type="text" 
+                        value={name}
+                        onChange={handleNameChange}
+                        required
+                        placeholder="Jane Doe"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all"
+                      />
+                    </div>
+
+                    {/* added DOB field */}
+                    <div className="pmp-spec-field">
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Date of Birth *</label>
+                      <input 
+                        type="text" 
+                        value={dob}
+                        onChange={handleDobChange}
+                        required
+                        placeholder="MM/DD/YYYY"
+                        maxLength={10}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all"
+                      />
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="pmp-spec-field">
-                      <label className="block text-sm font-medium text-white/70 mb-1.5">Phone *</label>
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Phone *</label>
                       <input 
                         type="tel" 
                         value={formatPhone(phone)}
@@ -250,7 +302,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                     </div>
 
                     <div className="pmp-spec-field">
-                      <label className="block text-sm font-medium text-white/70 mb-1.5">Email *</label>
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Email *</label>
                       <input 
                         type="email" 
                         value={email}
@@ -262,23 +314,68 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                     </div>
                   </div>
 
-                  {/* callback-time dropdown replacement */}
+                  {/* status field layout change: full-width rows */}
                   <div className="pmp-spec-field">
-                    <label className="block text-sm font-medium text-white/70 mb-1.5">Best time to call (Optional)</label>
+                    <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Primary Medical Physicians Status *</label>
                     <select 
-                      value={callbackTime}
-                      onChange={e => setCallbackTime(e.target.value)}
+                      value={pmpStatus}
+                      onChange={e => setPmpStatus(e.target.value)}
+                      required
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all appearance-none"
                     >
-                      <option value="" className="bg-[#0f172a] text-white/50">Select a time</option>
-                      <option value="Preferred Morning" className="bg-[#0f172a] text-white">Preferred Morning</option>
-                      <option value="Preferred Afternoon" className="bg-[#0f172a] text-white">Preferred Afternoon</option>
+                      <option value="" className="bg-[#0f172a] text-white/50">Select status</option>
+                      {/* updated dropdown labels/options */}
+                      <option value="New Patient" className="bg-[#0f172a] text-white">New Patient</option>
+                      <option value="Established Patient" className="bg-[#0f172a] text-white">Established Patient</option>
                     </select>
+                  </div>
+
+                  <div className="pmp-spec-field">
+                    <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Specialist Status *</label>
+                    <select 
+                      value={specialistStatus}
+                      onChange={e => setSpecialistStatus(e.target.value)}
+                      required
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all appearance-none"
+                    >
+                      <option value="" className="bg-[#0f172a] text-white/50">Select status</option>
+                      {/* updated dropdown labels/options */}
+                      <option value="New Patient" className="bg-[#0f172a] text-white">New Patient</option>
+                      <option value="Established Patient" className="bg-[#0f172a] text-white">Established Patient</option>
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* added specialist appointment date field */}
+                    <div className="pmp-spec-field">
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Appt Date (Optional)</label>
+                      <input 
+                        type="text" 
+                        value={appointmentDate}
+                        onChange={handleApptDateChange}
+                        placeholder="MM/DD/YYYY"
+                        maxLength={10}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all"
+                      />
+                    </div>
+
+                    <div className="pmp-spec-field">
+                      <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Best time to call (Optional)</label>
+                      <select 
+                        value={callbackTime}
+                        onChange={e => setCallbackTime(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all appearance-none"
+                      >
+                        <option value="" className="bg-[#0f172a] text-white/50">Select a time</option>
+                        <option value="Preferred Morning" className="bg-[#0f172a] text-white">Preferred Morning</option>
+                        <option value="Preferred Afternoon" className="bg-[#0f172a] text-white">Preferred Afternoon</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div className="pmp-spec-consent pt-2">
                     <label className="flex items-start gap-3 cursor-pointer group">
-                      <div className="relative flex items-center justify-center mt-0.5">
+                      <div className="relative flex items-center justify-center mt-0.5 shrink-0 w-5 h-5">
                         <input 
                           type="checkbox" 
                           checked={consent}
@@ -286,11 +383,11 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                           required
                           className="peer sr-only"
                         />
-                        <div className="w-5 h-5 rounded border border-white/20 bg-white/5 peer-checked:bg-[#29c1ac] peer-checked:border-[#29c1ac] transition-all flex items-center justify-center">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#0f172a] opacity-0 peer-checked:opacity-100 transition-opacity" />
-                        </div>
+                        {/* checkbox style refinement */}
+                        <div className="absolute inset-0 rounded border border-white/20 bg-white/5 peer-checked:bg-transparent peer-checked:border-[#29c1ac] transition-all"></div>
+                        <Check className="absolute w-5 h-5 text-[#29c1ac] opacity-0 peer-checked:opacity-100 transition-all scale-125 -translate-y-0.5 translate-x-0.5" strokeWidth={3} />
                       </div>
-                      <span className="text-sm text-white/70 group-hover:text-white/90 transition-colors">
+                      <span className="text-[13px] sm:text-sm text-white/70 group-hover:text-white/90 transition-colors">
                         I understand I should not include sensitive medical details. *
                       </span>
                     </label>
