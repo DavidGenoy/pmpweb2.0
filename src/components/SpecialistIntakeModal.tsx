@@ -345,7 +345,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                     </select>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-4"></div> */}
                     {/* added specialist appointment date field */}
                     <div className="pmp-spec-field">
                       <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Specialist Appointment Date (Optional)</label>
@@ -371,7 +371,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                         <option value="Preferred Afternoon" className="bg-[#0f172a] text-white">Preferred Afternoon</option>
                       </select>
                     </div>
-                  </div>
+                  
 
                   <div className="pmp-spec-consent pt-2">
                     <label className="flex items-start gap-3 cursor-pointer group">
