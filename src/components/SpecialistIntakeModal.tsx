@@ -59,8 +59,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       const originalBodyOverflow = document.body.style.overflow;
       const originalHtmlOverflow = document.documentElement.style.overflow;
       
-      // Lock scroll on both body and html to prevent background scrolling
-      // Removed touchAction: 'none' as it breaks inner modal scrolling on iOS
+      // background scroll lock while open
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
       
@@ -71,7 +70,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       window.addEventListener('keydown', handleKeyDown);
       
       return () => {
-        // scroll restoration on close
+        // normal page scroll restoration on close
         document.body.style.overflow = originalBodyOverflow;
         document.documentElement.style.overflow = originalHtmlOverflow;
         window.removeEventListener('keydown', handleKeyDown);
@@ -101,22 +100,26 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
     return val;
   };
 
-  // Date-only input constraints
-  const formatDate = (val: string) => {
-    const cleaned = val.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{0,2})(\d{0,2})(\d{0,4})$/);
-    if (!match) return '';
-    if (match[3]) return `${match[1]}/${match[2]}/${match[3]}`;
-    if (match[2]) return `${match[1]}/${match[2]}`;
-    return match[1];
+  // Date constraints for native date pickers
+  const getLocalDateStr = (date: Date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
   };
 
-  const handleDobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDob(formatDate(e.target.value));
-  };
+  const today = new Date();
+  const todayStr = getLocalDateStr(today);
+  
+  const minDobDate = new Date();
+  minDobDate.setFullYear(today.getFullYear() - 100);
+  const minDobStr = getLocalDateStr(minDobDate);
 
-  const handleApptDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAppointmentDate(formatDate(e.target.value));
+  const formatForApi = (dateStr: string) => {
+    if (!dateStr) return undefined;
+    const [year, month, day] = dateStr.split('-');
+    if (year && month && day) return `${month}/${day}/${year}`;
+    return dateStr;
   };
 
   // API submit logic
@@ -155,12 +158,12 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
         body: JSON.stringify({
           specialty,
           name,
-          dob, // added DOB field
+          dob: formatForApi(dob), // added DOB field
           phone: formatPhone(phone),
           email,
           pmp_patient_status: pmpStatus, // added PMP patient-status dropdown
           specialist_patient_status: specialistStatus, // added specialist patient-status dropdown
-          appointment_date: appointmentDate || undefined, // added specialist appointment date field
+          appointment_date: formatForApi(appointmentDate) || undefined, // added specialist appointment date field
           callback_time: callbackTime || undefined
         })
       });
@@ -187,8 +190,10 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       {isOpen && (
         /* Scoped modal markup/styles */
         <div 
-          // iPhone/iOS-specific scroll containment safeguard
+          // desktop modal scroll containment fix (data-lenis-prevent)
+          // mobile/iPhone modal scroll containment fix (overscroll-none)
           className="pmp-spec-overlay fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/80 backdrop-blur-sm overscroll-none" 
+          data-lenis-prevent="true"
           style={{ 
             paddingTop: 'max(1rem, env(safe-area-inset-top))',
             paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
@@ -273,17 +278,18 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                       />
                     </div>
 
-                    {/* added DOB field */}
+                    {/* DOB validation/date UI improvement */}
                     <div className="pmp-spec-field">
                       <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Date of Birth *</label>
                       <input 
-                        type="text" 
+                        type="date" 
                         value={dob}
-                        onChange={handleDobChange}
+                        onChange={e => setDob(e.target.value)}
+                        min={minDobStr}
+                        max={todayStr}
                         required
-                        placeholder="MM/DD/YYYY"
-                        maxLength={10}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all"
+                        // mobile date/calendar fit adjustments
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-[13px] sm:text-base text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all [color-scheme:dark] appearance-none"
                       />
                     </div>
                   </div>
@@ -346,16 +352,16 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                   </div>
 
                   {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-4"></div> */}
-                    {/* added specialist appointment date field */}
+                    {/* appointment-date future-date restriction */}
                     <div className="pmp-spec-field">
                       <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Specialist Appointment Date (Optional)</label>
                       <input 
-                        type="text" 
+                        type="date" 
                         value={appointmentDate}
-                        onChange={handleApptDateChange}
-                        placeholder="MM/DD/YYYY"
-                        maxLength={10}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all"
+                        onChange={e => setAppointmentDate(e.target.value)}
+                        min={todayStr}
+                        // mobile date/calendar fit adjustments
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-[13px] sm:text-base text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all [color-scheme:dark] appearance-none"
                       />
                     </div>
 
