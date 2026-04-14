@@ -25,6 +25,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
   const [email, setEmail] = useState('');
   const [pmpStatus, setPmpStatus] = useState(''); // added PMP patient-status dropdown
   const [specialistStatus, setSpecialistStatus] = useState(''); // added specialist patient-status dropdown
+  const [reason, setReason] = useState(''); // added reason field
   const [appointmentDate, setAppointmentDate] = useState(''); // added specialist appointment date field
   const [callbackTime, setCallbackTime] = useState('');
   const [consent, setConsent] = useState(false);
@@ -46,6 +47,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
       setEmail('');
       setPmpStatus('');
       setSpecialistStatus('');
+      setReason('');
       setAppointmentDate('');
       setCallbackTime('');
       setConsent(false);
@@ -163,6 +165,7 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
           email,
           pmp_patient_status: pmpStatus, // added PMP patient-status dropdown
           specialist_patient_status: specialistStatus, // added specialist patient-status dropdown
+          reason_of_visit: reason, // added reason field
           appointment_date: formatForApi(appointmentDate) || undefined, // added specialist appointment date field
           callback_time: callbackTime || undefined
         })
@@ -349,6 +352,18 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
                       <option value="New Patient" className="bg-[#0f172a] text-white">New Patient</option>
                       <option value="Established Patient" className="bg-[#0f172a] text-white">Established Patient</option>
                     </select>
+                  </div>
+
+                  <div className="pmp-spec-field">
+                    <label className="block text-[13px] sm:text-sm font-medium text-white/70 mb-1.5">Reason of the visit *</label>
+                    <textarea 
+                      value={reason}
+                      onChange={e => setReason(e.target.value)}
+                      required
+                      maxLength={160}
+                      placeholder="Briefly describe the reason of the visit (maximum 160 characters)"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-[13px] sm:text-base text-white placeholder:text-white/20 focus:outline-none focus:border-[#29c1ac] focus:ring-1 focus:ring-[#29c1ac] transition-all resize-none h-24"
+                    />
                   </div>
 
                   {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-4"></div> */}
