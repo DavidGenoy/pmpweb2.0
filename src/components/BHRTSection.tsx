@@ -84,7 +84,7 @@ export default function BHRTSection() {
           justify-content: center;
         }
         @media (min-width: 1024px) {
-          .bhrt-s1 { padding: 80px 5vw; justify-content: flex-start; }
+          .bhrt-s1 { padding: 80px 5vw; justify-content: center; }
         }
         .bhrt-s1::before {
           content: '';
@@ -116,7 +116,7 @@ export default function BHRTSection() {
           justify-content: center;
         }
         @media (min-width: 1024px) {
-          .bhrt-s2 { padding: 80px 5vw; justify-content: flex-start; }
+          .bhrt-s2 { padding: 80px 5vw; justify-content: center; }
         }
         .bhrt-s2::before {
           content: "";
@@ -188,29 +188,31 @@ export default function BHRTSection() {
         {/* SECTION 1: Hero / Intro */}
         <div className="bhrt-s1">
           <div className="max-w-lg mx-auto lg:ml-auto lg:mr-8 xl:mr-16 relative z-10 w-full">
-            <div className="text-[10px] md:text-xs font-medium tracking-[2.5px] uppercase text-[#4ecdc4] mb-4 md:mb-6">
+            {/* Desktop-only spacing/font adjustments added via lg: classes to fill space gracefully */}
+            <div className="text-[10px] md:text-xs lg:text-sm font-medium tracking-[2.5px] uppercase text-[#4ecdc4] mb-4 md:mb-6 lg:mb-8">
               Restore your natural balance with
             </div>
             
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl leading-[1.1] text-white mb-6">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-[1.1] text-white mb-6 lg:mb-10">
               Bioidentical Hormone Replacement<br />
               Therapy (BHRT).
             </h2>
             
-            <div className="mb-8 md:mb-10">
-              <h3 className="text-[#7ee8e2] text-sm md:text-base font-semibold mb-2">What is it?</h3>
-              <p className="text-xs md:text-sm text-white/80 leading-[1.6] font-light">
+            <div className="mb-8 md:mb-10 lg:mb-12">
+              <h3 className="text-[#7ee8e2] text-sm md:text-base lg:text-lg font-semibold mb-2 lg:mb-3">What is it?</h3>
+              <p className="text-xs md:text-sm lg:text-base text-white/80 leading-[1.6] lg:leading-[1.7] font-light">
                 BHRT with pellets is a safe, natural option for restoring balance. These plant-based hormones are structurally identical to the testosterone, estrogen, and other hormones your body produces.
               </p>
             </div>
             
-            <div className="pt-6 md:pt-8 border-t border-white/10">
-              <h3 className="font-serif text-2xl md:text-3xl text-white mb-3">
+            <div className="pt-6 md:pt-8 lg:pt-10 border-t border-white/10">
+              <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white mb-3 lg:mb-4">
                 Feel like <em className="italic text-[#7ee8e2]">yourself</em> again.
               </h3>
-              <p className="text-xs md:text-sm text-white/70 leading-[1.6] mb-6 md:mb-8 font-light">
+              <p className="text-xs md:text-sm lg:text-base text-white/70 leading-[1.6] lg:leading-[1.7] mb-6 md:mb-8 lg:mb-0 font-light">
                 When hormone levels shift, it can affect how you feel every day. Fatigue, poor sleep, weight changes, and brain fog may be signals worth discussing with a trained provider.
               </p>
+              {/* Mobile version button preserved, hidden on desktop */}
               <button
                 onClick={scrollToListen}
                 className="lg:hidden inline-flex items-center gap-2 bg-[#4ecdc4] text-[#0a2540] text-[11px] md:text-sm font-semibold tracking-[0.5px] px-5 py-3 md:px-6 md:py-3.5 rounded-full border-none cursor-pointer transition-transform duration-200 hover:bg-[#7ee8e2] active:scale-95"
