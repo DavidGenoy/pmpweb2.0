@@ -1,4 +1,5 @@
 import Hero from "../components/Hero";
+import BHRTSection from "../components/BHRTSection";
 import Locations from "../components/Locations";
 import Providers from "../components/Providers";
 import Specialists from "../components/Specialists";
@@ -56,6 +57,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <BHRTSection />
       <Locations />
       <Providers />
       <Specialists />

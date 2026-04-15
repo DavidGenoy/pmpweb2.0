@@ -319,19 +319,3 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
-
-/* Specialist Intake Modal Scoped Styles */
-.pmp-spec-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-}
-.pmp-spec-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-.pmp-spec-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.pmp-spec-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-}
