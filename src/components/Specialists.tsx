@@ -2,6 +2,7 @@ import { motion, useScroll, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect, useCallback, MouseEvent, TouchEvent } from "react";
 import { ChevronLeft, ChevronRight, MapPin, User } from "lucide-react";
 import ChromaticLink from "./ChromaticLink";
+import SpecialistIntakeModal from "./SpecialistIntakeModal";
 
 const specialists = [
   {
@@ -99,6 +100,11 @@ export default function Specialists() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [pressedCardIndex, setPressedCardIndex] = useState<number | null>(null);
+  
+  // Recreated SpecialistIntakeModal integration state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalSpecialty, setModalSpecialty] = useState("");
+  
   const startPos = useRef({ x: 0, y: 0 });
   const { scrollXProgress } = useScroll({
     container: containerRef,
@@ -111,17 +117,25 @@ export default function Specialists() {
     startPos.current = { x: clientX, y: clientY };
   };
 
-  const handleMouseUp = (e: MouseEvent | TouchEvent, href?: string, index?: number) => {
-    if (!href) return;
+  const handleMouseUp = (e: MouseEvent | TouchEvent, specialist: typeof specialists[0], index?: number) => {
+    const isModalSpecialty = ["Pulmonology", "Cardiology", "Gastroenterology", "Psychiatric Care", "Podiatry", "DRE"].includes(specialist.title);
+    if (!specialist.href && !isModalSpecialty) return;
+    
     const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : (e as MouseEvent).clientX;
     const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : (e as MouseEvent).clientY;
     
     const dist = Math.sqrt(Math.pow(clientX - startPos.current.x, 2) + Math.pow(clientY - startPos.current.y, 2));
     
     if (dist < 10) { // It's a click/tap
-      // Specialist card press/touch feedback behavior: slight delay to show feedback before redirect
+      // Specialist card press/touch feedback behavior: slight delay to show feedback before redirect/open
       setTimeout(() => {
-        window.open(href, '_blank', 'noopener,noreferrer');
+        if (isModalSpecialty) {
+          // Open recreated modal
+          setModalSpecialty(specialist.title);
+          setModalOpen(true);
+        } else if (specialist.href) {
+          window.open(specialist.href, '_blank', 'noopener,noreferrer');
+        }
       }, 150);
     }
   };
@@ -215,41 +229,45 @@ export default function Specialists() {
           className="flex gap-8 overflow-x-auto pt-16 pb-12 px-4 scrollbar-hide snap-x snap-mandatory relative z-10 overflow-y-visible reveal-stagger"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {specialists.map((specialist, index) => (
+          {specialists.map((specialist, index) => {
+            const isModalSpecialty = ["Pulmonology", "Cardiology", "Gastroenterology", "Psychiatric Care", "Podiatry", "DRE"].includes(specialist.title);
+            const isClickable = isModalSpecialty || !!specialist.href;
+
+            return (
             <div
               key={specialist.name}
               className="flex-none w-[300px] md:w-[400px] snap-center"
             >
               <div 
                 className={`group relative aspect-[4/5] rounded-3xl overflow-hidden glass-card shadow-2xl transition-all duration-300 ${
-                  specialist.href ? 'cursor-pointer' : ''
+                  isClickable ? 'cursor-pointer' : ''
                 } ${
                   pressedCardIndex === index 
                     ? 'scale-[0.98] brightness-110 ring-2 ring-accent-500/30' 
                     : 'hover:-translate-y-2'
                 }`}
                 onMouseDown={(e) => {
-                  if (specialist.href) {
+                  if (isClickable) {
                     handleMouseDown(e); // Fix: Call handleMouseDown on desktop to track start position
                     setPressedCardIndex(index);
                   }
                 }}
                 onMouseUp={(e) => {
-                  if (specialist.href) {
-                    handleMouseUp(e, specialist.href, index); // Fix: handleMouseUp now has a valid start position on desktop
+                  if (isClickable) {
+                    handleMouseUp(e, specialist, index); // Fix: handleMouseUp now has a valid start position on desktop
                     setPressedCardIndex(null);
                   }
                 }}
                 onMouseLeave={() => setPressedCardIndex(null)}
                 onTouchStart={(e) => {
-                  if (specialist.href) {
+                  if (isClickable) {
                     handleMouseDown(e);
                     setPressedCardIndex(index);
                   }
                 }}
                 onTouchEnd={(e) => {
-                  if (specialist.href) {
-                    handleMouseUp(e, specialist.href, index);
+                  if (isClickable) {
+                    handleMouseUp(e, specialist, index);
                     setPressedCardIndex(null);
                   }
                 }}
@@ -313,7 +331,8 @@ export default function Specialists() {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -329,6 +348,13 @@ export default function Specialists() {
           <p className="text-xs text-white/40 font-medium uppercase tracking-widest">Swipe to explore</p>
         </div>
       </div>
+
+      {/* Recreated SpecialistIntakeModal integration */}
+      <SpecialistIntakeModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        initialSpecialty={modalSpecialty}
+      />
     </section>
   );
 }
