@@ -163,10 +163,10 @@ export default function SpecialistIntakeModal({ isOpen, onClose, initialSpecialt
           dob: formatForApi(dob), // added DOB field
           phone: formatPhone(phone),
           email,
-          pmp_patient_status: pmpStatus, // added PMP patient-status dropdown
-          specialist_patient_status: specialistStatus, // added specialist patient-status dropdown
+          pmp_status: pmpStatus, // added PMP patient-status dropdown
+          specialist_status: specialistStatus, // added specialist patient-status dropdown
           reason_of_visit: reason, // added reason field
-          appointment_date: formatForApi(appointmentDate) || undefined, // added specialist appointment date field
+          specialist_appt_date: formatForApi(appointmentDate) || undefined, // added specialist appointment date field
           callback_time: callbackTime || undefined
         })
       });
