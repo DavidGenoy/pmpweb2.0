@@ -138,7 +138,7 @@ export default function Services() {
             Comprehensive Care for Your Entire Family
           </h3>
           <p className="text-lg text-white/60 reveal-text-scrub">
-            From routine checkups to managing complex conditions, our team of 16
+            From routine checkups to managing complex conditions, our team of 15
             providers offers a full spectrum of primary care services.
           </p>
         </div>

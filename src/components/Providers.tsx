@@ -103,14 +103,6 @@ const allProviders = [
     bookingUrl: "https://healow.com/apps/provider/nancy-lacroix-3838823",
   },
   {
-    name: "Maria Morejon",
-    degree: "ARNP, FNP-C",
-    specialty: "Family Practice",
-    image: "https://nethingso.xyz/providers/morejon_resized.webp",
-    /* Updated Book Appointment button URL for Maria Morejon */
-    bookingUrl: "https://healow.com/apps/provider/mariarosario-morejon-3941702",
-  },
-  {
     name: "Yoel Ramos",
     degree: "PA",
     specialty: "Family Practice",
@@ -134,7 +126,7 @@ export default function Providers() {
               Meet Our Team
             </h2>
             <h3 className="text-4xl md:text-5xl font-serif font-medium text-white mb-6">
-              Book appointments with any of our 16 Expert Providers
+              Book appointments with any of our 15 Expert Providers
             </h3>
             <p className="text-lg text-white/60 reveal-text-scrub">
               Our diverse team of board-certified physicians, nurse practitioners, 
