@@ -5,6 +5,7 @@ import Providers from "../components/Providers";
 import Specialists from "../components/Specialists";
 import Insurances from "../components/Insurances";
 import Services from "../components/Services";
+import HealowSection from "../components/HealowSection";
 import Testimonials from "../components/Testimonials";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -63,6 +64,7 @@ export default function Home() {
       <Specialists />
       <Insurances />
       <Services />
+      <HealowSection />
       <Testimonials />
     </main>
   );
