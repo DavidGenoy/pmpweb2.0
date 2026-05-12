@@ -82,6 +82,7 @@ export default function Services() {
       description:
         "Medically supervised programs to help you achieve and maintain a healthy weight.",
       icon: Gauge, // Weight Loss icon correction: using Gauge as a body-weight scale dial
+      externalHref: "https://liquidvmobile.com/weight-loss",
     },
     {
       title: "Pain Management",
@@ -100,6 +101,7 @@ export default function Services() {
       description:
         "Intravenous hydration and nutrient therapy for optimal wellness and recovery.",
       icon: FlaskConical,
+      externalHref: "https://liquidvmobile.com/iv-therapy",
     },
     {
       title: "Hypertension",
@@ -112,6 +114,7 @@ export default function Services() {
       description:
         "Advanced peptide therapies to optimize cellular function, enhance recovery, and support overall vitality.",
       icon: Pill, // Peptides icon replacement
+      externalHref: "https://liquidvmobile.com/peptide-hormone",
     },
     {
       title: "Cancer Screening",
@@ -144,31 +147,40 @@ export default function Services() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 sm:gap-8 reveal-stagger">
-          {services.map((service) => (
-            <div
-              key={service.title}
-              onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
-              onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
-              onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
-              className="group p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 hover:bg-accent-500 transition-all duration-300 cursor-pointer w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] touch-manipulation [&.is-pressed]:bg-accent-500"
-              style={{
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                transform: 'translateZ(0)',
-                WebkitTransform: 'translateZ(0)'
-              }}
-            >
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/10 group-hover:bg-white [.is-pressed_&]:bg-white flex items-center justify-center mb-4 sm:mb-6 shadow-sm transition-colors duration-300">
-                <service.icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent-400 group-hover:text-accent-500 [.is-pressed_&]:text-accent-500" />
-              </div>
-              <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-primary-900 [.is-pressed_&]:text-primary-900 mb-2 sm:mb-3 transition-colors duration-300">
-                {service.title}
-              </h4>
-              <p className="text-sm sm:text-base text-white/60 group-hover:text-primary-900/80 [.is-pressed_&]:text-primary-900/80 leading-relaxed transition-colors duration-300">
-                {service.description}
-              </p>
-            </div>
-          ))}
+          {services.map((service) => {
+            const isExternal = !!service.externalHref;
+            const CardComponent = isExternal ? 'a' : 'div';
+            const cardProps = isExternal 
+              ? { href: service.externalHref, target: '_blank', rel: 'noopener noreferrer' } 
+              : {};
+              
+            return (
+              <CardComponent
+                key={service.title}
+                {...cardProps}
+                onTouchStart={(e) => (e.currentTarget as HTMLElement).classList.add('is-pressed')}
+                onTouchEnd={(e) => (e.currentTarget as HTMLElement).classList.remove('is-pressed')}
+                onTouchCancel={(e) => (e.currentTarget as HTMLElement).classList.remove('is-pressed')}
+                className="group p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 hover:bg-accent-500 transition-all duration-300 cursor-pointer w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] touch-manipulation [&.is-pressed]:bg-accent-500"
+                style={{
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  transform: 'translateZ(0)',
+                  WebkitTransform: 'translateZ(0)'
+                }}
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/10 group-hover:bg-white [.is-pressed_&]:bg-white flex items-center justify-center mb-4 sm:mb-6 shadow-sm transition-colors duration-300">
+                  <service.icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent-400 group-hover:text-accent-500 [.is-pressed_&]:text-accent-500" />
+                </div>
+                <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-primary-900 [.is-pressed_&]:text-primary-900 mb-2 sm:mb-3 transition-colors duration-300">
+                  {service.title}
+                </h4>
+                <p className="text-sm sm:text-base text-white/60 group-hover:text-primary-900/80 [.is-pressed_&]:text-primary-900/80 leading-relaxed transition-colors duration-300">
+                  {service.description}
+                </p>
+              </CardComponent>
+            );
+          })}
         </div>
       </div>
     </section>

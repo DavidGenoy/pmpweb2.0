@@ -30,6 +30,7 @@ export default function Navbar() {
     /* URL assigned: https://connect.evexi.as/nutraceuticals/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354 */
     /* Mobile placement/order preserved: Being last in navLinks ensures it is the last item in the mobile nav list */
     { name: "Vitamins", href: "https://connect.evexi.as/nutraceuticals/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354", external: true },
+    { name: "Anti Aging", href: "https://liquidvmobile.com/anti-aging", external: true },
   ];
 
   const handleNavClick = (href: string, external?: boolean) => {
@@ -83,14 +84,14 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav - adjusted spacing and whitespace-nowrap to fit 1 row */}
-          <nav className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6">
+          <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 2xl:gap-5">
             {navLinks.map((link) => (
               <ChromaticLink
                 key={link.name}
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className="text-[12px] xl:text-[14px] 2xl:text-[15px] font-medium text-white/70 hover:text-accent-400 whitespace-nowrap"
+                className="text-[12px] xl:text-[13px] 2xl:text-[14px] font-medium text-white/70 hover:text-accent-400 whitespace-nowrap"
                 onClick={(e) => {
                   if (!link.external) {
                     e.preventDefault();
