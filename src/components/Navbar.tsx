@@ -25,6 +25,7 @@ export default function Navbar() {
     { name: "Locations", href: "#locations" },
     { name: "Services", href: "#services" },
     { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
+    { name: "Healow App", href: "#healow" },
     /* Vitamins menu item added after Patient Portal */
     /* URL assigned: https://connect.evexi.as/nutraceuticals/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354 */
     /* Mobile placement/order preserved: Being last in navLinks ensures it is the last item in the mobile nav list */
@@ -66,7 +67,7 @@ export default function Navbar() {
           : "bg-transparent py-5"
       } ios-navbar-fix`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3 group">
@@ -75,21 +76,21 @@ export default function Navbar() {
               <img 
                 src="https://nethingso.xyz/logo/white_pmp_logo.png" 
                 alt="Primary Medical Physicians" 
-                className="h-16 w-auto relative z-10 brightness-0 invert"
+                className="h-10 lg:h-12 xl:h-14 2xl:h-16 w-auto relative z-10 brightness-0 invert"
                 referrerPolicy="no-referrer"
               />
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          {/* Desktop Nav - adjusted spacing and whitespace-nowrap to fit 1 row */}
+          <nav className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6">
             {navLinks.map((link) => (
               <ChromaticLink
                 key={link.name}
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className="text-base font-medium text-white/70 hover:text-accent-400"
+                className="text-[12px] xl:text-[14px] 2xl:text-[15px] font-medium text-white/70 hover:text-accent-400 whitespace-nowrap"
                 onClick={(e) => {
                   if (!link.external) {
                     e.preventDefault();
@@ -103,21 +104,21 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
             <ChromaticLink
               href="tel:9543999014"
-              className="flex items-center gap-2 text-sm font-medium text-white/70 hover:text-accent-400 transition-colors"
+              className="flex items-center gap-1.5 text-[12px] xl:text-[14px] 2xl:text-sm font-medium text-white/70 hover:text-accent-400 transition-colors whitespace-nowrap"
             >
-              <Phone className="w-4 h-4" />
+              <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
               <span>(954) 399-9014</span>
             </ChromaticLink>
             <a 
               href="https://healow.com/apps/practice/primary-medical-physicians-llc-hollywood-fl-23412?v=2&t=1"
               target="_blank"
               rel="noreferrer"
-              className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-5 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
+              className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-3.5 py-1.5 xl:px-5 xl:py-2.5 rounded-full text-[12px] xl:text-[14px] 2xl:text-sm font-bold transition-all flex items-center gap-1.5 xl:gap-2 shadow-sm hover:shadow-md whitespace-nowrap"
             >
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
               Book Appointment
             </a>
           </div>
@@ -145,14 +146,14 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -10 }}
             className="absolute top-full left-0 w-full bg-primary-900 shadow-xl border-t border-white/10 lg:hidden"
           >
-            <div className="px-4 py-6 flex flex-col gap-4">
+            <div className="px-4 py-4 flex flex-col gap-2">
               {navLinks.map((link) => (
                 <ChromaticLink
                   key={link.name}
                   href={link.href}
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
-                  className="text-base font-medium text-white py-2 border-b border-white/5"
+                  className="text-[15px] font-medium text-white py-1.5 border-b border-white/5"
                   onClick={(e) => {
                     if (!link.external) {
                       e.preventDefault();
@@ -165,21 +166,21 @@ export default function Navbar() {
                   {link.name}
                 </ChromaticLink>
               ))}
-              <div className="pt-4 flex flex-col gap-3">
+              <div className="pt-3 flex flex-col gap-2">
                 <ChromaticLink
                   href="tel:9543999014"
-                  className="flex items-center justify-center gap-2 text-white font-medium py-3 rounded-xl bg-white/5"
+                  className="flex items-center justify-center gap-2 text-white font-medium py-2.5 rounded-xl bg-white/5 text-[15px]"
                 >
-                  <Phone className="w-5 h-5" />
+                  <Phone className="w-4 h-4" />
                   <span>(954) 399-9014</span>
                 </ChromaticLink>
                 <a 
                   href="https://healow.com/apps/practice/primary-medical-physicians-llc-hollywood-fl-23412?v=2&t=1"
                   target="_blank"
                   rel="noreferrer"
-                  className="bg-accent-500 text-primary-900 py-3 rounded-xl font-bold flex items-center justify-center gap-2"
+                  className="bg-accent-500 text-primary-900 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 text-[15px]"
                 >
-                  <Calendar className="w-5 h-5" />
+                  <Calendar className="w-4 h-4" />
                   Book Appointment
                 </a>
               </div>
