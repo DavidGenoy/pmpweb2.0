@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { 
   Smartphone, 
   Download, 
@@ -68,16 +67,36 @@ const features = [
 
 export default function HealowSection() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [sliderPos, setSliderPos] = useState(50);
+  
+  // iOS Performance: Use refs for slider animation instead of React state
+  // This prevents React from re-rendering the entire section on every drag frame
   const containerRef = useRef<HTMLDivElement>(null);
+  const leftImageRef = useRef<HTMLImageElement>(null);
+  const dividerRef = useRef<HTMLDivElement>(null);
+  const touchAreaRef = useRef<HTMLDivElement>(null);
+  
   const isDragging = useRef(false);
+  const rafId = useRef<number | null>(null);
 
   const handleMove = (clientX: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = clientX - rect.left;
     const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPos(percent);
+    
+    // Throttle DOM updates to animation frames for iOS smoothness
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(() => {
+      if (leftImageRef.current) {
+        leftImageRef.current.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+      }
+      if (dividerRef.current) {
+        dividerRef.current.style.left = `${percent}%`;
+      }
+      if (touchAreaRef.current) {
+        touchAreaRef.current.style.left = `${percent}%`;
+      }
+    });
   };
 
   const onMouseDown = () => (isDragging.current = true);
@@ -225,13 +244,18 @@ export default function HealowSection() {
             
             {/* Phone Image Comparison Reveal - Mobile size adjusted safely */}
             <div className="reveal-up relative w-full max-w-[240px] md:max-w-[320px] mx-auto group">
-              {/* Outer Glow for Elevation */}
-              <div className="absolute inset-0 bg-accent-500/10 blur-[120px] -z-10 transition-all opacity-30 group-hover:opacity-60" />
+              {/* Outer Glow for Elevation - Hardware accelerated to prevent iOS repaint during drag */}
+              <div 
+                className="absolute inset-0 bg-accent-500/10 blur-[120px] -z-10 transition-all opacity-30 group-hover:opacity-60 pointer-events-none" 
+                style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }} 
+              />
 
               {/* Single Transparent Container - Images already contain the phone mockup */}
+              {/* Isolate and transform-gpu prevent iOS backdrop/drop-shadow repaint during dragging */}
               <div 
                 ref={containerRef}
-                className="relative aspect-[414/896] w-full cursor-ew-resize select-none touch-none drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
+                className="relative aspect-[414/896] w-full cursor-ew-resize select-none touch-none drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] isolate"
+                style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
                 onMouseLeave={onMouseUp}
@@ -241,7 +265,9 @@ export default function HealowSection() {
                 onTouchMove={onTouchMove}
               >
                 {/* Background Image (Right Side) - Messages */}
+                {/* draggable=false prevents ghost drags on iOS */}
                 <img 
+                  draggable={false}
                   src="https://nethingso.xyz/healow/healow-1-messages.webp" 
                   alt="healow Messages View" 
                   className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -250,16 +276,19 @@ export default function HealowSection() {
                 {/* Foreground Image (Left Side) - Records */}
                 {/* Uses CSS clip-path for instant, perfect mobile rendering without JS calculations */}
                 <img 
+                  ref={leftImageRef}
+                  draggable={false}
                   src="https://nethingso.xyz/healow/healow-2-records.webp" 
                   alt="healow Records View" 
                   className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                  style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+                  style={{ clipPath: `inset(0 50% 0 0)` }}
                 />
 
                 {/* Reveal Divider Line */}
                 <div 
+                  ref={dividerRef}
                   className="absolute inset-y-0 w-[2px] bg-accent-400 transform -translate-x-1/2 pointer-events-none z-40"
-                  style={{ left: `${sliderPos}%` }}
+                  style={{ left: `50%` }}
                 >
                   {/* Draggable Handle */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center border-[2px] border-accent-400 z-50">
@@ -272,8 +301,9 @@ export default function HealowSection() {
 
                 {/* Invisible larger touch target for handle */}
                 <div 
+                  ref={touchAreaRef}
                   className="absolute inset-y-0 w-16 -ml-8 z-40 cursor-ew-resize"
-                  style={{ left: `${sliderPos}%` }}
+                  style={{ left: `50%` }}
                 />
               </div>
 
@@ -303,41 +333,45 @@ export default function HealowSection() {
             <div className="reveal-up space-y-4">
               <h3 className="text-2xl font-serif text-white mb-4 lg:mb-6">Frequently Asked Questions</h3>
               <div className="space-y-4">
-                {faqs.map((faq, i) => (
-                  <div 
-                    key={i} 
-                    className={`group rounded-2xl border transition-all duration-300 ${
-                      activeFaq === i 
-                        ? "bg-accent-500/5 border-accent-500/30" 
-                        : "bg-white/5 border-white/10 hover:border-white/20"
-                    }`}
-                  >
-                    <button
-                      onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                      className="w-full text-left p-6 flex justify-between items-center gap-4 group-active:scale-[0.99] transition-transform"
+                {faqs.map((faq, i) => {
+                  const isActive = activeFaq === i;
+                  return (
+                    <div 
+                      key={i} 
+                      className={`group rounded-2xl border transition-all duration-300 ${
+                        isActive 
+                          ? "bg-accent-500/5 border-accent-500/30" 
+                          : "bg-white/5 border-white/10 hover:border-white/20"
+                      }`}
                     >
-                      <span className="text-lg font-medium text-white/90 group-hover:text-white transition-colors">{faq.question}</span>
-                      <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-all duration-300 ${activeFaq === i ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
-                        <ChevronDown className={`w-4 h-4 ${activeFaq === i ? "text-primary-900" : "text-accent-400"}`} />
-                      </div>
-                    </button>
-                    <AnimatePresence>
-                      {activeFaq === i && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4">
+                      <button
+                        onClick={() => setActiveFaq(isActive ? null : i)}
+                        className="w-full text-left p-6 flex justify-between items-center gap-4 group-active:scale-[0.99] transition-transform"
+                      >
+                        <span className="text-lg font-medium text-white/90 group-hover:text-white transition-colors">{faq.question}</span>
+                        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-all duration-300 ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
+                          <ChevronDown className={`w-4 h-4 ${isActive ? "text-primary-900" : "text-accent-400"}`} />
+                        </div>
+                      </button>
+                      
+                      {/* iOS-Safe Accordion Animation using CSS Grid instead of layout measurement */}
+                      <div 
+                        className="grid transition-all duration-300 ease-in-out"
+                        style={{ gridTemplateRows: isActive ? '1fr' : '0fr' }}
+                      >
+                        <div className="overflow-hidden">
+                          <div 
+                            className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-opacity duration-300 ease-in-out ${
+                              isActive ? "opacity-100 delay-100" : "opacity-0"
+                            }`}
+                          >
                             {faq.answer}
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
