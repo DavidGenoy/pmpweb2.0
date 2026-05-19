@@ -132,6 +132,8 @@ export default function MammographyModal() {
                     <MapPin className="w-4 h-4 md:w-5 md:h-5 text-accent-500 shrink-0 mt-0.5" />
                     <div>
                       <p className="text-white text-xs sm:text-sm font-medium">Primary Medical Physicians — Hollywood Taft</p>
+                      {/* Added full location address */}
+                      <p className="text-white/70 text-xs sm:text-sm mt-0.5">6517 Taft St, Hollywood, FL 33024</p>
                     </div>
                   </div>
                   
