@@ -98,7 +98,7 @@ export default function MammographyModal() {
             {/* Left/Top Side - Floating Hero Image Composition */}
             <div className="w-full md:w-5/12 relative shrink-0 pt-10 sm:pt-12 px-4 md:pt-0 md:px-0 z-20 flex justify-center items-end md:static pointer-events-none">
               {/* Removed visible framed container box. desktop: moved more left and down, mobile: slight push down */}
-              <div className="relative w-[110%] sm:w-full h-[150px] sm:h-[180px] md:h-auto md:absolute md:top-16 lg:top-20 md:-left-[20%] lg:-left-[26%] md:w-[60%] lg:w-[65%] flex items-end justify-center md:items-center mt-2 md:mt-0">
+              <div className="relative w-[110%] sm:w-full h-[150px] sm:h-[180px] md:h-auto md:absolute md:top-18 lg:top-22 md:-left-[20%] lg:-left-[26%] md:w-[60%] lg:w-[65%] flex items-end justify-center md:items-center mt-2 md:mt-0">
                 <img 
                   src="https://nethingso.xyz/temp/mobile_mammo.webp"
                   alt="Mobile Mammography Coach"
