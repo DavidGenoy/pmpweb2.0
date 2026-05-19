@@ -7,6 +7,7 @@ import Insurances from "../components/Insurances";
 import Services from "../components/Services";
 import HealowSection from "../components/HealowSection";
 import Testimonials from "../components/Testimonials";
+import MammographyModal from "../components/MammographyModal";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -66,6 +67,7 @@ export default function Home() {
       <Services />
       <HealowSection />
       <Testimonials />
+      <MammographyModal />
     </main>
   );
 }
