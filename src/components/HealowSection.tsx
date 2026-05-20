@@ -65,72 +65,19 @@ const features = [
   }
 ];
 
-// iOS-Safe Q&A accordion animation fix:
-// Uses numeric height measurement and requestAnimationFrame instead of pure CSS Grid
-// or Framer Motion height:auto which caused layout jank on iPhone.
+// Safari-Safe Q&A accordion animation fix:
+// Uses CSS Grid for height transition to avoid JS layout thrashing.
+// Eliminates React state/ref height measurements that cause Safari jank.
+// Removes transform-gpu from the outer wrapper to prevent Safari from caching
+// it as a composited bitmap, which causes "text wiggle" during height changes.
 const FaqAccordionItem: React.FC<{
   faq: FAQItem;
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
-
-  useLayoutEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    if (isFirstRender.current) {
-      if (isActive) {
-        wrapper.style.height = "auto";
-      }
-      isFirstRender.current = false;
-      return;
-    }
-
-    if (isActive) {
-      wrapper.style.height = "auto";
-      const targetHeight = wrapper.scrollHeight;
-      
-      wrapper.style.transitionDuration = "0ms";
-      wrapper.style.height = "0px";
-      
-      // Force repaint
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      wrapper.offsetHeight;
-      
-      requestAnimationFrame(() => {
-        wrapper.style.transitionDuration = "300ms";
-        wrapper.style.height = `${targetHeight}px`;
-      });
-
-      const handleTransitionEnd = (e: TransitionEvent) => {
-        if (e.propertyName === "height" && wrapper.style.height !== "0px") {
-          wrapper.style.height = "auto";
-        }
-      };
-      
-      wrapper.addEventListener("transitionend", handleTransitionEnd);
-      return () => wrapper.removeEventListener("transitionend", handleTransitionEnd);
-    } else {
-      wrapper.style.transitionDuration = "0ms";
-      wrapper.style.height = `${wrapper.scrollHeight}px`;
-      
-      // Force repaint
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      wrapper.offsetHeight;
-      
-      requestAnimationFrame(() => {
-        wrapper.style.transitionDuration = "300ms";
-        wrapper.style.height = "0px";
-      });
-    }
-  }, [isActive]);
-
   return (
     <div 
-      className={`group rounded-2xl border transition-colors duration-300 transform-gpu ${
+      className={`group rounded-2xl border transition-colors duration-300 ${
         isActive 
           ? "bg-accent-500/5 border-accent-500/30" 
           : "bg-white/5 border-white/10 hover:border-white/20"
@@ -141,23 +88,26 @@ const FaqAccordionItem: React.FC<{
         className="w-full text-left p-6 flex justify-between items-center gap-4 active:scale-[0.99] transition-transform"
       >
         <span className="text-lg font-medium text-white/90 group-hover:text-white transition-colors">{faq.question}</span>
-        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 transform-gpu ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
+        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
           <ChevronDown className={`w-4 h-4 ${isActive ? "text-primary-900" : "text-accent-400"}`} />
         </div>
       </button>
       
+      {/* Safari Fluid Accordion using CSS Grid (avoids JS measuring) */}
       <div 
-        ref={wrapperRef}
-        className="overflow-hidden transition-[height] ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[height] transform-gpu"
-        style={{ height: "0px" }}
+        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+          isActive ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        style={{
+          gridTemplateRows: isActive ? "1fr" : "0fr"
+        }}
       >
-        <div 
-          ref={contentRef}
-          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] transform-gpu ${
-            isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
-          }`}
-        >
-          {faq.answer}
+        <div className="overflow-hidden">
+          <div className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-transform duration-300 ease-out transform-gpu ${
+            isActive ? "translate-y-0" : "-translate-y-2"
+          }`}>
+            {faq.answer}
+          </div>
         </div>
       </div>
     </div>
