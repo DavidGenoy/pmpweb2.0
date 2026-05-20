@@ -202,19 +202,20 @@ export default function Specialists() {
       <div className="relative px-4 sm:px-6 lg:px-8">
         {/* Navigation Arrows (Inside Slider, Centered) */}
         <div className="absolute inset-y-0 left-0 right-0 pointer-events-none z-30 flex items-center justify-between px-4 md:px-12">
+          {/* iOS/Mobile visibility fix: default to opacity-50 on mobile, use hover opacity logic on md+ */}
           <button 
             onClick={() => scroll('left')}
-            className="w-14 h-14 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-white pointer-events-auto opacity-0 group-hover/section:opacity-40 hover:!opacity-100 transition-all hover:scale-110 active:scale-95"
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-white pointer-events-auto opacity-50 md:opacity-0 md:group-hover/section:opacity-40 hover:!opacity-100 transition-all hover:scale-110 active:scale-95"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
           <button 
             onClick={() => scroll('right')}
-            className="w-14 h-14 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-white pointer-events-auto opacity-0 group-hover/section:opacity-40 hover:!opacity-100 transition-all hover:scale-110 active:scale-95"
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-white pointer-events-auto opacity-50 md:opacity-0 md:group-hover/section:opacity-40 hover:!opacity-100 transition-all hover:scale-110 active:scale-95"
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </div>
 
