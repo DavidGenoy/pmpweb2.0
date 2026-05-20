@@ -75,6 +75,23 @@ const FaqAccordionItem: React.FC<{
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState<number>(0);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    
+    // ResizeObserver cleanly tracks exact pixel height without layout thrashing
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContentHeight(entry.target.scrollHeight);
+      }
+    });
+    
+    resizeObserver.observe(contentRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     <div 
       className={`group rounded-2xl border transition-colors duration-300 ${
@@ -93,21 +110,20 @@ const FaqAccordionItem: React.FC<{
         </div>
       </button>
       
-      {/* Safari Fluid Accordion using CSS Grid (avoids JS measuring) */}
+      {/* Safari Fluid Accordion using explicitly tracked pixel height. 
+          Bypasses Grid 0fr Safari layout bugs and React micro-tick jank. */}
       <div 
-        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-          isActive ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-        style={{
-          gridTemplateRows: isActive ? "1fr" : "0fr"
-        }}
+        className="overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
+        style={{ height: isActive ? `${contentHeight}px` : "0px" }}
+        aria-hidden={!isActive}
       >
-        <div className="overflow-hidden">
-          <div className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-transform duration-300 ease-out transform-gpu ${
-            isActive ? "translate-y-0" : "-translate-y-2"
-          }`}>
-            {faq.answer}
-          </div>
+        <div 
+          ref={contentRef}
+          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out ${
+            isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+          }`}
+        >
+          {faq.answer}
         </div>
       </div>
     </div>
