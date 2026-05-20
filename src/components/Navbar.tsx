@@ -31,6 +31,7 @@ export default function Navbar() {
     /* Mobile placement/order preserved: Being last in navLinks ensures it is the last item in the mobile nav list */
     { name: "Vitamins", href: "https://connect.evexi.as/nutraceuticals/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354", external: true },
     { name: "Anti Aging", href: "https://liquidvmobile.com/anti-aging", external: true },
+    { name: "Referrals", href: "#specialists" },
   ];
 
   const handleNavClick = (href: string, external?: boolean) => {
@@ -84,7 +85,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav - adjusted spacing and whitespace-nowrap to fit 1 row */}
-          <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 2xl:gap-5">
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-3 2xl:gap-4">
             {navLinks.map((link) => (
               <ChromaticLink
                 key={link.name}
@@ -105,10 +106,10 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
             <ChromaticLink
               href="tel:9543999014"
-              className="flex items-center gap-1.5 text-[12px] xl:text-[14px] 2xl:text-sm font-medium text-white/70 hover:text-accent-400 transition-colors whitespace-nowrap"
+              className="flex items-center gap-1 xl:gap-1.5 text-[12px] xl:text-[14px] 2xl:text-sm font-medium text-white/70 hover:text-accent-400 transition-colors whitespace-nowrap"
             >
               <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
               <span>(954) 399-9014</span>
@@ -117,7 +118,7 @@ export default function Navbar() {
               href="https://healow.com/apps/practice/primary-medical-physicians-llc-hollywood-fl-23412?v=2&t=1"
               target="_blank"
               rel="noreferrer"
-              className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-3.5 py-1.5 xl:px-5 xl:py-2.5 rounded-full text-[12px] xl:text-[14px] 2xl:text-sm font-bold transition-all flex items-center gap-1.5 xl:gap-2 shadow-sm hover:shadow-md whitespace-nowrap"
+              className="bg-accent-500 hover:bg-accent-400 text-primary-900 px-3 py-1.5 xl:px-4 xl:py-2.5 rounded-full text-[12px] xl:text-[14px] 2xl:text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm hover:shadow-md whitespace-nowrap"
             >
               <Calendar className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
               Book Appointment

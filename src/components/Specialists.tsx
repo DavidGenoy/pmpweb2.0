@@ -176,6 +176,7 @@ export default function Specialists() {
 
   return (
     <section 
+      id="specialists"
       className="py-32 bg-transparent relative overflow-visible group/section"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -190,6 +191,9 @@ export default function Specialists() {
           </h3>
           <p className="text-lg text-white/60 reveal-text-scrub">
             Beyond primary care, we offer a wide range of specialized medical services to ensure comprehensive health management for our patients.
+          </p>
+          <p className="text-lg text-white/60 reveal-text-scrub mt-4">
+            The cards below make it easy to request a referral to one of our in-house specialists. Once submitted, our team will review your request and assist you in connecting with the appropriate specialist.
           </p>
         </div>
       </div>
@@ -325,6 +329,14 @@ export default function Specialists() {
                         </div>
                       ))}
                     </div>
+
+                    {/* Referral helper phrase */}
+                    {isModalSpecialty && (
+                      <div className="mt-4 text-xs font-semibold text-accent-500 opacity-90 group-hover:opacity-100 transition-opacity">
+                        <span className="hidden md:inline">Click to request a referral &rarr;</span>
+                        <span className="md:hidden">Tap to request a referral &rarr;</span>
+                      </div>
+                    )}
                     
                     <div className="mt-6 w-12 h-1 bg-accent-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                   </div>
