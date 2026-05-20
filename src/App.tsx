@@ -31,6 +31,13 @@ function ScrollToTopOnPathChange() {
 }
 
 export default function App() {
+  // Global iOS touchstart registration to enable :active styles everywhere
+  useEffect(() => {
+    const noop = () => {};
+    document.body.addEventListener('touchstart', noop, { passive: true });
+    return () => document.body.removeEventListener('touchstart', noop);
+  }, []);
+
   const showParticles = true;
   const highContrast = false;
 

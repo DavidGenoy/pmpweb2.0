@@ -74,6 +74,70 @@ const FaqAccordionItem: React.FC<{
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+    const content = contentRef.current;
+    if (!wrapper || !content) return;
+
+    if (isFirstRender.current) {
+      if (isActive) {
+        wrapper.style.height = "auto";
+        wrapper.style.opacity = "1";
+      }
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (isActive) {
+      // 1. Measure target height dynamically
+      wrapper.style.height = "auto";
+      const targetHeight = content.offsetHeight;
+      
+      // 2. Lock to zero to begin transition
+      wrapper.style.transitionDuration = "0ms";
+      wrapper.style.height = "0px";
+      wrapper.style.opacity = "0";
+      
+      // Force repaint
+      void wrapper.offsetHeight;
+      
+      // 3. Execute fluid transition
+      requestAnimationFrame(() => {
+        wrapper.style.transitionDuration = "300ms";
+        wrapper.style.height = `${targetHeight}px`;
+        wrapper.style.opacity = "1";
+      });
+
+      const cleanup = (e: TransitionEvent) => {
+        if (e.propertyName === "height" && wrapper.style.height !== "0px") {
+          wrapper.style.height = "auto";
+        }
+      };
+      
+      wrapper.addEventListener("transitionend", cleanup);
+      return () => wrapper.removeEventListener("transitionend", cleanup);
+      
+    } else {
+      // 1. Lock from "auto" to measured pixel height
+      wrapper.style.transitionDuration = "0ms";
+      wrapper.style.height = `${content.offsetHeight}px`;
+      
+      // Force repaint
+      void wrapper.offsetHeight;
+      
+      // 2. Collapse to 0
+      requestAnimationFrame(() => {
+        wrapper.style.transitionDuration = "300ms";
+        wrapper.style.height = "0px";
+        wrapper.style.opacity = "0";
+      });
+    }
+  }, [isActive]);
+
   return (
     <div 
       className={`group rounded-2xl border transition-colors duration-300 ${
@@ -92,21 +156,15 @@ const FaqAccordionItem: React.FC<{
         </div>
       </button>
       
-      <AnimatePresence initial={false}>
-        {isActive && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4">
-              {faq.answer}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div 
+        ref={wrapperRef}
+        className="overflow-hidden transition-all ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[height,opacity] transform-gpu"
+        style={{ height: "0px", opacity: 0 }}
+      >
+        <div ref={contentRef} className="px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4">
+          {faq.answer}
+        </div>
+      </div>
     </div>
   );
 };
