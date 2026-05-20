@@ -153,7 +153,7 @@ export default function Specialists() {
   const scroll = useCallback((direction: 'left' | 'right') => {
     if (containerRef.current) {
       const container = containerRef.current;
-      const { scrollLeft, clientWidth } = container;
+      const { scrollLeft, clientWidth, scrollWidth } = container;
       
       // Cancel any existing custom animation properly
       if (animationRef.current !== null) {
@@ -165,33 +165,51 @@ export default function Specialists() {
       const children = Array.from(container.children) as HTMLElement[];
       if (children.length === 0) return;
 
-      // Find the card currently closest to the center of the container
-      const containerCenter = scrollLeft + (clientWidth / 2);
-      let closestIndex = 0;
-      let minDistance = Infinity;
+      // Desktop loop fix: if we are at the physical bounds of the scroll container,
+      // force wraparound. This is necessary because the last card may never exactly "center"
+      // on larger screens due to missing right-margin overscroll.
+      const isAtStart = scrollLeft <= 5;
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5;
 
-      children.forEach((child, index) => {
-        const childCenter = child.offsetLeft + (child.clientWidth / 2);
-        const distance = Math.abs(childCenter - containerCenter);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestIndex = index;
-        }
-      });
+      let targetIndex;
 
-      // Calculate target index
-      let targetIndex = direction === 'left' ? closestIndex - 1 : closestIndex + 1;
-
-      // Wrap around logic
-      if (targetIndex < 0) {
+      if (direction === 'left' && isAtStart) {
         targetIndex = children.length - 1;
-      } else if (targetIndex >= children.length) {
+      } else if (direction === 'right' && isAtEnd) {
         targetIndex = 0;
+      } else {
+        // Find the card currently closest to the center of the container
+        const containerCenter = scrollLeft + (clientWidth / 2);
+        let closestIndex = 0;
+        let minDistance = Infinity;
+
+        children.forEach((child, index) => {
+          const childCenter = child.offsetLeft + (child.clientWidth / 2);
+          const distance = Math.abs(childCenter - containerCenter);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
+          }
+        });
+
+        // Calculate target index
+        targetIndex = direction === 'left' ? closestIndex - 1 : closestIndex + 1;
+
+        // Wrap around logic for middle cards
+        if (targetIndex < 0) {
+          targetIndex = children.length - 1;
+        } else if (targetIndex >= children.length) {
+          targetIndex = 0;
+        }
       }
 
       // Calculate precise scroll position to exactly center the target card
       const targetChild = children[targetIndex];
-      const targetScrollLeft = targetChild.offsetLeft - (clientWidth / 2) + (targetChild.clientWidth / 2);
+      let targetScrollLeft = targetChild.offsetLeft - (clientWidth / 2) + (targetChild.clientWidth / 2);
+      
+      // Clamp target scroll to prevent custom JS animation overshoot and ensure deterministic bounds
+      const maxScroll = scrollWidth - clientWidth;
+      targetScrollLeft = Math.max(0, Math.min(maxScroll, targetScrollLeft));
 
       // Identify if the device is iOS
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);

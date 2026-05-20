@@ -26,10 +26,10 @@ export default function MammographyModal() {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -52,19 +52,19 @@ export default function MammographyModal() {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div 
-          key="mammo-modal" // key required for AnimatePresence to work correctly on mount/unmount
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
+        <motion.div 
+          key="mammo-modal" 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 ${!isOpen ? "pointer-events-none" : ""}`}
           role="dialog"
           aria-modal="true"
           aria-labelledby="mammo-modal-title"
         >
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+          <div
             className="absolute inset-0 bg-primary-900/80 backdrop-blur-sm"
             onClick={dismissModal} // outside click dismiss behavior
             aria-hidden="true"
@@ -174,7 +174,7 @@ export default function MammographyModal() {
               </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
