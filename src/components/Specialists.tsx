@@ -142,17 +142,43 @@ export default function Specialists() {
 
   const scroll = useCallback((direction: 'left' | 'right') => {
     if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      const scrollAmount = direction === 'left' ? -400 : 400;
+      const container = containerRef.current;
+      const { scrollLeft, clientWidth } = container;
       
+      // iOS-safe deterministic pagination: navigate by specific card index
+      const children = Array.from(container.children) as HTMLElement[];
+      if (children.length === 0) return;
+
+      // Find the card currently closest to the center of the container
+      const containerCenter = scrollLeft + (clientWidth / 2);
+      let closestIndex = 0;
+      let minDistance = Infinity;
+
+      children.forEach((child, index) => {
+        const childCenter = child.offsetLeft + (child.clientWidth / 2);
+        const distance = Math.abs(childCenter - containerCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      // Calculate target index
+      let targetIndex = direction === 'left' ? closestIndex - 1 : closestIndex + 1;
+
       // Wrap around logic
-      if (direction === 'right' && scrollLeft + clientWidth >= scrollWidth - 20) {
-        containerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-      } else if (direction === 'left' && scrollLeft <= 20) {
-        containerRef.current.scrollTo({ left: scrollWidth, behavior: 'smooth' });
-      } else {
-        containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      if (targetIndex < 0) {
+        targetIndex = children.length - 1;
+      } else if (targetIndex >= children.length) {
+        targetIndex = 0;
       }
+
+      // Calculate precise scroll position to exactly center the target card
+      const targetChild = children[targetIndex];
+      const targetScrollLeft = targetChild.offsetLeft - (clientWidth / 2) + (targetChild.clientWidth / 2);
+
+      // Smooth scroll exactly to the target, which aligns perfectly with grab/snap points
+      container.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
     }
   }, []);
 
@@ -160,19 +186,12 @@ export default function Specialists() {
     if (isHovered) return;
 
     const interval = setInterval(() => {
-      if (containerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-        // If we're at the end, loop back to start
-        if (scrollLeft + clientWidth >= scrollWidth - 20) {
-          containerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          containerRef.current.scrollBy({ left: 350, behavior: 'smooth' });
-        }
-      }
+      // Use the iOS-safe deterministic scroll logic for auto-pagination too
+      scroll('right');
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, [isHovered, scroll]);
 
   return (
     <section 
