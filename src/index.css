@@ -125,7 +125,6 @@ body {
     /* Using clip instead of hidden prevents iOS scroll jank */
     overflow-x: clip;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
     position: relative;
     height: auto;
     min-height: 100%;

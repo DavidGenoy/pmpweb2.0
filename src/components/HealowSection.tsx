@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { 
   Smartphone, 
   Download, 
@@ -73,70 +74,9 @@ const FaqAccordionItem: React.FC<{
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
-
-  useLayoutEffect(() => {
-    const wrapper = wrapperRef.current;
-    const content = contentRef.current;
-    if (!wrapper || !content) return;
-
-    if (isFirstRender.current) {
-      if (isActive) {
-        wrapper.style.height = "auto";
-      }
-      isFirstRender.current = false;
-      return;
-    }
-
-    if (isActive) {
-      // Measure natural height first
-      wrapper.style.height = "auto";
-      const targetHeight = content.offsetHeight;
-      
-      // Reset back to 0
-      wrapper.style.transitionDuration = "0ms";
-      wrapper.style.height = "0px";
-      
-      // Force layout repaint to ensure 0px is registered before animating
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      wrapper.offsetHeight;
-      
-      // Execute the fluid measured-height transition
-      requestAnimationFrame(() => {
-        wrapper.style.transitionDuration = "300ms";
-        wrapper.style.height = `${targetHeight}px`;
-      });
-
-      const handleTransitionEnd = (e: TransitionEvent) => {
-        if (e.propertyName === "height" && wrapper.style.height !== "0px") {
-          wrapper.style.height = "auto"; // Unlock height after opening
-        }
-      };
-      
-      wrapper.addEventListener("transitionend", handleTransitionEnd);
-      return () => wrapper.removeEventListener("transitionend", handleTransitionEnd);
-    } else {
-      // Lock current measured height initially so it can smoothly go to 0
-      wrapper.style.transitionDuration = "0ms";
-      wrapper.style.height = `${content.offsetHeight}px`;
-      
-      // Force repaint to register the exact start value
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      wrapper.offsetHeight;
-      
-      // Execute the fluid transition to 0px
-      requestAnimationFrame(() => {
-        wrapper.style.transitionDuration = "300ms";
-        wrapper.style.height = "0px";
-      });
-    }
-  }, [isActive]);
-
   return (
     <div 
-      className={`group rounded-2xl border transition-colors duration-300 transform-gpu ${
+      className={`group rounded-2xl border transition-colors duration-300 ${
         isActive 
           ? "bg-accent-500/5 border-accent-500/30" 
           : "bg-white/5 border-white/10 hover:border-white/20"
@@ -144,31 +84,32 @@ const FaqAccordionItem: React.FC<{
     >
       <button
         onClick={onClick}
-        className="w-full text-left p-6 flex justify-between items-center gap-4 group-active:scale-[0.99] transition-transform"
+        className="w-full text-left p-6 flex justify-between items-center gap-4 active:scale-[0.99] transition-transform"
       >
         <span className="text-lg font-medium text-white/90 group-hover:text-white transition-colors">{faq.question}</span>
-        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 transform-gpu ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
+        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
           <ChevronDown className={`w-4 h-4 ${isActive ? "text-primary-900" : "text-accent-400"}`} />
         </div>
       </button>
       
-      <div 
-        ref={wrapperRef}
-        className="overflow-hidden transition-[height] ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[height] transform-gpu"
-        style={{ height: "0px" }}
-      >
-        <div 
-          ref={contentRef}
-          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] transform-gpu ${
-            isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
-          }`}
-        >
-          {faq.answer}
-        </div>
-      </div>
+      <AnimatePresence initial={false}>
+        {isActive && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4">
+              {faq.answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
-}
+};
 
 export default function HealowSection() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
