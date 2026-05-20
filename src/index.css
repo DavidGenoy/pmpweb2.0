@@ -240,38 +240,6 @@ body {
   }
 }
 
-/* Touch Device Interactive States (Premium Feel) */
-@media (hover: none) {
-  /* Remove sticky hover */
-  .glass-card:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: none !important;
-  }
-  
-  button:hover:not(:disabled), .btn:hover:not(:disabled) {
-    transform: none;
-    box-shadow: none;
-  }
-
-  /* Add active (press) states for tactile feedback */
-  button:active:not(:disabled), .btn:active:not(:disabled), a:active {
-    transform: scale(0.98) !important;
-    opacity: 0.9;
-    transition: all 0.1s ease-out;
-  }
-  
-  .glass-card:active {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(2, 195, 154, 0.3);
-    transition: all 0.1s ease-out;
-  }
-  
-  /* Make sure links feel responsive */
-  .group\/link:active {
-    opacity: 0.7;
-  }
-}
 
 .glass-card:hover {
   @apply border-accent-500/20 bg-white/10;

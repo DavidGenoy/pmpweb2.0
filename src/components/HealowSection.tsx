@@ -68,15 +68,11 @@ const features = [
 // iOS-Safe Q&A accordion animation fix:
 // Uses numeric height measurement and requestAnimationFrame instead of pure CSS Grid
 // or Framer Motion height:auto which caused layout jank on iPhone.
-function FaqAccordionItem({
-  faq,
-  isActive,
-  onClick,
-}: {
+const FaqAccordionItem: React.FC<{
   faq: FAQItem;
   isActive: boolean;
   onClick: () => void;
-}) {
+}> = ({ faq, isActive, onClick }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
