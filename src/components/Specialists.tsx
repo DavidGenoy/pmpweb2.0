@@ -106,6 +106,7 @@ export default function Specialists() {
   const [modalSpecialty, setModalSpecialty] = useState("");
   
   const startPos = useRef({ x: 0, y: 0 });
+  const animationRef = useRef<number | null>(null);
   const { scrollXProgress } = useScroll({
     container: containerRef,
   });
@@ -145,6 +146,12 @@ export default function Specialists() {
       const container = containerRef.current;
       const { scrollLeft, clientWidth } = container;
       
+      // Cancel any existing custom animation properly
+      if (animationRef.current !== null) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+
       // iOS-safe deterministic pagination: navigate by specific card index
       const children = Array.from(container.children) as HTMLElement[];
       if (children.length === 0) return;
@@ -177,8 +184,41 @@ export default function Specialists() {
       const targetChild = children[targetIndex];
       const targetScrollLeft = targetChild.offsetLeft - (clientWidth / 2) + (targetChild.clientWidth / 2);
 
-      // Smooth scroll exactly to the target, which aligns perfectly with grab/snap points
-      container.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+      // Identify if the device is iOS
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      if (isIOS) {
+        // Custom smooth scroll animation for iOS to preserve premium ease without rigidly snapping
+        const startScrollLeft = scrollLeft;
+        const distanceToScroll = targetScrollLeft - startScrollLeft;
+        const startTime = performance.now();
+        const duration = 550; // ms timing tuned to feel like Android/desktop
+
+        // easeOutQuart for premium glide
+        const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+
+        const animateScroll = (currentTime: number) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          const easedProgress = easeOutQuart(progress);
+          // Only change scrollLeft when animating, bypassing native smooth scroll logic entirely
+          container.scrollLeft = startScrollLeft + distanceToScroll * easedProgress;
+
+          if (progress < 1) {
+            animationRef.current = requestAnimationFrame(animateScroll);
+          } else {
+            // Guarantee exact centering at the end
+            container.scrollLeft = targetScrollLeft;
+            animationRef.current = null;
+          }
+        };
+
+        animationRef.current = requestAnimationFrame(animateScroll);
+      } else {
+        // Smooth scroll exactly to the target for Android/Desktop (already works perfectly)
+        container.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+      }
     }
   }, []);
 
