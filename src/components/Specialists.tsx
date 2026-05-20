@@ -113,6 +113,15 @@ export default function Specialists() {
 
   // iOS/mobile-safe interaction handling: track drag distance to distinguish between swipe and tap
   const handleMouseDown = (e: MouseEvent | TouchEvent) => {
+    // Cancel animation if user manually touches/grabs the slider to prevent fighting the programmatic scroll
+    if (animationRef.current !== null) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+      if (containerRef.current) {
+        containerRef.current.style.scrollSnapType = '';
+        containerRef.current.style.scrollBehavior = '';
+      }
+    }
     const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
     startPos.current = { x: clientX, y: clientY };
@@ -192,16 +201,20 @@ export default function Specialists() {
         const startScrollLeft = scrollLeft;
         const distanceToScroll = targetScrollLeft - startScrollLeft;
         const startTime = performance.now();
-        const duration = 550; // ms timing tuned to feel like Android/desktop
+        const duration = 650; // ms timing tuned to glide like Android/desktop
 
-        // easeOutQuart for premium glide
-        const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+        // Temporarily disable native CSS scroll snapping and smooth behavior to avoid fighting JS animation
+        container.style.scrollSnapType = 'none';
+        container.style.scrollBehavior = 'auto';
+
+        // easeInOutCubic for a softer start and end glide
+        const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
         const animateScroll = (currentTime: number) => {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
           
-          const easedProgress = easeOutQuart(progress);
+          const easedProgress = easeInOutCubic(progress);
           // Only change scrollLeft when animating, bypassing native smooth scroll logic entirely
           container.scrollLeft = startScrollLeft + distanceToScroll * easedProgress;
 
@@ -210,6 +223,11 @@ export default function Specialists() {
           } else {
             // Guarantee exact centering at the end
             container.scrollLeft = targetScrollLeft;
+            
+            // Restore native snapping behavior
+            container.style.scrollSnapType = '';
+            container.style.scrollBehavior = '';
+            
             animationRef.current = null;
           }
         };
