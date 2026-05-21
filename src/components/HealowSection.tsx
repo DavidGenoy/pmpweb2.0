@@ -83,6 +83,13 @@ const FaqAccordionItem: React.FC<{
           ? "bg-accent-500/5 border-accent-500/30"
           : "bg-white/5 border-white/10 hover:border-white/20"
       }`}
+      // `contain: layout style` keeps the row's layout invalidation local —
+      // when the inner grid track interpolates from 0fr → 1fr, ancestors
+      // (and the heavy `blur-[120px]` siblings) don't get re-rasterized.
+      // `translateZ(0)` parks the item on the compositor on WebKit/macOS,
+      // where the same compositing is the difference between buttery and
+      // sub-frame jitter.
+      style={{ contain: 'layout style', transform: 'translateZ(0)' }}
     >
       <button
         onClick={onClick}
@@ -202,8 +209,19 @@ export default function HealowSection() {
   return (
     <section id="healow" className="relative py-24 md:py-32 overflow-hidden bg-primary-900">
       {/* Background Glows */}
-      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-accent-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-accent-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      {/* Background glows: pinned to their own GPU layer so the accordion's
+          layout changes below don't force WebKit/macOS to re-rasterize the
+          120px blur kernel every frame. `contain: paint` keeps paint scoped
+          to the element; `translateZ(0)` + `will-change: transform` keep it
+          on the compositor. */}
+      <div
+        className="absolute top-0 right-0 w-1/2 h-1/2 bg-accent-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"
+        style={{ transform: 'translate3d(50%, -50%, 0)', willChange: 'transform', contain: 'paint' }}
+      />
+      <div
+        className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-accent-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"
+        style={{ transform: 'translate3d(-50%, 50%, 0)', willChange: 'transform', contain: 'paint' }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Reduced mobile gap from 16 to 10 for tighter vertical stack */}
@@ -404,7 +422,10 @@ export default function HealowSection() {
         {/* Centered Portal Profile Block - Responsive margin */}
         <div className="mt-16 md:mt-24 reveal-up flex justify-center">
           <div className="w-full max-w-4xl p-8 md:p-14 text-center space-y-12 relative group">
-            <div className="absolute inset-0 bg-accent-500/10 blur-[140px] opacity-20 -z-10 group-hover:opacity-40 transition-opacity" />
+            <div
+              className="absolute inset-0 bg-accent-500/10 blur-[140px] opacity-20 -z-10 group-hover:opacity-40 transition-opacity"
+              style={{ transform: 'translateZ(0)', willChange: 'transform', contain: 'paint' }}
+            />
             
             <div className="space-y-6">
 
