@@ -1,25 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
-/* Tailwind v4 defaults the `hover:` variant to `@media (hover: hover)`, which
-   matches only when the device's PRIMARY input can hover. On touchscreen-capable
-   laptops (and iPads with a mouse) the primary input is reported as touch/coarse,
-   so `hover:` styles never apply on real mouse-over — yet the browser still
-   fires `:hover` briefly on a press, which is exactly the "hover only when I
-   click and hold" symptom. `any-hover: hover` matches when ANY connected input
-   device can hover (mouse on a touch laptop), and still doesn't match on
-   pure-touch devices, so phone tap behavior is preserved.
+/* Tailwind v4 defaults the `hover:` variant to `@media (hover: hover)`. On
+   several real-world setups (Safari on touchscreen-capable Macs, iPads with a
+   keyboard, browsers behind certain accessibility/privacy settings) both
+   `hover: hover` and `any-hover: hover` can report false even when a mouse or
+   trackpad is in use, which makes Tailwind's `hover:` utilities silently
+   stop applying on desktop. The symptom is the classic "hover only fires
+   when I click and hold" — the press triggers `:hover` for an instant, but
+   real mouse-over does nothing.
 
-   Only the base `hover:` variant is overridden. `group-hover` (and the
-   functional `group-hover/<name>` family) is left to Tailwind's default
-   generator so named groups like `group-hover/section` continue to compile. */
-@custom-variant hover {
-  @media (any-hover: hover) {
-    &:hover {
-      @slot;
-    }
-  }
-}
+   We override the variant to plain `&:hover` with no media query so desktop
+   hover is guaranteed to work in every browser. The trade-off is that a tap
+   on a pure-touch device briefly fires `:hover`, which reads as quick tap
+   feedback and disappears as soon as the finger lifts. */
+@custom-variant hover (&:hover);
 
 @theme {
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;

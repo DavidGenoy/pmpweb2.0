@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { 
   Smartphone, 
   Download, 
@@ -65,66 +65,17 @@ const features = [
   }
 ];
 
-// Safari-stable accordion item.
-// Drives the wrapper height imperatively from 0 → measured scrollHeight → auto
-// (and the reverse on close) instead of transitioning a fixed max-height range.
-// This avoids Safari's poor max-height interpolation and the layout thrashing
-// that made repeated open/close feel stuck and laggy. The static question text
-// has no transform/will-change/conflicting font-smoothing rules, so Safari does
-// not promote it to a composite layer and the "sideways wiggle" goes away.
+// Accordion built on CSS Grid `grid-template-rows: 0fr → 1fr` instead of
+// animating `height`. Safari reflows the whole subtree on every frame of a
+// height transition, which made repeated open/close feel laggy and jittery;
+// the grid-rows transition lets the browser interpolate the row track size
+// without forcing a content remeasure each frame, and there's no JS
+// measurement, no scrollHeight read, and no rAF dance for the close path.
 const FaqAccordionItem: React.FC<{
   faq: FAQItem;
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const didMountRef = useRef(false);
-
-  useLayoutEffect(() => {
-    const wrapper = wrapperRef.current;
-    const content = contentRef.current;
-    if (!wrapper || !content) return;
-
-    // First render: set the final state without animating.
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      wrapper.style.height = isActive ? "auto" : "0px";
-      return;
-    }
-
-    if (isActive) {
-      // OPEN: measure once, animate from current height to that target,
-      // then release to `auto` so the panel adapts if content reflows.
-      const target = content.scrollHeight;
-      wrapper.style.height = `${target}px`;
-
-      const onEnd = (e: TransitionEvent) => {
-        if (e.propertyName !== "height" || e.target !== wrapper) return;
-        wrapper.style.height = "auto";
-        wrapper.removeEventListener("transitionend", onEnd);
-      };
-      wrapper.addEventListener("transitionend", onEnd);
-      return () => wrapper.removeEventListener("transitionend", onEnd);
-    }
-
-    // CLOSE: pin the current pixel height (in case it's `auto`), then on the
-    // next frame transition to 0. Two rAFs guarantee the first value commits
-    // before the second one, so Safari actually animates the transition.
-    const current = wrapper.getBoundingClientRect().height;
-    wrapper.style.height = `${current}px`;
-    let raf2 = 0;
-    const raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => {
-        if (wrapperRef.current) wrapperRef.current.style.height = "0px";
-      });
-    });
-    return () => {
-      cancelAnimationFrame(raf1);
-      if (raf2) cancelAnimationFrame(raf2);
-    };
-  }, [isActive]);
-
   return (
     <div
       className={`group rounded-2xl border transition-colors duration-300 ${
@@ -151,21 +102,18 @@ const FaqAccordionItem: React.FC<{
       </button>
 
       <div
-        ref={wrapperRef}
         aria-hidden={!isActive}
-        style={{
-          height: 0,
-          overflow: "hidden",
-          transition: "height 320ms cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
+        className="grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ gridTemplateRows: isActive ? "1fr" : "0fr" }}
       >
-        <div
-          ref={contentRef}
-          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out ${
-            isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1 pointer-events-none"
-          }`}
-        >
-          {faq.answer}
+        <div className="overflow-hidden min-h-0">
+          <div
+            className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity] duration-200 ease-out ${
+              isActive ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            {faq.answer}
+          </div>
         </div>
       </div>
     </div>
