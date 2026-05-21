@@ -1,6 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
+/* Tailwind v4 defaults the `hover:` variant to `@media (hover: hover)`, which
+   matches only when the device's PRIMARY input can hover. On touchscreen-capable
+   laptops (and iPads with a mouse) the primary input is reported as touch/coarse,
+   so `hover:` styles never apply on real mouse-over — yet the browser still
+   fires `:hover` briefly on a press, which is exactly the "hover only when I
+   click and hold" symptom. `any-hover: hover` matches when ANY connected input
+   device can hover (mouse on a touch laptop), and still doesn't match on
+   pure-touch devices, so phone tap behavior is preserved.
+
+   Only the base `hover:` variant is overridden. `group-hover` (and the
+   functional `group-hover/<name>` family) is left to Tailwind's default
+   generator so named groups like `group-hover/section` continue to compile. */
+@custom-variant hover {
+  @media (any-hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
 @theme {
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;

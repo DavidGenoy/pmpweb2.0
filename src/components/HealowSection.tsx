@@ -65,55 +65,105 @@ const features = [
   }
 ];
 
-// Safari-Safe Q&A accordion animation fix:
-// Uses CSS Grid for height transition to avoid JS layout thrashing.
-// Eliminates React state/ref height measurements that cause Safari jank.
-// Removes transform-gpu from the outer wrapper to prevent Safari from caching
-// it as a composited bitmap, which causes "text wiggle" during height changes.
+// Safari-stable accordion item.
+// Drives the wrapper height imperatively from 0 → measured scrollHeight → auto
+// (and the reverse on close) instead of transitioning a fixed max-height range.
+// This avoids Safari's poor max-height interpolation and the layout thrashing
+// that made repeated open/close feel stuck and laggy. The static question text
+// has no transform/will-change/conflicting font-smoothing rules, so Safari does
+// not promote it to a composite layer and the "sideways wiggle" goes away.
 const FaqAccordionItem: React.FC<{
   faq: FAQItem;
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const didMountRef = useRef(false);
+
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+    const content = contentRef.current;
+    if (!wrapper || !content) return;
+
+    // First render: set the final state without animating.
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      wrapper.style.height = isActive ? "auto" : "0px";
+      return;
+    }
+
+    if (isActive) {
+      // OPEN: measure once, animate from current height to that target,
+      // then release to `auto` so the panel adapts if content reflows.
+      const target = content.scrollHeight;
+      wrapper.style.height = `${target}px`;
+
+      const onEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== "height" || e.target !== wrapper) return;
+        wrapper.style.height = "auto";
+        wrapper.removeEventListener("transitionend", onEnd);
+      };
+      wrapper.addEventListener("transitionend", onEnd);
+      return () => wrapper.removeEventListener("transitionend", onEnd);
+    }
+
+    // CLOSE: pin the current pixel height (in case it's `auto`), then on the
+    // next frame transition to 0. Two rAFs guarantee the first value commits
+    // before the second one, so Safari actually animates the transition.
+    const current = wrapper.getBoundingClientRect().height;
+    wrapper.style.height = `${current}px`;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        if (wrapperRef.current) wrapperRef.current.style.height = "0px";
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+    };
+  }, [isActive]);
+
   return (
-    <div 
-      className={`group rounded-2xl border transition-colors duration-300 subpixel-antialiased ${
-        isActive 
-          ? "bg-accent-500/5 border-accent-500/30" 
+    <div
+      className={`group rounded-2xl border transition-colors duration-300 ${
+        isActive
+          ? "bg-accent-500/5 border-accent-500/30"
           : "bg-white/5 border-white/10 hover:border-white/20"
       }`}
     >
       <button
         onClick={onClick}
-        // Removed active:scale-[0.99] and transition-transform because they trigger
-        // a composite layer change in Safari that causes font subpixel shifting/wiggling.
+        aria-expanded={isActive}
         className="w-full text-left p-6 flex justify-between items-center gap-4"
       >
-        <span 
-          className="text-lg font-medium text-white/90 group-hover:text-white transition-colors"
-          style={{ WebkitFontSmoothing: "antialiased", transform: "translateZ(0)" }}
-        >
+        <span className="text-lg font-medium text-white/90 group-hover:text-white transition-colors">
           {faq.question}
         </span>
-        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
+        <div
+          className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 ${
+            isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"
+          }`}
+        >
           <ChevronDown className={`w-4 h-4 ${isActive ? "text-primary-900" : "text-accent-400"}`} />
         </div>
       </button>
-      
-      {/* Safari-Safe Fluid Accordion using pure CSS max-height. 
-          No JS ResizeObserver loops, no CSS Grid 0fr bugs.
-          Will-change isolates the composite layer. */}
-      <div 
-        className={`overflow-hidden transition-[max-height] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[max-height] ${
-          isActive ? "max-h-[500px]" : "max-h-0"
-        }`}
+
+      <div
+        ref={wrapperRef}
         aria-hidden={!isActive}
+        style={{
+          height: 0,
+          overflow: "hidden",
+          transition: "height 320ms cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
       >
-        <div 
-          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out transform-gpu ${
-            isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+        <div
+          ref={contentRef}
+          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out ${
+            isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1 pointer-events-none"
           }`}
-          style={{ backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
         >
           {faq.answer}
         </div>
