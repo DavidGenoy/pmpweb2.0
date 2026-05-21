@@ -65,16 +65,70 @@ const features = [
   }
 ];
 
-// Safari-Safe Q&A accordion animation fix:
-// Uses CSS Grid for height transition to avoid JS layout thrashing.
-// Eliminates React state/ref height measurements that cause Safari jank.
-// Removes transform-gpu from the outer wrapper to prevent Safari from caching
-// it as a composited bitmap, which causes "text wiggle" during height changes.
+// Safari/WebKit-Safe Accordion Animation
+// 1. Avoids max-height, CSS Grid 0fr, or Framer Motion layout transitions which cause Safari jank.
+// 2. Uses single-measure `scrollHeight` and rAF to animate to precise pixel values.
+// 3. Removes active:scale/translateZ from sibling texts to prevent Safari subpixel wiggly fonts.
 const FaqAccordionItem: React.FC<{
   faq: FAQItem;
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    if (isFirstRender.current) {
+      if (isActive) {
+        wrapper.style.height = "auto";
+      }
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (isActive) {
+      wrapper.style.height = "auto";
+      const targetHeight = wrapper.scrollHeight;
+      
+      wrapper.style.transitionDuration = "0ms";
+      wrapper.style.height = "0px";
+      
+      // Force layout repaint
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      wrapper.offsetHeight;
+      
+      requestAnimationFrame(() => {
+        wrapper.style.transitionDuration = "300ms";
+        wrapper.style.height = `${targetHeight}px`;
+      });
+
+      const handleTransitionEnd = (e: TransitionEvent) => {
+        if (e.propertyName === "height" && wrapper.style.height !== "0px") {
+          wrapper.style.height = "auto";
+        }
+      };
+      
+      wrapper.addEventListener("transitionend", handleTransitionEnd);
+      return () => wrapper.removeEventListener("transitionend", handleTransitionEnd);
+    } else {
+      wrapper.style.transitionDuration = "0ms";
+      wrapper.style.height = `${wrapper.scrollHeight}px`;
+      
+      // Force layout repaint
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      wrapper.offsetHeight;
+      
+      requestAnimationFrame(() => {
+        wrapper.style.transitionDuration = "300ms";
+        wrapper.style.height = "0px";
+      });
+    }
+  }, [isActive]);
+
   return (
     <div 
       className={`group rounded-2xl border transition-colors duration-300 subpixel-antialiased ${
@@ -85,13 +139,11 @@ const FaqAccordionItem: React.FC<{
     >
       <button
         onClick={onClick}
-        // Removed active:scale-[0.99] and transition-transform because they trigger
-        // a composite layer change in Safari that causes font subpixel shifting/wiggling.
         className="w-full text-left p-6 flex justify-between items-center gap-4"
       >
         <span 
           className="text-lg font-medium text-white/90 group-hover:text-white transition-colors"
-          style={{ WebkitFontSmoothing: "antialiased", transform: "translateZ(0)" }}
+          style={{ WebkitFontSmoothing: "antialiased" }}
         >
           {faq.question}
         </span>
@@ -100,20 +152,18 @@ const FaqAccordionItem: React.FC<{
         </div>
       </button>
       
-      {/* Safari-Safe Fluid Accordion using pure CSS max-height. 
-          No JS ResizeObserver loops, no CSS Grid 0fr bugs.
-          Will-change isolates the composite layer. */}
       <div 
-        className={`overflow-hidden transition-[max-height] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[max-height] ${
-          isActive ? "max-h-[500px]" : "max-h-0"
-        }`}
+        ref={wrapperRef}
+        className="overflow-hidden transition-[height] ease-[cubic-bezier(0.25,1,0.5,1)]"
+        style={{ height: "0px" }}
         aria-hidden={!isActive}
       >
         <div 
-          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out transform-gpu ${
+          ref={contentRef}
+          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out ${
             isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
           }`}
-          style={{ backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
+          style={{ WebkitFontSmoothing: "antialiased" }}
         >
           {faq.answer}
         </div>
@@ -386,8 +436,8 @@ export default function HealowSection() {
               </p>
             </div>
 
-            {/* Q&A Accordion */}
-            <div className="reveal-up space-y-4">
+            {/* Q&A Accordion, removed reveal-up to prevent GSAP/transforms breaking Safari accordion layout */}
+            <div className="space-y-4">
               <h3 className="text-2xl font-serif text-white mb-4 lg:mb-6">Frequently Asked Questions</h3>
               <div className="space-y-4">
                 {faqs.map((faq, i) => (
