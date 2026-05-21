@@ -75,26 +75,9 @@ const FaqAccordionItem: React.FC<{
   isActive: boolean;
   onClick: () => void;
 }> = ({ faq, isActive, onClick }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState<number>(0);
-
-  useEffect(() => {
-    if (!contentRef.current) return;
-    
-    // ResizeObserver cleanly tracks exact pixel height without layout thrashing
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setContentHeight(entry.target.scrollHeight);
-      }
-    });
-    
-    resizeObserver.observe(contentRef.current);
-    return () => resizeObserver.disconnect();
-  }, []);
-
   return (
     <div 
-      className={`group rounded-2xl border transition-colors duration-300 ${
+      className={`group rounded-2xl border transition-colors duration-300 subpixel-antialiased ${
         isActive 
           ? "bg-accent-500/5 border-accent-500/30" 
           : "bg-white/5 border-white/10 hover:border-white/20"
@@ -102,26 +85,35 @@ const FaqAccordionItem: React.FC<{
     >
       <button
         onClick={onClick}
-        className="w-full text-left p-6 flex justify-between items-center gap-4 active:scale-[0.99] transition-transform"
+        // Removed active:scale-[0.99] and transition-transform because they trigger
+        // a composite layer change in Safari that causes font subpixel shifting/wiggling.
+        className="w-full text-left p-6 flex justify-between items-center gap-4"
       >
-        <span className="text-lg font-medium text-white/90 group-hover:text-white transition-colors">{faq.question}</span>
+        <span 
+          className="text-lg font-medium text-white/90 group-hover:text-white transition-colors"
+          style={{ WebkitFontSmoothing: "antialiased", transform: "translateZ(0)" }}
+        >
+          {faq.question}
+        </span>
         <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border border-white/10 transition-transform duration-300 ${isActive ? "bg-accent-500 border-accent-500 rotate-180" : "bg-white/5"}`}>
           <ChevronDown className={`w-4 h-4 ${isActive ? "text-primary-900" : "text-accent-400"}`} />
         </div>
       </button>
       
-      {/* Safari Fluid Accordion using explicitly tracked pixel height. 
-          Bypasses Grid 0fr Safari layout bugs and React micro-tick jank. */}
+      {/* Safari-Safe Fluid Accordion using pure CSS max-height. 
+          No JS ResizeObserver loops, no CSS Grid 0fr bugs.
+          Will-change isolates the composite layer. */}
       <div 
-        className="overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
-        style={{ height: isActive ? `${contentHeight}px` : "0px" }}
+        className={`overflow-hidden transition-[max-height] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[max-height] ${
+          isActive ? "max-h-[500px]" : "max-h-0"
+        }`}
         aria-hidden={!isActive}
       >
         <div 
-          ref={contentRef}
-          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out ${
+          className={`px-6 pb-6 text-white/60 leading-relaxed border-t border-white/10 pt-4 transition-[opacity,transform] duration-300 ease-out transform-gpu ${
             isActive ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
           }`}
+          style={{ backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
         >
           {faq.answer}
         </div>
