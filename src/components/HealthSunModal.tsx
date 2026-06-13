@@ -115,7 +115,7 @@ export default function HealthSunModal() {
               </h2>
               
               <p className="text-white/80 text-[12px] sm:text-base md:text-lg mb-3 sm:mb-8 shrink-0 max-w-lg leading-snug sm:leading-relaxed">
-                As of <strong>July 31st</strong>, Primary Medical Physicians will no longer accept HealthSun Health Plans.
+                As of <strong className="text-accent-400">July 31st</strong>, Primary Medical Physicians will no longer accept HealthSun Health Plans.
               </p>
 
               <div className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-6 mb-3 sm:mb-8 text-left space-y-2 sm:space-y-6 shrink-0">
