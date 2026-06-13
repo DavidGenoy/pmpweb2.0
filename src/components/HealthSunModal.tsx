@@ -77,85 +77,88 @@ export default function HealthSunModal() {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             // Clean modal sizing, tight on mobile, max-h limits on mobile for internal scrolling
-            className="relative w-full max-w-[600px] max-h-[85svh] md:max-h-[90vh] bg-primary-900 rounded-3xl sm:rounded-[2rem] shadow-2xl border border-white/10 flex flex-col z-10 shadow-[0_20px_60px_-15px_rgba(0,168,150,0.2)]"
+            className="relative w-full max-w-[600px] max-h-[calc(100dvh-3rem)] sm:max-h-[90vh] bg-primary-900 rounded-2xl sm:rounded-[2rem] shadow-2xl border border-white/10 flex flex-col z-10 shadow-[0_20px_60px_-15px_rgba(0,168,150,0.2)]"
           >
             {/* Close Button - positioned safely */}
             <button
               onClick={dismissModal}
-              className="absolute top-3 right-3 sm:top-5 sm:right-5 p-2 bg-primary-900 border border-white/20 hover:bg-white/10 rounded-full text-white/80 hover:text-white shadow-xl transition-all z-30 group"
+              className="absolute top-2 right-2 sm:top-5 sm:right-5 p-2 bg-primary-900 border border-white/20 hover:bg-white/10 rounded-full text-white/80 hover:text-white shadow-xl transition-all z-30 group"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
             </button>
 
             {/* Content area: flex-1, min-h-0, overflow-y-auto enables safe mobile internal scrolling */}
-            <div className="p-5 pb-6 sm:p-8 md:p-10 flex flex-col flex-1 min-h-0 overflow-y-auto overscroll-contain items-center text-center">
+            <div 
+              className="p-4 pb-5 sm:p-8 md:p-10 flex flex-col flex-1 min-h-0 overflow-y-auto overscroll-contain items-center text-center"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
               
-              {/* HealthSun Logo - Background card removed for native integration */}
-              <div className="w-24 sm:w-36 md:w-44 mb-3 sm:mb-6 shrink-0 relative flex justify-center items-center">
-                <div className="absolute inset-0 bg-white/10 blur-[15px] sm:blur-[20px] rounded-full" />
+              {/* HealthSun Logo - Safari-safe contrast glow */}
+              <div className="w-20 sm:w-36 md:w-44 mb-2 sm:mb-6 shrink-0 relative flex justify-center items-center py-2">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0.05)_50%,transparent_70%)] rounded-full pointer-events-none" />
                 <img 
                   src="https://nethingso.xyz/insurances/insurance-18-healthsun.webp"
                   alt="HealthSun Health Plans"
-                  className="w-full h-auto object-contain pointer-events-none drop-shadow-lg relative z-10" 
+                  className="w-full h-auto object-contain pointer-events-none drop-shadow-lg relative z-10 brightness-[1.1]" 
                 />
               </div>
 
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent-500/10 border border-accent-500/20 rounded-full mb-3 sm:mb-4 shrink-0">
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-accent-500/10 border border-accent-500/20 rounded-full mb-1 sm:mb-4 shrink-0">
                 <div className="w-1.5 h-1.5 rounded-full bg-accent-400" />
-                <span className="text-accent-400 text-[10px] sm:text-xs font-bold tracking-wide uppercase">Patient Notice</span>
+                <span className="text-accent-400 text-[9px] sm:text-[10px] md:text-xs font-bold tracking-wide uppercase">Patient Notice</span>
               </div>
               
-              <h2 id="healthsun-modal-title" className="text-lg sm:text-2xl md:text-3xl font-serif text-white mb-2 sm:mb-4 leading-tight shrink-0">
+              <h2 id="healthsun-modal-title" className="text-base sm:text-2xl md:text-3xl font-serif text-white mb-1.5 sm:mb-4 leading-tight shrink-0">
                 Important Notice for HealthSun Patients
               </h2>
               
-              <p className="text-white/80 text-[13px] sm:text-base md:text-lg mb-4 sm:mb-8 shrink-0 max-w-lg leading-snug sm:leading-relaxed">
+              <p className="text-white/80 text-[12px] sm:text-base md:text-lg mb-3 sm:mb-8 shrink-0 max-w-lg leading-snug sm:leading-relaxed">
                 As of <strong>July 31st</strong>, Primary Medical Physicians will no longer accept HealthSun Health Plans.
               </p>
 
-              <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 mb-4 sm:mb-8 text-left space-y-3 sm:space-y-6 shrink-0">
+              <div className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-6 mb-3 sm:mb-8 text-left space-y-2 sm:space-y-6 shrink-0">
                 <p className="text-white/70 text-[11px] sm:text-sm font-medium text-center mb-1 sm:mb-0">
                   For assistance with insurance options, please contact:
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
-                  <div className="flex flex-col items-center w-full py-3 sm:py-2">
-                    <span className="text-white font-medium text-[13px] sm:text-base mb-0.5 sm:mb-1">Sandy Parker</span>
-                    <span className="text-white/60 text-[11px] sm:text-xs mb-1.5 sm:mb-2">English Assistance</span>
-                    <a href="tel:9544107125" className="inline-flex items-center gap-1.5 text-accent-400 font-bold text-[13px] sm:text-base hover:text-accent-300 transition-colors">
-                      <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <div className="flex flex-col items-center w-full py-2 sm:py-2">
+                    <span className="text-white font-medium text-[12px] sm:text-base mb-0.5">Sandy Parker</span>
+                    <span className="text-white/60 text-[10px] sm:text-xs mb-1 sm:mb-2">English Assistance</span>
+                    <a href="tel:9544107125" className="inline-flex items-center gap-1 text-accent-400 font-bold text-[12px] sm:text-base hover:text-accent-300 transition-colors">
+                      <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
                       (954) 410-7125
                     </a>
                   </div>
                   
-                  <div className="flex flex-col items-center w-full py-3 sm:py-2">
-                    <span className="text-white font-medium text-[13px] sm:text-base mb-0.5 sm:mb-1">Lila Estrabridis</span>
-                    <span className="text-white/60 text-[11px] sm:text-xs mb-1.5 sm:mb-2">Spanish Assistance</span>
-                    <a href="tel:5617040508" className="inline-flex items-center gap-1.5 text-accent-400 font-bold text-[13px] sm:text-base hover:text-accent-300 transition-colors">
-                      <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <div className="flex flex-col items-center w-full py-2 sm:py-2">
+                    <span className="text-white font-medium text-[12px] sm:text-base mb-0.5">Lila Estrabridis</span>
+                    <span className="text-white/60 text-[10px] sm:text-xs mb-1 sm:mb-2">Spanish Assistance</span>
+                    <a href="tel:5617040508" className="inline-flex items-center gap-1 text-accent-400 font-bold text-[12px] sm:text-base hover:text-accent-300 transition-colors">
+                      <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
                       (561) 704-0508
                     </a>
                   </div>
                 </div>
               </div>
               
-              <div className="w-full mb-4 sm:mb-8 shrink-0">
-                <p className="text-white/70 text-[11px] sm:text-sm mb-1.5 sm:mb-2">You may also contact our office directly at:</p>
-                <a href="tel:9543999014" className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] sm:text-base hover:text-accent-400 transition-colors">
+              <div className="w-full mb-3 sm:mb-8 shrink-0">
+                <p className="text-white/70 text-[10px] sm:text-sm mb-1 sm:mb-2">You may also contact our office directly at:</p>
+                <a href="tel:9543999014" className="inline-flex items-center gap-1.5 text-white font-bold text-[12px] sm:text-base hover:text-accent-400 transition-colors">
                   <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent-500" />
                   (954) 399-9014
                 </a>
               </div>
 
-              <p className="text-white/90 font-serif text-[15px] sm:text-xl shrink-0 italic">
+              <p className="text-white/90 font-serif text-[13px] sm:text-xl shrink-0 italic">
                 Thank you for your trust in our care.
               </p>
 
-              <div className="mt-5 sm:mt-8 shrink-0 w-full flex justify-center">
+              <div className="mt-4 sm:mt-8 shrink-0 w-full flex justify-center">
                 <button
                   onClick={dismissModal}
-                  className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-accent-500 text-primary-900 text-sm font-bold hover:bg-accent-400 transition-all shadow-[0_10px_30px_rgba(0,168,150,0.3)] hover:-translate-y-0.5"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 rounded-full bg-accent-500 text-primary-900 text-[13px] sm:text-sm font-bold hover:bg-accent-400 transition-all shadow-[0_10px_30px_rgba(0,168,150,0.3)] hover:-translate-y-0.5"
                 >
                   I Understand
                 </button>
