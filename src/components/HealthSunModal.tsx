@@ -94,14 +94,15 @@ export default function HealthSunModal() {
               style={{ WebkitOverflowScrolling: 'touch' }}
             >
               
-              {/* HealthSun Logo - Safari-safe contrast glow */}
-              <div className="w-20 sm:w-36 md:w-44 mb-2 sm:mb-6 shrink-0 relative flex justify-center items-center py-2">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0.05)_50%,transparent_70%)] rounded-full pointer-events-none" />
-                <img 
-                  src="https://nethingso.xyz/insurances/insurance-18-healthsun.webp"
-                  alt="HealthSun Health Plans"
-                  className="w-full h-auto object-contain pointer-events-none drop-shadow-lg relative z-10 brightness-[1.1]" 
-                />
+              {/* HealthSun Logo - Premium semi-transparent light pill for contrast */}
+              <div className="mb-3 sm:mb-6 shrink-0 flex justify-center items-center">
+                <div className="bg-white/85 rounded-full px-4 py-2 sm:px-6 sm:py-3 border border-white/20 shadow-sm backdrop-blur-sm">
+                  <img 
+                    src="https://nethingso.xyz/insurances/insurance-18-healthsun.webp"
+                    alt="HealthSun Health Plans"
+                    className="w-24 sm:w-36 md:w-40 h-auto object-contain pointer-events-none" 
+                  />
+                </div>
               </div>
 
               <div className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-accent-500/10 border border-accent-500/20 rounded-full mb-1 sm:mb-4 shrink-0">
