@@ -311,7 +311,7 @@ export default function HealowSection() {
                       <span>
                         Search for our practice using our code: 
                         <span className="inline-block ml-2 px-3 py-1 rounded bg-accent-500 text-primary-900 font-mono font-bold text-lg shadow-[0_0_20px_rgba(0,168,150,0.4)]">
-                          ACFDCF
+                          ACFDCD
                         </span>
                       </span>
                     )
