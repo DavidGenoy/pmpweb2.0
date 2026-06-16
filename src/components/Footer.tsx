@@ -60,7 +60,7 @@ export default function Footer() {
             </div>
             <p className="text-white/70 leading-relaxed text-sm">
               Providing comprehensive, compassionate primary care to the Broward
-              and Dade County community through our 15 expert providers across 7
+              and Dade County community through our 14 expert providers across 7
               convenient locations.
             </p>
             <div className="flex items-center gap-4">

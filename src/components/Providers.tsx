@@ -68,13 +68,6 @@ const allProviders = [
     bookingUrl: "https://healow.com/apps/provider/joseph-mascenik-2878871",
   },
   {
-    name: "Yordy Brito",
-    degree: "FNP",
-    specialty: "Family Practice",
-    image: "https://nethingso.xyz/providers/brito_resized.webp",
-    bookingUrl: "https://healow.com/apps/provider/yordy-britoaguila-3188588",
-  },
-  {
     name: "Carolina Raudez",
     degree: "APRN, FNP-BC",
     specialty: "Family Practice",
@@ -126,7 +119,7 @@ export default function Providers() {
               Meet Our Team
             </h2>
             <h3 className="text-4xl md:text-5xl font-serif font-medium text-white mb-6">
-              Book appointments with any of our 15 Expert Providers
+              Book appointments with any of our 14 Expert Providers
             </h3>
             <p className="text-lg text-white/60 reveal-text-scrub">
               Our diverse team of board-certified physicians, nurse practitioners, 

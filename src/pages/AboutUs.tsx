@@ -37,7 +37,7 @@ export default function AboutUs() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24 reveal-stagger">
             <div className="space-y-2">
-              <span className="text-6xl md:text-8xl font-serif font-medium text-accent-500">15</span>
+              <span className="text-6xl md:text-8xl font-serif font-medium text-accent-500">14</span>
               <p className="text-sm font-bold tracking-widest text-white/40 uppercase">Expert Providers</p>
               <p className="text-white/60 text-sm leading-relaxed">A multidisciplinary team of dedicated medical professionals.</p>
             </div>
