@@ -124,7 +124,7 @@ export default function Hero() {
             </div>
 
             {/* Footer / Socials */}
-            <div className="mt-8 pt-6 border-t border-white/10">
+            <div className="mt-8 pt-6">
               <p className="text-sm font-medium text-white mb-3">Patient Testimonials</p>
               <div className="flex flex-row items-center justify-between w-full mt-3">
                 <a href="https://g.page/r/CZYx5q8wKJTDEAE/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 sm:gap-3 group/review bg-white/5 hover:bg-white/10 px-3 sm:px-4 py-2 rounded-full transition-all border border-white/5 hover:border-white/20 shrink-0">
