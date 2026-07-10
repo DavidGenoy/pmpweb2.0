@@ -112,16 +112,13 @@ export default function Hero() {
                 <div className="space-y-4 text-white/80 ml-2">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-white/10 pb-3 hover:border-accent-500/50 hover:text-accent-400 transition-colors gap-1 sm:gap-4">
                     <span className="font-medium uppercase tracking-wider text-xs sm:text-sm text-white/60 whitespace-nowrap">Monday - Friday</span>
-                    <span className="font-medium text-sm sm:text-base whitespace-nowrap">8:00 AM – 6:00 PM</span>
+                    <span className="font-medium text-sm sm:text-base whitespace-nowrap">8:00 AM – 5:00 PM</span>
                   </div>
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-white/10 pb-3 hover:border-accent-500/50 hover:text-accent-400 transition-colors gap-1 sm:gap-4">
                     <span className="font-medium uppercase tracking-wider text-xs sm:text-sm text-white/60 whitespace-nowrap">Saturday</span>
                     <span className="font-medium text-sm sm:text-base whitespace-nowrap">8:30 AM – 1:00 PM</span>
                   </div>
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center pb-2 hover:text-accent-400 transition-colors gap-1 sm:gap-4">
-                    <span className="font-medium uppercase tracking-wider text-xs sm:text-sm text-white/60 whitespace-nowrap">Sunday</span>
-                    <span className="font-medium text-sm sm:text-base whitespace-nowrap">9:00 AM – 4:00 PM</span>
-                  </div>
+                  
                 </div>
               </div>
             </div>
