@@ -18,7 +18,6 @@ const logos = [
   "https://nethingso.xyz/insurances/insurance-15-united.webp",
   "https://nethingso.xyz/insurances/insurance-16-devoted.webp",
   "https://nethingso.xyz/insurances/insurance-17-preferred-care-network.webp",
-  "https://nethingso.xyz/insurances/insurance-18-healthsun.webp",
 ];
 
 export default function Insurances() {

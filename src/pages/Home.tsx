@@ -69,7 +69,7 @@ export default function Home() {
       <HealowSection />
       <Testimonials />
       {/* <MammographyModal /> Temporarily disabled for HealthSun Notice */}
-      <HealthSunModal />
+     {/* <HealthSunModal Temporarily disabled for timeline ended />*/}
     </main>
   );
 }
