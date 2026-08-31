@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, HeartPulse, Activity, ShieldCheck, Stethoscop
 
 export default function EvexiasService() {
   useEffect(() => {
-    document.title = "Dr. Issa Moises | EVEXIAS Hormone Pellet Therapy | Primary Medical Physicians";
+    document.title = "Dr. Moises Issa | EVEXIAS Hormone Pellet Therapy | Primary Medical Physicians";
     
     // Set meta description
     let metaDescription = document.querySelector('meta[name="description"]');
@@ -13,7 +13,7 @@ export default function EvexiasService() {
       metaDescription.setAttribute('name', 'description');
       document.head.appendChild(metaDescription);
     }
-    metaDescription.setAttribute('content', 'Explore EvexiPEL hormone pellet therapy with Dr. Issa Moises at Primary Medical Physicians in South Florida. Learn about hormone optimization for men and women.');
+    metaDescription.setAttribute('content', 'Explore EvexiPEL hormone pellet therapy with Dr. Moises Issa at Primary Medical Physicians in South Florida, in partnership with Liquid V Mobile. Learn about hormone optimization.');
 
     // Set canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -28,15 +28,23 @@ export default function EvexiasService() {
     const schemaData = {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "EVEXIAS Hormone Pellet Therapy with Dr. Issa Moises",
-      "description": "Explore EvexiPEL hormone pellet therapy with Dr. Issa Moises at Primary Medical Physicians in South Florida. Learn about hormone optimization for men and women.",
+      "name": "EVEXIAS Hormone Pellet Therapy with Dr. Moises Issa",
+      "description": "Explore EvexiPEL hormone pellet therapy with Dr. Moises Issa at Primary Medical Physicians in South Florida, in partnership with Liquid V Mobile.",
       "url": "https://primarymedicalphysicians.com/services/evexias-hormone-pellet-therapy",
       "provider": {
         "@type": "MedicalBusiness",
         "name": "Primary Medical Physicians",
         "url": "https://primarymedicalphysicians.com"
       },
-      "specialty": "Hormone Optimization",
+      "about": {
+        "@type": "Physician",
+        "name": "Dr. Moises Issa"
+      },
+      "mentions": {
+        "@type": "Organization",
+        "name": "Liquid V Mobile",
+        "url": "https://liquidvmobile.com/"
+      },
       "mainEntity": {
         "@type": "MedicalSpecialty",
         "name": "Hormone Pellet Therapy",
@@ -64,24 +72,20 @@ export default function EvexiasService() {
 
   const faqs = [
     {
-      q: "Does Dr. Issa Moises offer EVEXIAS hormone pellet therapy?",
-      a: "Yes, Dr. Issa Moises offers consultations for EVEXIAS hormone pellet therapy at Primary Medical Physicians in South Florida, evaluating whether this treatment aligns with your specific health needs."
+      q: "Does Dr. Moises Issa offer EVEXIAS hormone pellet therapy?",
+      a: "Yes, Dr. Moises Issa offers consultations for EVEXIAS hormone pellet therapy at Primary Medical Physicians in South Florida, evaluating whether this treatment aligns with your specific health needs."
     },
     {
       q: "What is EvexiPEL hormone pellet therapy?",
       a: "EvexiPEL is a form of bioidentical hormone replacement therapy (BHRT) that uses small, custom-compounded pellets inserted under the skin. These pellets are designed to release a steady stream of hormones over time."
     },
     {
-      q: "What is hormone optimization?",
-      a: "Hormone optimization involves evaluating your current hormone levels through lab testing and medical history, and developing a tailored plan—which may include therapies like EvexiPEL—to help balance those levels appropriately."
+      q: "What is Liquid V Mobile's relationship to EVEXIAS / EvexiPEL hormone therapy?",
+      a: "Primary Medical Physicians works in partnership with Liquid V Mobile to provide additional information and access regarding EVEXIAS and EvexiPEL hormone therapy for our patients."
     },
     {
-      q: "Is hormone pellet therapy available for men?",
-      a: "Yes, hormone optimization and pellet therapy are available for men. Eligibility and potential benefits depend on individual symptoms and lab results, which a physician can determine during a consultation."
-    },
-    {
-      q: "Is hormone pellet therapy available for women?",
-      a: "Yes, women experiencing hormonal imbalances may be evaluated for hormone pellet therapy. A thorough medical history and testing are required to determine if it is a suitable option."
+      q: "Can men and women discuss hormone optimization with Dr. Moises Issa?",
+      a: "Yes. Both men and women experiencing symptoms of hormonal imbalance can schedule a consultation with Dr. Moises Issa. Eligibility and potential benefits depend on individual symptoms and lab results, which the physician will determine."
     },
     {
       q: "Do I need blood tests before hormone therapy?",
@@ -93,10 +97,10 @@ export default function EvexiasService() {
     },
     {
       q: "Where can I receive EVEXIAS pellet therapy in South Florida?",
-      a: "You can schedule a consultation with Dr. Issa Moises at Primary Medical Physicians, which operates multiple convenient locations across South Florida."
+      a: "You can schedule a consultation with Dr. Moises Issa at Primary Medical Physicians, which operates multiple convenient locations across South Florida."
     },
     {
-      q: "How can I schedule a consultation with Dr. Issa Moises?",
+      q: "How can I schedule a consultation with Dr. Moises Issa?",
       a: "You can book an appointment by calling our office or using our online scheduling portal to discuss your symptoms and explore hormone optimization options."
     }
   ];
@@ -113,10 +117,10 @@ export default function EvexiasService() {
           </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium mb-6 reveal-up leading-tight">
             EVEXIAS Hormone Pellet Therapy <br />
-            <span className="text-accent-400 italic">with Dr. Issa Moises</span>
+            <span className="text-accent-400 italic">with Dr. Moises Issa</span>
           </h1>
           <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 leading-relaxed reveal-up" style={{ animationDelay: '0.1s' }}>
-            Discover if EvexiPEL bioidentical hormone replacement therapy is right for you. Dr. Issa Moises at Primary Medical Physicians provides comprehensive evaluations for personalized hormone optimization in South Florida.
+            Discover if EvexiPEL bioidentical hormone replacement therapy is right for you. Dr. Moises Issa at Primary Medical Physicians provides comprehensive evaluations for personalized hormone optimization in South Florida, in partnership with Liquid V Mobile.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6 reveal-up" style={{ animationDelay: '0.2s' }}>
             <a
@@ -173,7 +177,7 @@ export default function EvexiasService() {
         </div>
       </section>
 
-      {/* Dr. Issa Moises Section */}
+      {/* Dr. Moises Issa Section */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-12 items-center bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 reveal-up">
@@ -181,11 +185,12 @@ export default function EvexiasService() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/20 relative group">
                 <img 
                   src="https://nethingso.xyz/providers/issa_resized.webp" 
-                  alt="Dr. Issa Moises, EVEXIAS provider at Primary Medical Physicians" 
+                  alt="Dr. Moises Issa, EVEXIAS provider at Primary Medical Physicians" 
                   className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-6 left-6 right-6">
+                  <p className="text-white text-xl font-serif font-medium mb-1 drop-shadow-sm">Moises Issa</p>
                   <p className="text-accent-400 font-bold mb-1">M.D., F.A.C.S.G.</p>
                   <p className="text-white text-sm">Internal Medicine - Geriatrics</p>
                 </div>
@@ -193,14 +198,14 @@ export default function EvexiasService() {
             </div>
             <div className="w-full md:w-2/3">
               <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">
-                Consult with <span className="text-accent-400 italic">Dr. Issa Moises</span>
+                Consult with <span className="text-accent-400 italic">Dr. Moises Issa</span>
               </h2>
               <div className="space-y-6 text-lg text-white/70 leading-relaxed mb-8">
                 <p>
-                  As part of the dedicated medical team at Primary Medical Physicians, Dr. Issa Moises provides comprehensive evaluations for patients exploring hormone optimization. With extensive experience in internal medicine, Dr. Moises understands the complex role hormones play in overall health.
+                  As part of the dedicated medical team at Primary Medical Physicians, Dr. Moises Issa provides comprehensive evaluations for patients exploring hormone optimization. With extensive experience in internal medicine, Dr. Moises Issa understands the complex role hormones play in overall health.
                 </p>
                 <p>
-                  Whether you are seeking answers for unexplained fatigue, mood changes, or metabolic concerns, Dr. Issa Moises approaches every patient with a thorough clinical perspective. If clinically appropriate, he offers EVEXIAS hormone pellet therapy as one potential pathway for treatment.
+                  Whether you are seeking answers for unexplained fatigue, mood changes, or metabolic concerns, Dr. Moises Issa approaches every patient with a thorough clinical perspective. If clinically appropriate, he offers EVEXIAS hormone pellet therapy as one potential pathway for treatment.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -210,10 +215,33 @@ export default function EvexiasService() {
                   rel="noreferrer"
                   className="px-6 py-3 bg-white/10 text-white rounded-full font-bold text-center hover:bg-white/20 transition-all border border-white/20"
                 >
-                  Book with Dr. Moises
+                  Book with Dr. Moises Issa
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Liquid V Mobile Partnership */}
+      <section className="py-16 bg-accent-500/5 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center reveal-up">
+            <h2 className="text-3xl md:text-4xl font-serif font-medium mb-6">
+              In Partnership with <span className="text-accent-400 italic">Liquid V Mobile</span>
+            </h2>
+            <p className="text-lg text-white/70 leading-relaxed mb-8">
+              Primary Medical Physicians works in partnership with Liquid V Mobile. Through this collaboration, patients can access additional information and resources related to EVEXIAS and EvexiPEL hormone therapy. Liquid V Mobile works alongside our practice to expand patient education and access to hormone optimization options.
+            </p>
+            <a
+              href="https://liquidvmobile.com/"
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 border border-accent-500/50 text-accent-400 rounded-full font-bold text-lg hover:bg-accent-500 hover:text-primary-950 transition-all"
+            >
+              Visit Liquid V Mobile
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </section>
@@ -254,7 +282,7 @@ export default function EvexiasService() {
               What to Expect: <span className="text-accent-400 italic">The Process</span>
             </h2>
             <p className="text-lg text-white/70">
-              Hormone therapy is a medical decision. Here is what a typical consultation journey looks like with Dr. Issa Moises.
+              Hormone therapy is a medical decision. Here is what a typical consultation journey looks like with Dr. Moises Issa.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
@@ -272,7 +300,7 @@ export default function EvexiasService() {
               { 
                 step: "03", 
                 title: "Evaluation & Treatment Plan", 
-                desc: "Dr. Moises reviews your labs. If appropriate, a customized EvexiPEL treatment plan is recommended." 
+                desc: "Dr. Moises Issa reviews your labs. If appropriate, a customized EvexiPEL treatment plan is recommended." 
               }
             ].map((item, i) => (
               <div key={i} className="relative p-8 rounded-3xl bg-white/5 border border-white/10">
@@ -315,18 +343,26 @@ export default function EvexiasService() {
             Take the Next Step Toward <br />
             <span className="text-accent-400 italic">Hormone Optimization</span>
           </h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <a
               href={evexiasLink}
               target="_blank"
               rel="sponsored noopener noreferrer"
-              className="px-10 py-4 bg-accent-500 text-primary-950 rounded-full font-bold text-lg hover:bg-accent-400 transition-all hover:scale-105 shadow-xl w-full sm:w-auto"
+              className="px-8 py-4 bg-accent-500 text-primary-950 rounded-full font-bold text-lg hover:bg-accent-400 transition-all hover:scale-105 shadow-xl w-full sm:w-auto"
             >
               Learn More About EVEXIAS
             </a>
+            <a
+              href="https://liquidvmobile.com/"
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-bold text-lg hover:bg-white/20 transition-all w-full sm:w-auto"
+            >
+              Visit Liquid V Mobile
+            </a>
             <Link
               to="/#contact"
-              className="px-10 py-4 border border-white/20 rounded-full font-bold text-lg hover:bg-white/10 transition-all w-full sm:w-auto"
+              className="px-8 py-4 border border-white/20 rounded-full font-bold text-lg hover:bg-white/10 transition-all w-full sm:w-auto"
             >
               Schedule Consultation
             </Link>
