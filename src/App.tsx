@@ -14,6 +14,7 @@ import Home from "./pages/Home";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
+import EvexiasService from "./pages/EvexiasService";
 import NotFound from "./pages/NotFound";
 
 function ScrollToTopOnPathChange() {
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/services/evexias-hormone-pellet-therapy" element={<EvexiasService />} />
           {/* Wildcard route for 404 Page Not Found */}
           <Route path="*" element={<NotFound />} />
         </Routes>
