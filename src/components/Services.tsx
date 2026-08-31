@@ -127,6 +127,7 @@ export default function Services() {
       description:
         "Personalized hormone replacement therapy using pellet technology for consistent and effective results.",
       icon: Dna,
+      externalHref:"https://primarymedicalphysicians.com/services/evexias-hormone-pellet-therapy",
     },
   ];
 
