@@ -107,75 +107,80 @@ export default function EvexiasService() {
 
   return (
     <main className="min-h-screen pt-32 pb-16">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden mb-24">
-        <div className="absolute inset-0 bg-accent-500/5" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-8 reveal-up">
-            <span className="w-2 h-2 rounded-full bg-accent-500 animate-pulse" />
-            <span className="text-sm font-medium tracking-wide uppercase text-white/80">Hormone Optimization</span>
+      {/* Combined Background Wrapper for Hero & Overview to soften transition */}
+      <div className="relative">
+        {/* Continuous background layer replacing the hard cut */}
+        <div className="absolute inset-0 bg-gradient-to-b from-accent-500/5 via-accent-500/[0.02] to-transparent pointer-events-none" />
+        
+        {/* Hero Section */}
+        <section className="relative overflow-hidden pt-8 pb-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-8 reveal-up">
+              <span className="w-2 h-2 rounded-full bg-accent-500 animate-pulse" />
+              <span className="text-sm font-medium tracking-wide uppercase text-white/80">Hormone Optimization</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium mb-6 reveal-up leading-tight">
+              EVEXIAS Hormone Pellet Therapy <br />
+              <span className="text-accent-400 italic">with Dr. Moises Issa</span>
+            </h1>
+            <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 leading-relaxed reveal-up" style={{ animationDelay: '0.1s' }}>
+              Discover if EvexiPEL bioidentical hormone replacement therapy is right for you. Dr. Moises Issa at Primary Medical Physicians provides comprehensive evaluations for personalized hormone optimization in South Florida, in partnership with Liquid V Mobile.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-6 reveal-up" style={{ animationDelay: '0.2s' }}>
+              <a
+                href={evexiasLink}
+                target="_blank"
+                rel="sponsored noopener noreferrer"
+                className="px-8 py-4 bg-accent-500 text-primary-950 rounded-full font-bold text-lg hover:bg-accent-400 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-accent-500/20 w-full sm:w-auto flex items-center justify-center gap-2"
+              >
+                Explore EvexiPEL Hormone Therapy
+                <ArrowRight className="w-5 h-5" />
+              </a>
+              <Link
+                to="/#contact"
+                className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-bold text-lg hover:bg-white/20 transition-all w-full sm:w-auto"
+              >
+                Schedule a Consultation
+              </Link>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium mb-6 reveal-up leading-tight">
-            EVEXIAS Hormone Pellet Therapy <br />
-            <span className="text-accent-400 italic">with Dr. Moises Issa</span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 leading-relaxed reveal-up" style={{ animationDelay: '0.1s' }}>
-            Discover if EvexiPEL bioidentical hormone replacement therapy is right for you. Dr. Moises Issa at Primary Medical Physicians provides comprehensive evaluations for personalized hormone optimization in South Florida, in partnership with Liquid V Mobile.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 reveal-up" style={{ animationDelay: '0.2s' }}>
-            <a
-              href={evexiasLink}
-              target="_blank"
-              rel="sponsored noopener noreferrer"
-              className="px-8 py-4 bg-accent-500 text-primary-950 rounded-full font-bold text-lg hover:bg-accent-400 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-accent-500/20 w-full sm:w-auto flex items-center justify-center gap-2"
-            >
-              Explore EvexiPEL Hormone Therapy
-              <ArrowRight className="w-5 h-5" />
-            </a>
-            <Link
-              to="/#contact"
-              className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-bold text-lg hover:bg-white/20 transition-all w-full sm:w-auto"
-            >
-              Schedule a Consultation
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* EVEXIAS & EvexiPEL Overview */}
-      <section className="py-16 bg-white/[0.02] border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="reveal-up">
-              <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">
-                What is <span className="text-accent-400 italic">EvexiPEL?</span>
-              </h2>
-              <div className="space-y-6 text-lg text-white/70 leading-relaxed">
-                <p>
-                  EvexiPEL is a specific method of bioidentical hormone replacement therapy (BHRT) developed by EVEXIAS Health Solutions. It utilizes small, custom-compounded pellets that are placed subcutaneously (under the skin).
-                </p>
-                <p>
-                  Unlike creams, patches, or pills that can cause fluctuating hormone levels, these pellets are designed to release a steady, consistent amount of hormones over a period of months. This approach aims to mimic the body's natural hormone delivery system.
-                </p>
+        {/* EVEXIAS & EvexiPEL Overview */}
+        <section className="relative py-16 border-b border-white/5">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="reveal-up">
+                <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">
+                  What is <span className="text-accent-400 italic">EvexiPEL?</span>
+                </h2>
+                <div className="space-y-6 text-lg text-white/70 leading-relaxed">
+                  <p>
+                    EvexiPEL is a specific method of bioidentical hormone replacement therapy (BHRT) developed by EVEXIAS Health Solutions. It utilizes small, custom-compounded pellets that are placed subcutaneously (under the skin).
+                  </p>
+                  <p>
+                    Unlike creams, patches, or pills that can cause fluctuating hormone levels, these pellets are designed to release a steady, consistent amount of hormones over a period of months. This approach aims to mimic the body's natural hormone delivery system.
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal-stagger">
+                {[
+                  { icon: Activity, title: "Consistent Delivery", desc: "Designed to release hormones steadily over time." },
+                  { icon: HeartPulse, title: "Bioidentical", desc: "Hormones structurally identical to those naturally produced." },
+                  { icon: ShieldCheck, title: "Medical Evaluation", desc: "Requires careful physician assessment and lab testing." },
+                  { icon: Stethoscope, title: "Personalized", desc: "Tailored to your specific clinical lab results and symptoms." }
+                ].map((item, i) => (
+                  <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.08] transition-colors group">
+                    <item.icon className="w-8 h-8 text-accent-500 mb-4 group-hover:scale-110 transition-transform" />
+                    <h4 className="text-lg font-serif font-medium mb-2">{item.title}</h4>
+                    <p className="text-sm text-white/50">{item.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal-stagger">
-              {[
-                { icon: Activity, title: "Consistent Delivery", desc: "Designed to release hormones steadily over time." },
-                { icon: HeartPulse, title: "Bioidentical", desc: "Hormones structurally identical to those naturally produced." },
-                { icon: ShieldCheck, title: "Medical Evaluation", desc: "Requires careful physician assessment and lab testing." },
-                { icon: Stethoscope, title: "Personalized", desc: "Tailored to your specific clinical lab results and symptoms." }
-              ].map((item, i) => (
-                <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.08] transition-colors group">
-                  <item.icon className="w-8 h-8 text-accent-500 mb-4 group-hover:scale-110 transition-transform" />
-                  <h4 className="text-lg font-serif font-medium mb-2">{item.title}</h4>
-                  <p className="text-sm text-white/50">{item.desc}</p>
-                </div>
-              ))}
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Dr. Moises Issa Section */}
       <section className="py-24">
