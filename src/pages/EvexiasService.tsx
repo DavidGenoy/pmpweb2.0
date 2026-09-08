@@ -202,21 +202,21 @@ export default function EvexiasService() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <p className="text-white text-xl font-serif font-medium mb-1 drop-shadow-sm">Moises Issa</p>
-                  <p className="text-accent-400 font-bold mb-1">M.D., F.A.C.S.G.</p>
-                  <p className="text-white text-sm">Internal Medicine - Geriatrics</p>
+                  <p className="text-accent-400 font-bold mb-1">MD</p>
+                  <p className="text-white text-sm">Internal Medicine</p>
                 </div>
               </div>
             </div>
             <div className="w-full md:w-2/3">
               <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">
-                Consult with <span className="text-accent-400 italic">Dr. Moises Issa M.D.</span>
+                Consult with <span className="text-accent-400 italic">Dr. Moises Issa, MD</span>
               </h2>
               <div className="space-y-6 text-lg text-white/70 leading-relaxed mb-8">
                 <p>
-                  As part of the dedicated medical team at Primary Medical Physicians, Dr. Moises Issa provides comprehensive evaluations for patients exploring hormone optimization. With extensive experience in internal medicine, Dr. Moises Issa understands the complex role hormones play in overall health.
+                  As part of the dedicated medical team at Primary Medical Physicians, <Link to="/providers/moises-issa-md" className="text-accent-400 hover:text-accent-300 underline underline-offset-4">Dr. Moises Issa, MD</Link> provides comprehensive evaluations for patients exploring hormone optimization. With extensive experience in internal medicine, Dr. Issa understands the complex role hormones play in overall health.
                 </p>
                 <p>
-                  Whether you are seeking answers for unexplained fatigue, mood changes, or metabolic concerns, Dr. Moises Issa approaches every patient with a thorough clinical perspective. If clinically appropriate, he offers EVEXIAS hormone pellet therapy as one potential pathway for treatment.
+                  Whether you are seeking answers for unexplained fatigue, mood changes, or metabolic concerns, Dr. Issa approaches every patient with a thorough clinical perspective. If clinically appropriate, he offers EVEXIAS hormone pellet therapy as one potential pathway for treatment.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">

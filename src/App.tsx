@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import ParticleBackground from "./components/ParticleBackground";
 import ScrollManager from "./components/ScrollManager";
 import Navbar from "./components/Navbar";
+import ProviderMoisesIssa from "./pages/ProviderMoisesIssa";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
@@ -48,6 +49,7 @@ export default function App() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/providers/moises-issa-md" element={<ProviderMoisesIssa />} />
           <Route path="/services/evexias-hormone-pellet-therapy" element={<EvexiasService />} />
           {/* Wildcard route for 404 Page Not Found */}
           <Route path="*" element={<NotFound />} />
