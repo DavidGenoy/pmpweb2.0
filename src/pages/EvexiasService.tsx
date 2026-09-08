@@ -195,14 +195,14 @@ export default function EvexiasService() {
             <div className="w-full md:w-1/3 shrink-0">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/20 relative group">
                 <img 
-                  src="https://nethingso.xyz/providers/issa-resized-hd.webp" 
+                  src="https://nethingso.xyz/providers/issa-profile.webp" 
                   alt="Dr. Moises Issa, EVEXIAS provider at Primary Medical Physicians" 
                   className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <p className="text-white text-xl font-serif font-medium mb-1 drop-shadow-sm">Moises Issa</p>
-                  <p className="text-accent-400 font-bold mb-1">MD F.A.C.S.G.</p>
+                  <p className="text-accent-400 font-bold mb-1">F.A.C.S.G. MD</p>
                   <p className="text-white text-sm">Internal Medicine</p>
                 </div>
               </div>

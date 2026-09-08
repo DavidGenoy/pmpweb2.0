@@ -116,7 +116,7 @@ export default function ProviderMoisesIssa() {
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
                     <p className="text-white font-serif text-2xl font-medium">Moises Issa</p>
-                    <p className="text-accent-400 font-medium text-sm tracking-wide">MD</p>
+                    <p className="text-accent-400 font-medium text-sm tracking-wide">F.A.C.S.G. MD</p>
                   </div>
                 </div>
               </div>
