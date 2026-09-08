@@ -92,6 +92,10 @@ export default function EvexiasService() {
       a: "Absolutely. Comprehensive lab testing is a crucial step to evaluate your current hormone levels and determine if hormone optimization is clinically appropriate for you."
     },
     {
+      q: "What are peptides?",
+      a: "Peptides are short chains of amino acids, the same building blocks that make up proteins. Many peptides occur naturally in the body and act as signaling molecules involved in normal physiological processes. Certain peptides are also used or studied in medicine for specific purposes. At Primary Medical Physicians, any discussion of peptide-based treatment begins with an individualized medical evaluation to determine whether a particular option is clinically appropriate."
+    },
+    {
       q: "Is hormone pellet therapy right for everyone?",
       a: "No. Hormone pellet therapy requires individualized medical evaluation. Your physician will review your symptoms, health history, and risks to decide if it is a medically sound option for you."
     },
@@ -191,7 +195,7 @@ export default function EvexiasService() {
             <div className="w-full md:w-1/3 shrink-0">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/20 relative group">
                 <img 
-                  src="https://nethingso.xyz/providers/issa_resized.webp" 
+                  src="https://nethingso.xyz/providers/issa-resized-hd.webp" 
                   alt="Dr. Moises Issa, EVEXIAS provider at Primary Medical Physicians" 
                   className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
@@ -307,7 +311,7 @@ export default function EvexiasService() {
               { 
                 step: "03", 
                 title: "Evaluation & Treatment Plan", 
-                desc: "Dr. Moises Issa reviews your labs. If appropriate, a customized EvexiPEL treatment plan is recommended." 
+                desc: "Dr. Moises Issa reviews your labs. If appropriate, a customized EvexiPEL treatment or peptide plan is recommended." 
               }
             ].map((item, i) => (
               <div key={i} className="relative p-8 rounded-3xl bg-white/5 border border-white/10">
