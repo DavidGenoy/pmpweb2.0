@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Star, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
@@ -9,8 +9,9 @@ const allProviders = [
     name: "Moises Issa",
     degree: "M.D.",
     specialty: "Internal Medicine",
-    image: "https://nethingso.xyz/providers/issa-resized-hd.webp",
-    bookingUrl: "/providers/moises-issa-md",
+    image: "https://nethingso.xyz/providers/issa_resized.webp",
+    bookingUrl: "https://healow.com/apps/provider/moises-issa-2847656",
+    profileUrl: "/providers/moises-issa-md",
   },
   {
     name: "William Pena",
@@ -108,6 +109,7 @@ const allProviders = [
 
 export default function Providers() {
   const [isExpanded, setIsExpanded] = useState(true);
+  const navigate = useNavigate();
   const initialCount = 5;
   const visibleProviders = isExpanded ? allProviders : allProviders.slice(0, initialCount);
 
@@ -167,10 +169,15 @@ export default function Providers() {
                 >
                   {/* provider-card mobile touch effect restoration: immediate green feedback on press */}
                   <div 
+                    onClick={() => {
+                      if (provider.profileUrl) {
+                        navigate(provider.profileUrl);
+                      }
+                    }}
                     onTouchStart={(e) => e.currentTarget.classList.add('is-pressed')}
                     onTouchEnd={(e) => e.currentTarget.classList.remove('is-pressed')}
                     onTouchCancel={(e) => e.currentTarget.classList.remove('is-pressed')}
-                    className="group/provider flex flex-row lg:flex-col items-stretch w-full h-full min-h-[190px] sm:min-h-[210px] lg:min-h-0 transition-all duration-300 max-lg:[&.is-pressed]:bg-[#02c39a]/10 max-lg:[&.is-pressed]:transition-none"
+                    className={`group/provider flex flex-row lg:flex-col items-stretch w-full h-full min-h-[190px] sm:min-h-[210px] lg:min-h-0 transition-all duration-300 max-lg:[&.is-pressed]:bg-[#02c39a]/10 max-lg:[&.is-pressed]:transition-none ${provider.profileUrl ? "cursor-pointer" : ""}`}
                   >
                     {/* Image Container: Edge-to-edge on mobile/tablet, original vertical on desktop */}
                     <div className="relative w-[35%] sm:w-[40%] lg:w-full lg:h-auto lg:aspect-[4/5] shrink-0 overflow-hidden reveal-scale">
@@ -200,29 +207,18 @@ export default function Providers() {
                       
                       {/* CTA Button: immediate button press feedback retained */}
                       <div className="mt-auto pt-2 lg:pt-6">
-                        {provider.bookingUrl.startsWith("/") ? (
-                          <Link 
-                            to={provider.bookingUrl}
-                            onTouchStart={(e) => { e.stopPropagation(); e.currentTarget.classList.add('is-pressed'); }}
-                            onTouchEnd={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
-                            onTouchCancel={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
-                            className="w-full bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-2 lg:py-3 rounded-lg lg:rounded-xl font-medium transition-all duration-300 text-sm inline-flex items-center justify-center active:bg-[#02c39a] active:text-primary-900 active:scale-[0.96] active:shadow-[0_0_20px_rgba(2,195,154,0.4)] active:border-[#02c39a] active:duration-0 border border-transparent touch-manipulation [&.is-pressed]:bg-[#02c39a] [&.is-pressed]:text-primary-900 [&.is-pressed]:scale-[0.96] [&.is-pressed]:shadow-[0_0_20px_rgba(2,195,154,0.4)] [&.is-pressed]:border-[#02c39a] [&.is-pressed]:duration-0"
-                          >
-                            View Profile
-                          </Link>
-                        ) : (
-                          <a 
-                            href={provider.bookingUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onTouchStart={(e) => { e.stopPropagation(); e.currentTarget.classList.add('is-pressed'); }}
-                            onTouchEnd={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
-                            onTouchCancel={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
-                            className="w-full bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-2 lg:py-3 rounded-lg lg:rounded-xl font-medium transition-all duration-300 text-sm inline-flex items-center justify-center active:bg-[#02c39a] active:text-primary-900 active:scale-[0.96] active:shadow-[0_0_20px_rgba(2,195,154,0.4)] active:border-[#02c39a] active:duration-0 border border-transparent touch-manipulation [&.is-pressed]:bg-[#02c39a] [&.is-pressed]:text-primary-900 [&.is-pressed]:scale-[0.96] [&.is-pressed]:shadow-[0_0_20px_rgba(2,195,154,0.4)] [&.is-pressed]:border-[#02c39a] [&.is-pressed]:duration-0"
-                          >
-                            Book Appointment
-                          </a>
-                        )}
+                        <a 
+                          href={provider.bookingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          onTouchStart={(e) => { e.stopPropagation(); e.currentTarget.classList.add('is-pressed'); }}
+                          onTouchEnd={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
+                          onTouchCancel={(e) => { e.stopPropagation(); e.currentTarget.classList.remove('is-pressed'); }}
+                          className="w-full bg-white/10 hover:bg-accent-500 hover:text-primary-900 text-white py-2 lg:py-3 rounded-lg lg:rounded-xl font-medium transition-all duration-300 text-sm inline-flex items-center justify-center active:bg-[#02c39a] active:text-primary-900 active:scale-[0.96] active:shadow-[0_0_20px_rgba(2,195,154,0.4)] active:border-[#02c39a] active:duration-0 border border-transparent touch-manipulation [&.is-pressed]:bg-[#02c39a] [&.is-pressed]:text-primary-900 [&.is-pressed]:scale-[0.96] [&.is-pressed]:shadow-[0_0_20px_rgba(2,195,154,0.4)] [&.is-pressed]:border-[#02c39a] [&.is-pressed]:duration-0"
+                        >
+                          Book Appointment
+                        </a>
                       </div>
                     </div>
                   </div>
