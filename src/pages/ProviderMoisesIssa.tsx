@@ -93,7 +93,7 @@ export default function ProviderMoisesIssa() {
     },
     {
       q: "Where did Dr. Moises Issa complete his medical training?",
-      a: "Dr. Issa earned his MD from Ross University and subsequently completed postgraduate medical training that included a Family Medicine internship at Prince George's Hospital Center and an Internal Medicine residency at Crozer Chester Medical Center."
+      a: "Dr. Issa completed his undergraduate studies at Florida State University, earning a Bachelor of Science in Pre-Medicine/Pre-Medical Studies after attending from 1988 to 1992. He then attended Ross University School of Medicine from 1992 to 1996, where he earned his Doctor of Medicine degree. He subsequently completed an Internal Medicine Residency Program at Temple University from 1998 to 2001."
     }
   ];
 
@@ -116,7 +116,7 @@ export default function ProviderMoisesIssa() {
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
                     <p className="text-white font-serif text-2xl font-medium">Moises Issa</p>
-                    <p className="text-accent-400 font-medium text-sm tracking-wide">F.A.C.S.G. MD</p>
+                    <p className="text-accent-400 font-medium text-sm tracking-wide">MD F.A.C.S.G.</p>
                   </div>
                 </div>
               </div>
@@ -135,9 +135,6 @@ export default function ProviderMoisesIssa() {
                   </span>
                   <span className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-md text-sm font-medium text-white/80">
                     Primary Medical Physicians
-                  </span>
-                  <span className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-md text-sm font-medium text-white/80">
-                    NPI 1558357780
                   </span>
                 </div>
                 <p className="text-lg text-white/80 leading-relaxed mb-10 max-w-3xl">
@@ -174,10 +171,10 @@ export default function ProviderMoisesIssa() {
                 </h2>
                 <div className="space-y-6 text-lg text-white/70 leading-relaxed">
                   <p>
-                    Dr. Moises Issa, MD, is an Internal Medicine physician at Primary Medical Physicians in South Florida, with a clinical focus on comprehensive adult primary care and the health needs of older adults. Licensed in Florida since 2001, Dr. Issa has built a career spanning primary care, chronic-disease management, clinical research, physician leadership, medical education and community service.
+                    Moises Issa, MD, is an Internal Medicine physician at Primary Medical Physicians in South Florida, with a clinical focus on comprehensive adult primary care and the health needs of older adults. Licensed in Florida since 2001, Dr. Issa has built a career spanning primary care, chronic-disease management, clinical research, physician leadership, medical education and community service.
                   </p>
                   <p>
-                    Dr. Issa earned a Bachelor of Science in Biology from Florida State University and his Doctor of Medicine degree from Ross University in 1997. He subsequently completed a Family Medicine internship at Prince George's Hospital Center in Maryland before completing his Internal Medicine residency at Crozer Chester Medical Center in Pennsylvania in 2001.
+                    Dr. Issa began his academic training at Florida State University, where he completed a Bachelor of Science in Pre-Medicine/Pre-Medical Studies from 1988 to 1992. He then attended Ross University School of Medicine from 1992 to 1996, earning his Doctor of Medicine degree. He continued his postgraduate medical training at Temple University, completing an Internal Medicine Residency Program from 1998 to 2001.
                   </p>
                   <p>
                     Today, Dr. Issa practices with Primary Medical Physicians in South Florida. His professional work includes Internal Medicine and long-term adult primary care, with particular attention to chronic conditions, preventive care, healthy aging and individualized care planning.
@@ -266,26 +263,21 @@ export default function ProviderMoisesIssa() {
                 <div className="space-y-6">
                   <div className="relative pl-8 border-l-2 border-white/10">
                     <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent-500 border-4 border-[#0a0a0a]" />
-                    <p className="font-medium text-lg">Crozer Chester Medical Center — Pennsylvania</p>
-                    <p className="text-accent-400">Internal Medicine Residency</p>
+                    <p className="font-medium text-lg">Temple University — Pennsylvania</p>
+                    <p className="text-accent-400">Internal Medicine Residency Program</p>
                     <p className="text-sm text-white/50 mt-1">1998–2001</p>
                   </div>
                   <div className="relative pl-8 border-l-2 border-white/10">
-                    <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white/20 border-4 border-[#0a0a0a]" />
-                    <p className="font-medium text-lg">Prince George's Hospital Center — Maryland</p>
-                    <p className="text-white/70">Family Medicine Internship</p>
-                    <p className="text-sm text-white/50 mt-1">1997–1998</p>
+                    <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent-500 border-4 border-[#0a0a0a]" />
+                    <p className="font-medium text-lg">Ross University School of Medicine</p>
+                    <p className="text-accent-400">Doctor of Medicine (MD), Medicine</p>
+                    <p className="text-sm text-white/50 mt-1">1992–1996</p>
                   </div>
                   <div className="relative pl-8 border-l-2 border-white/10">
-                    <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white/20 border-4 border-[#0a0a0a]" />
-                    <p className="font-medium text-lg">Ross University School of Medicine</p>
-                    <p className="text-white/70">Doctor of Medicine</p>
-                    <p className="text-sm text-white/50 mt-1">1997</p>
-                  </div>
-                  <div className="relative pl-8 border-l-2 border-transparent">
-                    <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white/20 border-4 border-[#0a0a0a]" />
+                    <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent-500 border-4 border-[#0a0a0a]" />
                     <p className="font-medium text-lg">Florida State University</p>
-                    <p className="text-white/70">Bachelor of Science in Biology</p>
+                    <p className="text-accent-400">Bachelor of Science (BS), Pre-Medicine/Pre-Medical Studies</p>
+                    <p className="text-sm text-white/50 mt-1">1988–1992</p>
                   </div>
                 </div>
               </div>
@@ -325,7 +317,7 @@ export default function ProviderMoisesIssa() {
                 <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
                   <h3 className="text-2xl font-serif font-medium mb-4">Clinical Research & Medical Education</h3>
                   <p className="text-white/70 leading-relaxed">
-                    Dr. Issa's professional activities extend into medical education and clinical research. Florida State University College of Medicine has listed him as a clinical preceptor, and ClinicalTrials.gov identifies Moises Issa as a principal investigator at Zenith Clinical Research in Hollywood, Florida, for clinical research activity.
+                    Dr. Issa's professional activities extend into medical education and clinical research. Florida State University College of Medicine has listed him as an assistant clinical professor, and ClinicalTrials.gov identifies Moises Issa as a principal investigator at Zenith Clinical Research in Hollywood, Florida, for clinical research activity.
                   </p>
                 </div>
                 <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
