@@ -76,7 +76,7 @@ export default function ProviderMoisesIssa() {
 
   const faqs = [
     {
-      q: "What type of doctor is Dr. Moises Issa?",
+      q: "What type of doctor is Moises Issa?",
       a: "Dr. Moises Issa is an Internal Medicine physician at Primary Medical Physicians in South Florida. His practice focuses on comprehensive adult primary care, chronic-condition management and care addressing many of the health needs associated with aging."
     },
     {
@@ -111,7 +111,7 @@ export default function ProviderMoisesIssa() {
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/20 relative group">
                   <img 
                     src="https://nethingso.xyz/providers/issa-resized-hd.webp" 
-                    alt="Dr. Moises Issa, MD, Internal Medicine physician at Primary Medical Physicians" 
+                    alt="Moises Issa, MD, Internal Medicine physician at Primary Medical Physicians" 
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
@@ -124,14 +124,14 @@ export default function ProviderMoisesIssa() {
               {/* Hero Content */}
               <div className="w-full lg:w-2/3 reveal-up" style={{ animationDelay: '0.1s' }}>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium mb-4 leading-tight">
-                  Dr. Moises Issa, MD
+                  Moises Issa, MD
                 </h1>
                 <p className="text-xl md:text-2xl text-accent-400 font-medium mb-6">
                   Internal Medicine | Geriatric-Focused Primary Care | Hormone Optimization
                 </p>
                 <div className="flex flex-wrap gap-3 mb-8">
                   <span className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-md text-sm font-medium text-white/80">
-                    Florida-Licensed Physician Since 2001
+                    Florida Licensed Physician Since 2001
                   </span>
                   <span className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-md text-sm font-medium text-white/80">
                     Primary Medical Physicians
