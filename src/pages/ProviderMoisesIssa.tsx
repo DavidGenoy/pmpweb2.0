@@ -314,18 +314,6 @@ export default function ProviderMoisesIssa() {
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <BriefcaseMedical className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
-                    <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">Florida Medical License</p>
-                    <p className="font-medium text-sm sm:text-base">ME81676</p>
-                    <p className="text-[11px] sm:text-xs text-white/40 mt-0.5 sm:mt-1">Status: Clear / Active</p>
-                  </div>
-                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <Award className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
-                    <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">NPI Number</p>
-                    <p className="font-medium text-sm sm:text-base">1558357780</p>
-                    <p className="text-[11px] sm:text-xs text-white/40 mt-0.5 sm:mt-1">Taxonomy: Internal Medicine</p>
-                  </div>
-                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
                     <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
                     <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">Practice</p>
                     <p className="font-medium text-sm sm:text-base">Primary Medical Physicians</p>
