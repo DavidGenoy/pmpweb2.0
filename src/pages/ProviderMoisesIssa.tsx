@@ -236,7 +236,7 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* About & Clinical Focus Section */}
-        <section className="pt-4 sm:pt-6 lg:pt-16 pb-12 sm:pb-14 lg:pb-16 border-b border-white/5 relative">
+        <section className="pt-6 sm:pt-6 lg:pt-16 pb-12 sm:pb-14 lg:pb-16 border-b border-white/5 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
               <div className="reveal-up">
