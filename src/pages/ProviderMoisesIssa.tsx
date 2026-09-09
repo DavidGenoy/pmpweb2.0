@@ -1,7 +1,55 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, CheckCircle2, Award, GraduationCap, Building2, Stethoscope, BriefcaseMedical, ChevronDown } from "lucide-react";
+import { ArrowRight, CheckCircle2, Award, Building2, Stethoscope, BriefcaseMedical, ChevronDown } from "lucide-react";
+
+function ScrollFadeText({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -20px 0px",
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-opacity duration-300 ease-out ${
+        isVisible ? "opacity-100" : "opacity-35"
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function ProviderMoisesIssa() {
   const [openFaqs, setOpenFaqs] = useState<number[]>([]);
@@ -112,7 +160,7 @@ export default function ProviderMoisesIssa() {
         <div className="absolute inset-0 bg-gradient-to-b from-accent-500/5 via-accent-500/[0.02] to-transparent pointer-events-none" />
         
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-8 pb-16">
+        <section className="relative overflow-hidden pt-6 sm:pt-8 pb-6 sm:pb-8 lg:pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Mobile / Tablet Header: Positioned above image */}
             <div className="lg:hidden text-center mb-6 sm:mb-8 reveal-up">
@@ -188,53 +236,63 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* About & Clinical Focus Section */}
-        <section className="py-16 border-b border-white/5 relative">
+        <section className="pt-4 sm:pt-6 lg:pt-16 pb-12 sm:pb-14 lg:pb-16 border-b border-white/5 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
               <div className="reveal-up">
-                <h2 className="text-3xl md:text-4xl font-serif text-center font-medium mb-10">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   About <span className="text-accent-400 italic">Dr. Moises Issa</span>
                 </h2>
-                <div className="space-y-6 text-lg text-white/70 leading-relaxed">
-                  <p>
-                    Moises Issa, MD, is an Internal Medicine physician at Primary Medical Physicians in South Florida, with a clinical focus on comprehensive adult primary care and the health needs of older adults. Licensed in Florida since 2001, Dr. Issa has built a career spanning primary care, chronic-disease management, clinical research, physician leadership, medical education and community service.
-                  </p>
-                  <p>
-                    Dr. Issa began his academic training at Florida State University, where he completed a Bachelor of Science in Pre-Medicine/Pre-Medical Studies from 1988 to 1992. He then attended Ross University School of Medicine from 1992 to 1996, earning his Doctor of Medicine degree. He continued his postgraduate medical training at Temple University, completing an Internal Medicine Residency Program from 1998 to 2001.
-                  </p>
-                  <p>
-                    Today, Dr. Issa practices with Primary Medical Physicians in South Florida. His professional work includes Internal Medicine and long-term adult primary care, with particular attention to chronic conditions, preventive care, healthy aging and individualized care planning.
-                  </p>
-                  <p>
-                    Dr. Issa's approach to patient care emphasizes understanding each patient's medical history, risk factors, long-term health goals and quality of life. Treatment decisions are based on individualized medical evaluation and informed discussion of available options, potential benefits, risks and alternatives.
-                  </p>
+                <div className="space-y-3.5 sm:space-y-4 lg:space-y-6 text-sm sm:text-base lg:text-lg text-white/70 leading-normal sm:leading-relaxed">
+                  <ScrollFadeText>
+                    <p>
+                      Moises Issa, MD, is an Internal Medicine physician at Primary Medical Physicians in South Florida, with a clinical focus on comprehensive adult primary care and the health needs of older adults. Licensed in Florida since 2001, Dr. Issa has built a career spanning primary care, chronic-disease management, clinical research, physician leadership, medical education and community service.
+                    </p>
+                  </ScrollFadeText>
+                  <ScrollFadeText>
+                    <p>
+                      Dr. Issa began his academic training at Florida State University, where he completed a Bachelor of Science in Pre-Medicine/Pre-Medical Studies from 1988 to 1992. He then attended Ross University School of Medicine from 1992 to 1996, earning his Doctor of Medicine degree. He continued his postgraduate medical training at Temple University, completing an Internal Medicine Residency Program from 1998 to 2001.
+                    </p>
+                  </ScrollFadeText>
+                  <ScrollFadeText>
+                    <p>
+                      Today, Dr. Issa practices with Primary Medical Physicians in South Florida. His professional work includes Internal Medicine and long-term adult primary care, with particular attention to chronic conditions, preventive care, healthy aging and individualized care planning.
+                    </p>
+                  </ScrollFadeText>
+                  <ScrollFadeText>
+                    <p>
+                      Dr. Issa's approach to patient care emphasizes understanding each patient's medical history, risk factors, long-term health goals and quality of life. Treatment decisions are based on individualized medical evaluation and informed discussion of available options, potential benefits, risks and alternatives.
+                    </p>
+                  </ScrollFadeText>
                 </div>
               </div>
 
               <div className="reveal-up" style={{ animationDelay: '0.1s' }}>
-                <h2 className="text-3xl md:text-4xl font-serif font-medium mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   Internal Medicine & Comprehensive Adult Care
                 </h2>
-                <div className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out mb-8">
-                  <Stethoscope className="w-10 h-10 text-accent-500 mb-6" />
-                  <p className="text-lg text-white/80 leading-relaxed mb-6">
-                    As an Internal Medicine physician, Dr. Issa provides comprehensive medical care for adults, including preventive care, chronic-condition management, medication management and long-term health planning. His practice also addresses many of the complex and evolving health needs that can accompany aging.
-                  </p>
-                  <ul className="space-y-4 text-white/70">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-accent-500 shrink-0" />
+                <div className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out mb-6 lg:mb-8">
+                  <Stethoscope className="hidden lg:block w-10 h-10 text-accent-500 mb-6" />
+                  <ScrollFadeText>
+                    <p className="text-sm sm:text-base lg:text-lg text-white/80 leading-normal sm:leading-relaxed mb-4 sm:mb-5 lg:mb-6">
+                      As an Internal Medicine physician, Dr. Issa provides comprehensive medical care for adults, including preventive care, chronic-condition management, medication management and long-term health planning. His practice also addresses many of the complex and evolving health needs that can accompany aging.
+                    </p>
+                  </ScrollFadeText>
+                  <ul className="space-y-3 sm:space-y-3.5 lg:space-y-4 text-xs sm:text-sm lg:text-base text-white/70">
+                    <li className="flex items-start gap-2.5 sm:gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent-500 shrink-0 mt-0.5" />
                       <span>Comprehensive adult primary care and health screenings</span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-accent-500 shrink-0" />
+                    <li className="flex items-start gap-2.5 sm:gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent-500 shrink-0 mt-0.5" />
                       <span>Management of chronic medical conditions</span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-accent-500 shrink-0" />
+                    <li className="flex items-start gap-2.5 sm:gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent-500 shrink-0 mt-0.5" />
                       <span>Geriatric-focused care and healthy aging strategies</span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-accent-500 shrink-0" />
+                    <li className="flex items-start gap-2.5 sm:gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent-500 shrink-0 mt-0.5" />
                       <span>Individualized preventive care and medication management</span>
                     </li>
                   </ul>
@@ -245,65 +303,65 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* Professional Profile & Education Section */}
-        <section className="py-16 border-b border-white/5 bg-black/20">
+        <section className="py-12 sm:py-14 lg:py-16 border-b border-white/5 bg-black/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
               
               {/* Credentials Grid */}
               <div className="reveal-up">
-                <h2 className="text-3xl md:text-4xl font-serif font-medium mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   Professional Profile
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <BriefcaseMedical className="w-6 h-6 text-accent-500 mb-3" />
-                    <p className="text-sm text-white/50 mb-1">Florida Medical License</p>
-                    <p className="font-medium">ME81676</p>
-                    <p className="text-xs text-white/40 mt-1">Status: Clear / Active</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                    <BriefcaseMedical className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
+                    <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">Florida Medical License</p>
+                    <p className="font-medium text-sm sm:text-base">ME81676</p>
+                    <p className="text-[11px] sm:text-xs text-white/40 mt-0.5 sm:mt-1">Status: Clear / Active</p>
                   </div>
-                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <Award className="w-6 h-6 text-accent-500 mb-3" />
-                    <p className="text-sm text-white/50 mb-1">NPI Number</p>
-                    <p className="font-medium">1558357780</p>
-                    <p className="text-xs text-white/40 mt-1">Taxonomy: Internal Medicine</p>
+                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                    <Award className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
+                    <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">NPI Number</p>
+                    <p className="font-medium text-sm sm:text-base">1558357780</p>
+                    <p className="text-[11px] sm:text-xs text-white/40 mt-0.5 sm:mt-1">Taxonomy: Internal Medicine</p>
                   </div>
-                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <Building2 className="w-6 h-6 text-accent-500 mb-3" />
-                    <p className="text-sm text-white/50 mb-1">Practice</p>
-                    <p className="font-medium">Primary Medical Physicians</p>
+                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                    <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
+                    <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">Practice</p>
+                    <p className="font-medium text-sm sm:text-base">Primary Medical Physicians</p>
                   </div>
-                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <CheckCircle2 className="w-6 h-6 text-accent-500 mb-3" />
-                    <p className="text-sm text-white/50 mb-1">Leadership</p>
-                    <p className="font-medium">Medical Director</p>
-                    <p className="text-xs text-white/40 mt-1">Liquid V LLC</p>
+                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                    <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-accent-500 mb-2 sm:mb-3" />
+                    <p className="text-xs sm:text-sm text-white/50 mb-0.5 sm:mb-1">Leadership</p>
+                    <p className="font-medium text-sm sm:text-base">Medical Director</p>
+                    <p className="text-[11px] sm:text-xs text-white/40 mt-0.5 sm:mt-1">Liquid V LLC</p>
                   </div>
                 </div>
               </div>
 
               {/* Education Timeline */}
               <div className="reveal-up" style={{ animationDelay: '0.1s' }}>
-                <h2 className="text-3xl md:text-4xl font-serif font-medium mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   Education & Medical Training
                 </h2>
-                <div className="space-y-6">
-                  <div className="relative pl-8 border-l-2 border-white/10">
+                <div className="space-y-4 sm:space-y-5 lg:space-y-6">
+                  <div className="relative pl-7 sm:pl-8 border-l-2 border-white/10">
                     <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent-500 border-4 border-[#0a0a0a]" />
-                    <p className="font-medium text-lg">Temple University — Pennsylvania</p>
-                    <p className="text-accent-400">Internal Medicine Residency Program</p>
-                    <p className="text-sm text-white/50 mt-1">1998–2001</p>
+                    <p className="font-medium text-base sm:text-lg">Temple University — Pennsylvania</p>
+                    <p className="text-xs sm:text-sm text-accent-400">Internal Medicine Residency Program</p>
+                    <p className="text-xs sm:text-sm text-white/50 mt-0.5 sm:mt-1">1998–2001</p>
                   </div>
-                  <div className="relative pl-8 border-l-2 border-white/10">
+                  <div className="relative pl-7 sm:pl-8 border-l-2 border-white/10">
                     <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent-500 border-4 border-[#0a0a0a]" />
-                    <p className="font-medium text-lg">Ross University School of Medicine</p>
-                    <p className="text-accent-400">Doctor of Medicine (MD), Medicine</p>
-                    <p className="text-sm text-white/50 mt-1">1992–1996</p>
+                    <p className="font-medium text-base sm:text-lg">Ross University School of Medicine</p>
+                    <p className="text-xs sm:text-sm text-accent-400">Doctor of Medicine (MD), Medicine</p>
+                    <p className="text-xs sm:text-sm text-white/50 mt-0.5 sm:mt-1">1992–1996</p>
                   </div>
-                  <div className="relative pl-8 border-l-2 border-white/10">
+                  <div className="relative pl-7 sm:pl-8 border-l-2 border-white/10">
                     <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-accent-500 border-4 border-[#0a0a0a]" />
-                    <p className="font-medium text-lg">Florida State University</p>
-                    <p className="text-accent-400">Bachelor of Science (BS), Pre-Medicine/Pre-Medical Studies</p>
-                    <p className="text-sm text-white/50 mt-1">1988–1992</p>
+                    <p className="font-medium text-base sm:text-lg">Florida State University</p>
+                    <p className="text-xs sm:text-sm text-accent-400">Bachelor of Science (BS), Pre-Medicine/Pre-Medical Studies</p>
+                    <p className="text-xs sm:text-sm text-white/50 mt-0.5 sm:mt-1">1988–1992</p>
                   </div>
                 </div>
               </div>
@@ -313,44 +371,52 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* Hormone Optimization & Liquid V Mobile */}
-        <section className="py-16 border-b border-white/5">
+        <section className="py-12 sm:py-14 lg:py-16 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <div className="reveal-up">
-                <h2 className="text-3xl md:text-4xl font-serif font-medium mb-6">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   Hormone Optimization & EVEXIAS / EvexiPEL
                 </h2>
-                <div className="space-y-6 text-lg text-white/70 leading-relaxed mb-8">
-                  <p>
-                    Dr. Moises Issa is associated with Primary Medical Physicians' hormone optimization program, including EVEXIAS / EvexiPEL hormone pellet therapy. Primary Medical Physicians offers consultations with Dr. Issa to evaluate whether hormone optimization may be appropriate based on a patient's symptoms, medical history, laboratory evaluation and individual health needs.
-                  </p>
-                  <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                    <h3 className="text-white font-medium mb-2">Liquid V Mobile Partnership</h3>
-                    <p className="text-base text-white/70">
+                <div className="space-y-4 sm:space-y-5 lg:space-y-6 text-sm sm:text-base lg:text-lg text-white/70 leading-normal sm:leading-relaxed mb-6 lg:mb-8">
+                  <ScrollFadeText>
+                    <p>
+                      Dr. Moises Issa is associated with Primary Medical Physicians' hormone optimization program, including EVEXIAS / EvexiPEL hormone pellet therapy. Primary Medical Physicians offers consultations with Dr. Issa to evaluate whether hormone optimization may be appropriate based on a patient's symptoms, medical history, laboratory evaluation and individual health needs.
+                    </p>
+                  </ScrollFadeText>
+                  <div className="p-4 sm:p-5 lg:p-6 rounded-xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                    <h3 className="text-white font-medium text-sm sm:text-base mb-1.5 sm:mb-2">Liquid V Mobile Partnership</h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-white/70 leading-normal sm:leading-relaxed">
                       Primary Medical Physicians provides its EVEXIAS / EvexiPEL hormone therapy services in partnership with <a href="https://liquidvmobile.com/" target="_blank" rel="noopener noreferrer" className="text-accent-400 hover:text-accent-300 underline underline-offset-4 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-400 rounded">Liquid V Mobile</a>. Liquid V identifies Dr. Moises Issa, MD as Medical Director for Liquid V LLC.
                     </p>
                   </div>
                 </div>
-                <Link
-                  to="/services/evexias-hormone-pellet-therapy"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent-500/10 text-accent-400 border border-accent-500/20 rounded-full font-medium hover:bg-accent-500/20 hover:scale-[1.025] active:scale-[0.97] transition-all duration-200 ease-out touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-950 group"
-                >
-                  Learn About EVEXIAS / EvexiPEL Hormone Therapy
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                </Link>
-              </div>
-              <div className="grid gap-6 reveal-up" style={{ animationDelay: '0.1s' }}>
-                <div className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                  <h3 className="text-2xl font-serif font-medium mb-4">Clinical Research & Medical Education</h3>
-                  <p className="text-white/70 leading-relaxed">
-                    Dr. Issa's professional activities extend into medical education and clinical research. Florida State University College of Medicine has listed him as an assistant clinical professor, and ClinicalTrials.gov identifies Moises Issa as a principal investigator at Zenith Clinical Research in Hollywood, Florida, for clinical research activity.
-                  </p>
+                <div className="flex justify-center lg:justify-start">
+                  <Link
+                    to="/services/evexias-hormone-pellet-therapy"
+                    className="w-full max-w-[280px] sm:max-w-[320px] lg:max-w-none sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 lg:px-6 lg:py-3 bg-accent-500/10 text-accent-400 border border-accent-500/20 rounded-full font-medium text-xs sm:text-sm lg:text-base hover:bg-accent-500/20 hover:scale-[1.025] active:scale-[0.97] transition-all duration-200 ease-out touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-950 group mx-auto lg:mx-0 text-center min-h-[44px]"
+                  >
+                    <span>Learn About EVEXIAS / EvexiPEL Hormone Therapy</span>
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 group-hover:translate-x-1 transition-transform duration-200" />
+                  </Link>
                 </div>
-                <div className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
-                  <h3 className="text-2xl font-serif font-medium mb-4">Community Involvement</h3>
-                  <p className="text-white/70 leading-relaxed">
-                    His community involvement has included service with the Broward County Chapter of the American Red Cross, where he has previously served in board leadership roles.
-                  </p>
+              </div>
+              <div className="grid gap-4 sm:gap-6 reveal-up" style={{ animationDelay: '0.1s' }}>
+                <div className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-serif font-medium mb-3 lg:mb-4 text-center lg:text-left">Clinical Research & Medical Education</h3>
+                  <ScrollFadeText>
+                    <p className="text-sm sm:text-base text-white/70 leading-normal sm:leading-relaxed">
+                      Dr. Issa's professional activities extend into medical education and clinical research. Florida State University College of Medicine has listed him as an assistant clinical professor, and ClinicalTrials.gov identifies Moises Issa as a principal investigator at Zenith Clinical Research in Hollywood, Florida, for clinical research activity.
+                    </p>
+                  </ScrollFadeText>
+                </div>
+                <div className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-serif font-medium mb-3 lg:mb-4 text-center lg:text-left">Community Involvement</h3>
+                  <ScrollFadeText>
+                    <p className="text-sm sm:text-base text-white/70 leading-normal sm:leading-relaxed">
+                      His community involvement has included service with the Broward County Chapter of the American Red Cross, where he has previously served in board leadership roles.
+                    </p>
+                  </ScrollFadeText>
                 </div>
               </div>
             </div>
@@ -358,14 +424,13 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* FAQs Section */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent-500/10 blur-[120px] rounded-full pointer-events-none" />
+        <section className="py-14 sm:py-16 lg:py-24 relative overflow-hidden">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center mb-16 reveal-up">
-              <h2 className="text-sm font-bold tracking-widest text-accent-400 uppercase mb-4">
+            <div className="text-center mb-10 sm:mb-12 lg:mb-16 reveal-up">
+              <h2 className="text-xs sm:text-sm font-bold tracking-widest text-accent-400 uppercase mb-3 sm:mb-4">
                 Common Questions
               </h2>
-              <h3 className="text-3xl md:text-5xl font-serif font-medium">
+              <h3 className="text-2xl sm:text-3xl md:text-5xl font-serif font-medium leading-tight">
                 Frequently Asked Questions
               </h3>
             </div>
@@ -436,12 +501,12 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-16 text-center border-t border-white/5 bg-black/40">
+        <section className="py-12 sm:py-14 lg:py-16 text-center border-t border-white/5 bg-black/40">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 reveal-up">
-            <h2 className="text-3xl md:text-4xl font-serif font-medium mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-medium mb-4 sm:mb-6 leading-tight">
               Schedule an Appointment with Dr. Issa
             </h2>
-            <p className="text-lg text-white/70 mb-8">
+            <p className="text-sm sm:text-base lg:text-lg text-white/70 mb-6 sm:mb-8 max-w-2xl mx-auto">
               Take the next step in managing your health or exploring hormone optimization with an individualized consultation.
             </p>
             <a
