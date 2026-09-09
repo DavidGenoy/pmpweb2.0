@@ -160,7 +160,7 @@ export default function ProviderMoisesIssa() {
         <div className="absolute inset-0 bg-gradient-to-b from-accent-500/5 via-accent-500/[0.02] to-transparent pointer-events-none" />
         
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-6 sm:pt-8 pb-8 sm:pb-8 lg:pb-16">
+        <section className="relative overflow-hidden pt-6 sm:pt-8 pb-12 sm:pb-14 lg:pb-16 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Mobile / Tablet Header: Positioned above image */}
             <div className="lg:hidden text-center mb-6 sm:mb-8 reveal-up">
@@ -209,7 +209,7 @@ export default function ProviderMoisesIssa() {
                 </div>
 
                 {/* Description */}
-                <p className="text-base sm:text-lg text-white/80 leading-relaxed mb-8 lg:mb-10 max-w-3xl mx-auto lg:mx-0">
+                <p className="text-base sm:text-lg text-white/80 leading-relaxed mb-6 sm:mb-7 lg:mb-10 max-w-3xl mx-auto lg:mx-0">
                   Dr. Moises Issa is an Internal Medicine physician at Primary Medical Physicians serving South Florida. His work spans comprehensive primary care, care focused on the health needs of older adults, chronic-disease management, clinical research and hormone optimization, including Primary Medical Physicians' EVEXIAS / EvexiPEL hormone therapy program offered in partnership with Liquid V Mobile.
                 </p>
 
@@ -236,9 +236,9 @@ export default function ProviderMoisesIssa() {
         </section>
 
         {/* About & Clinical Focus Section */}
-        <section className="pt-6 sm:pt-6 lg:pt-16 pb-12 sm:pb-14 lg:pb-16 border-b border-white/5 relative">
+        <section className="py-12 sm:py-14 lg:py-16 border-b border-white/5 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-16">
               <div className="reveal-up">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   About <span className="text-accent-400 italic">Dr. Moises Issa</span>
@@ -271,7 +271,7 @@ export default function ProviderMoisesIssa() {
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   Internal Medicine & Comprehensive Adult Care
                 </h2>
-                <div className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out mb-6 lg:mb-8">
+                <div className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent-500/30 hover:shadow-[0_0_20px_rgba(2,195,154,0.1)] transition-all duration-200 ease-out mb-0 lg:mb-8">
                   <Stethoscope className="hidden lg:block w-10 h-10 text-accent-500 mb-6" />
                   <ScrollFadeText>
                     <p className="text-sm sm:text-base lg:text-lg text-white/80 leading-normal sm:leading-relaxed mb-4 sm:mb-5 lg:mb-6">
@@ -305,7 +305,7 @@ export default function ProviderMoisesIssa() {
         {/* Professional Profile & Education Section */}
         <section className="py-12 sm:py-14 lg:py-16 border-b border-white/5 bg-black/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-16">
               
               {/* Credentials Grid */}
               <div className="reveal-up">
@@ -373,12 +373,12 @@ export default function ProviderMoisesIssa() {
         {/* Hormone Optimization & Liquid V Mobile */}
         <section className="py-12 sm:py-14 lg:py-16 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-16 items-center">
               <div className="reveal-up">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-center lg:text-left font-medium mb-5 sm:mb-6 lg:mb-8 leading-tight">
                   Hormone Optimization & EVEXIAS / EvexiPEL
                 </h2>
-                <div className="space-y-4 sm:space-y-5 lg:space-y-6 text-sm sm:text-base lg:text-lg text-white/70 leading-normal sm:leading-relaxed mb-6 lg:mb-8">
+                <div className="space-y-4 sm:space-y-5 lg:space-y-6 text-sm sm:text-base lg:text-lg text-white/70 leading-normal sm:leading-relaxed mb-5 sm:mb-6 lg:mb-8">
                   <ScrollFadeText>
                     <p>
                       Dr. Moises Issa is associated with Primary Medical Physicians' hormone optimization program, including EVEXIAS / EvexiPEL hormone pellet therapy. Primary Medical Physicians offers consultations with Dr. Issa to evaluate whether hormone optimization may be appropriate based on a patient's symptoms, medical history, laboratory evaluation and individual health needs.
@@ -426,7 +426,7 @@ export default function ProviderMoisesIssa() {
         {/* FAQs Section */}
         <section className="py-14 sm:py-16 lg:py-24 relative overflow-hidden">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center mb-10 sm:mb-12 lg:mb-16 reveal-up">
+            <div className="text-center mb-8 sm:mb-10 lg:mb-16 reveal-up">
               <h2 className="text-xs sm:text-sm font-bold tracking-widest text-accent-400 uppercase mb-3 sm:mb-4">
                 Common Questions
               </h2>
@@ -435,7 +435,7 @@ export default function ProviderMoisesIssa() {
               </h3>
             </div>
             
-            <div className="space-y-4 sm:space-y-5 reveal-up" style={{ animationDelay: '0.1s' }}>
+            <div className="space-y-3.5 sm:space-y-4 reveal-up" style={{ animationDelay: '0.1s' }}>
               {faqs.map((faq, i) => {
                 const isOpen = openFaqs.includes(i);
                 return (
@@ -503,10 +503,10 @@ export default function ProviderMoisesIssa() {
         {/* Final CTA */}
         <section className="py-12 sm:py-14 lg:py-16 text-center border-t border-white/5 bg-black/40">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 reveal-up">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-medium mb-4 sm:mb-6 leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-medium mb-3 sm:mb-4 lg:mb-6 leading-tight">
               Schedule an Appointment with Dr. Issa
             </h2>
-            <p className="text-sm sm:text-base lg:text-lg text-white/70 mb-6 sm:mb-8 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg text-white/70 mb-5 sm:mb-6 lg:mb-8 max-w-2xl mx-auto">
               Take the next step in managing your health or exploring hormone optimization with an individualized consultation.
             </p>
             <a
