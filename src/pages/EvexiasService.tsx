@@ -266,7 +266,7 @@ export default function EvexiasService() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-primary-950/20 to-transparent opacity-85" />
                 <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
                   <p className="text-white text-lg sm:text-xl font-serif font-medium mb-0.5 sm:mb-1 drop-shadow-sm">Moises Issa</p>
-                  <p className="text-accent-400 text-sm sm:text-base font-bold mb-0.5 sm:mb-1">F.A.C.S.G. MD</p>
+                  <p className="text-accent-400 text-sm sm:text-base font-bold mb-0.5 sm:mb-1">MD F.A.C.S.G.</p>
                   <p className="text-white/80 text-xs sm:text-sm">Internal Medicine</p>
                 </div>
               </div>
