@@ -192,7 +192,7 @@ export default function ProviderMoisesIssa() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               <div className="reveal-up">
-                <h2 className="text-3xl md:text-4xl font-serif font-medium mb-8">
+                <h2 className="text-3xl md:text-4xl font-serif text-center font-medium mb-10">
                   About <span className="text-accent-400 italic">Dr. Moises Issa</span>
                 </h2>
                 <div className="space-y-6 text-lg text-white/70 leading-relaxed">
