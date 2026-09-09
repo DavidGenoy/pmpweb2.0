@@ -160,7 +160,7 @@ export default function ProviderMoisesIssa() {
         <div className="absolute inset-0 bg-gradient-to-b from-accent-500/5 via-accent-500/[0.02] to-transparent pointer-events-none" />
         
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-6 sm:pt-8 pb-6 sm:pb-8 lg:pb-16">
+        <section className="relative overflow-hidden pt-6 sm:pt-8 pb-8 sm:pb-8 lg:pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Mobile / Tablet Header: Positioned above image */}
             <div className="lg:hidden text-center mb-6 sm:mb-8 reveal-up">
