@@ -79,12 +79,50 @@ export default function ProviderMoisesIssa() {
     }
     canonical.setAttribute('href', 'https://primarymedicalphysicians.com/providers/moises-issa-md');
 
+    // Page-specific Open Graph metadata
+    const ogProperties = [
+      { property: "og:title", content: "Dr. Moises Issa, MD | Internal Medicine | Primary Medical Physicians" },
+      { property: "og:description", content: "Meet Dr. Moises Issa, MD, an Internal Medicine physician at Primary Medical Physicians serving South Florida. Learn about his medical care, professional background, clinical research and hormone optimization services." },
+      { property: "og:url", content: "https://primarymedicalphysicians.com/providers/moises-issa-md" },
+      { property: "og:type", content: "profile" },
+      { property: "og:image", content: "https://nethingso.xyz/providers/issa-resized-hd.webp" },
+      { property: "og:image:alt", content: "Dr. Moises Issa, MD at Primary Medical Physicians" },
+      { property: "og:site_name", content: "Primary Medical Physicians" },
+    ];
+
+    const ogCleanups: (() => void)[] = [];
+
+    ogProperties.forEach(({ property, content }) => {
+      let ogMeta = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement | null;
+      if (!ogMeta) {
+        ogMeta = document.createElement('meta');
+        ogMeta.setAttribute('property', property);
+        document.head.appendChild(ogMeta);
+        const el = ogMeta;
+        ogCleanups.push(() => {
+          if (el && el.parentNode) {
+            el.parentNode.removeChild(el);
+          }
+        });
+      } else {
+        const previousContent = ogMeta.getAttribute('content');
+        ogCleanups.push(() => {
+          if (previousContent !== null) {
+            ogMeta?.setAttribute('content', previousContent);
+          } else {
+            ogMeta?.removeAttribute('content');
+          }
+        });
+      }
+      ogMeta.setAttribute('content', content);
+    });
+
     const schemaData = {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
       "mainEntity": {
-        "@type": "Person",
-        "@id": "https://primarymedicalphysicians.com/providers/moises-issa-md#person",
+        "@type": "Physician",
+        "@id": "https://primarymedicalphysicians.com/providers/moises-issa-md#physician",
         "name": "Moises Issa",
         "honorificPrefix": "Dr.",
         "honorificSuffix": "MD",
@@ -125,9 +163,10 @@ export default function ProviderMoisesIssa() {
     script.textContent = JSON.stringify(schemaData);
 
     return () => {
-      if (script) {
-        document.head.removeChild(script);
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
       }
+      ogCleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
