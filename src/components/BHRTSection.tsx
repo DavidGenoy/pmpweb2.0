@@ -202,7 +202,7 @@ export default function BHRTSection() {
             <div className="mb-8 md:mb-10 lg:mb-12">
               <h3 className="text-[#7ee8e2] text-sm md:text-base lg:text-lg font-semibold mb-2 lg:mb-3">What is it?</h3>
               <p className="text-xs md:text-sm lg:text-base text-white/80 leading-[1.6] lg:leading-[1.7] font-light">
-                BHRT with pellets is a safe, natural option for restoring balance. These plant-based hormones are structurally identical to the testosterone, estrogen, and other hormones your body produces.
+                BHRT uses hormones that are structurally identical to hormones naturally produced by the body. Hormone therapy may be considered for appropriate patients after an individualized medical evaluation and discussion of potential benefits, risks, and alternatives.
               </p>
             </div>
             

@@ -150,7 +150,7 @@ export default function EvexiasService() {
     },
     {
       q: "Do I need blood tests before hormone therapy?",
-      a: "Absolutely. Comprehensive lab testing is a crucial step to evaluate your current hormone levels and determine if hormone optimization is clinically appropriate for you."
+      a: "Laboratory testing may be recommended as part of an individualized evaluation, depending on your symptoms, medical history, treatment being considered, and your physician’s clinical judgment."
     },
     {
       q: "What are peptides?",
@@ -231,7 +231,7 @@ export default function EvexiasService() {
                   </ScrollFadeText>
                   <ScrollFadeText>
                     <p>
-                      Unlike creams, patches, or pills that can cause fluctuating hormone levels, these pellets are designed to release a steady, consistent amount of hormones over a period of months. This approach aims to mimic the body's natural hormone delivery system.
+                      EvexiPEL uses small pellets placed under the skin that are designed to release hormones gradually over time. Different hormone-therapy formulations have different dosing, absorption, benefits, risks, and monitoring considerations, which should be discussed with a qualified healthcare professional.
                     </p>
                   </ScrollFadeText>
                 </div>
