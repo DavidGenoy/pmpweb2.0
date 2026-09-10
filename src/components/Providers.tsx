@@ -193,13 +193,20 @@ export default function Providers() {
                     
                     {/* Content Container: Compact on mobile/tablet, original on desktop */}
                     <div className="flex flex-col flex-grow p-4 sm:p-5 lg:p-6 min-w-0 justify-center z-10">
-                      <h4 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 lg:mb-1 max-lg:truncate transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-[#02c39a] max-lg:group-[.is-pressed]/provider:transition-none">
+                      <h4 className={`text-base sm:text-lg lg:text-xl font-bold text-white mb-0.5 ${provider.profileUrl ? 'lg:mb-0.5' : 'lg:mb-1'} max-lg:truncate transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-[#02c39a] max-lg:group-[.is-pressed]/provider:transition-none`}>
                         {provider.name}
                       </h4>
                       {/* mobile-only text/dot color transition on touch */}
-                      <p className="text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm mb-1 lg:mb-3 max-lg:truncate transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-white max-lg:group-[.is-pressed]/provider:transition-none">
+                      <p className={`text-[#02c39a] lg:text-accent-400 font-medium text-xs lg:text-sm ${provider.profileUrl ? 'mb-0.5 lg:mb-1' : 'mb-1 lg:mb-3'} max-lg:truncate transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-white max-lg:group-[.is-pressed]/provider:transition-none`}>
                         {provider.degree}
                       </p>
+                      
+                      {provider.profileUrl && (
+                        <span className="block text-accent-400/90 lg:text-accent-400/80 text-[11px] lg:text-xs mb-1 lg:mb-1.5 transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-white/90">
+                          View full profile →
+                        </span>
+                      )}
+
                       <div className="flex items-center gap-1.5 lg:gap-2 text-white/60 lg:text-white/50 text-xs lg:text-sm mb-3 lg:mb-0 transition-colors duration-300 max-lg:group-[.is-pressed]/provider:text-white/90 max-lg:group-[.is-pressed]/provider:transition-none">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#02c39a] lg:bg-accent-500 shrink-0 transition-colors duration-300 max-lg:group-[.is-pressed]/provider:bg-white max-lg:group-[.is-pressed]/provider:transition-none" />
                         <span className="truncate">{provider.specialty}</span>

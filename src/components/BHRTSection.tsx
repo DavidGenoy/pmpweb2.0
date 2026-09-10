@@ -311,7 +311,7 @@ export default function BHRTSection() {
               </p>
               <button
                 type="button"
-                onClick={() => window.open('https://connect.evexi.as/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354', '_blank')}
+                onClick={() => window.open('https://healow.com/apps/provider/moises-issa-2847656', '_blank')}
                 className="relative w-full border-0 rounded-full bg-[#4ecdc4] text-[#0a2540] text-[11px] md:text-sm font-semibold py-3 px-3.5 cursor-pointer hover:bg-[#7ee8e2] transition-colors"
               >
                 Talk to our team →
@@ -386,7 +386,7 @@ export default function BHRTSection() {
             Speak with a trained EvexiPEL provider to learn whether BHRT pellet therapy may be right for you.
           </p>
           <button
-            onClick={() => window.open('https://connect.evexi.as/?p_id=a11730c8-811e-45ab-82cb-2b27e1465354', '_blank')}
+            onClick={() => window.open('https://primarymedicalphysicians.com/services/evexias-hormone-pellet-therapy', '_blank')}
             className="block bg-[#4ecdc4] text-[#0a2540] text-xs md:text-sm font-semibold py-3.5 px-4 rounded-full border-none cursor-pointer w-full max-w-sm mx-auto mb-3 tracking-[0.3px] hover:bg-[#7ee8e2] transition-colors"
           >
             Learn About EvexiPEL →
