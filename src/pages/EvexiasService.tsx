@@ -256,7 +256,11 @@ export default function EvexiasService() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 reveal-up">
             <div className="w-full sm:max-w-xs lg:max-w-none lg:w-1/3 shrink-0 mx-auto">
-              <div className="aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 relative group shadow-lg">
+              <Link 
+                to="/providers/moises-issa-md"
+                aria-label="View Dr. Moises Issa full physician profile"
+                className="block aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 relative group shadow-lg"
+              >
                 <img 
                   src="https://nethingso.xyz/providers/issa-profile.webp" 
                   alt="Dr. Moises Issa, EVEXIAS provider at Primary Medical Physicians" 
@@ -266,10 +270,11 @@ export default function EvexiasService() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-primary-950/20 to-transparent opacity-85" />
                 <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
                   <p className="text-white text-lg sm:text-xl font-serif font-medium mb-0.5 sm:mb-1 drop-shadow-sm">Moises Issa</p>
-                  <p className="text-accent-400 text-sm sm:text-base font-bold mb-0.5 sm:mb-1">MD F.A.C.S.G.</p>
+                  <p className="text-accent-400 text-sm sm:text-base font-bold mb-0.5">MD F.A.C.S.G.</p>
+                  <span className="block text-accent-400/90 text-[11px] sm:text-xs mb-1 font-medium transition-colors duration-300 group-hover:text-white/90">View full profile &rarr;</span>
                   <p className="text-white/80 text-xs sm:text-sm">Internal Medicine</p>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="w-full lg:w-2/3 text-center lg:text-left">
               <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif font-medium mb-4 sm:mb-6 leading-tight">
