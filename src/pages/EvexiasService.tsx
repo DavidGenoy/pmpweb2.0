@@ -158,7 +158,7 @@ export default function EvexiasService() {
     },
     {
       q: "Is hormone pellet therapy right for everyone?",
-      a: "No. Hormone pellet therapy requires individualized medical evaluation. Your physician will review your symptoms, health history, and risks to decide if it is a medically sound option for you."
+      a: "Hormone pellet therapy may be appropriate for patients who meet specific clinical criteria. Your physician will review your symptoms, health history, and individual risk factors to determine whether this treatment is a medically suitable option for you."
     },
     {
       q: "Where can I receive EVEXIAS pellet therapy in South Florida?",
