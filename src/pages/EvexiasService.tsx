@@ -95,7 +95,11 @@ export default function EvexiasService() {
       },
       "about": {
         "@type": "Physician",
-        "name": "Dr. Moises Issa"
+        "@id": "https://primarymedicalphysicians.com/providers/moises-issa-md#physician",
+        "name": "Moises Issa",
+        "honorificPrefix": "Dr.",
+        "honorificSuffix": "MD",
+        "url": "https://primarymedicalphysicians.com/providers/moises-issa-md"
       },
       "mentions": {
         "@type": "Organization",
