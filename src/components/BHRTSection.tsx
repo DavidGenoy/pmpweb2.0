@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Activity, Scale, Brain, Moon, Heart } from 'lucide-react';
 
 export default function BHRTSection() {
@@ -385,12 +386,12 @@ export default function BHRTSection() {
           <p className="text-[11px] md:text-sm text-white/60 mb-6 md:mb-8 font-light leading-[1.6] max-w-md mx-auto">
             Speak with a trained EvexiPEL provider to learn whether BHRT pellet therapy may be right for you.
           </p>
-          <button
-            onClick={() => window.open('https://primarymedicalphysicians.com/services/evexias-hormone-pellet-therapy', '_blank')}
+          <Link
+            to="/services/evexias-hormone-pellet-therapy"
             className="block bg-[#4ecdc4] text-[#0a2540] text-xs md:text-sm font-semibold py-3.5 px-4 rounded-full border-none cursor-pointer w-full max-w-sm mx-auto mb-3 tracking-[0.3px] hover:bg-[#7ee8e2] transition-colors"
           >
             Learn About EvexiPEL →
-          </button>
+          </Link>
           <span
             className="text-[10px] md:text-xs text-white/50 underline cursor-pointer hover:text-white/80 transition-colors"
             onClick={() => document.getElementById('providers')?.scrollIntoView({ behavior: 'smooth' })}
