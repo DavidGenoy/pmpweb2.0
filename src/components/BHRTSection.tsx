@@ -366,7 +366,7 @@ export default function BHRTSection() {
               </div>
             </div>
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
-              <div className="font-serif text-[20px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
+              <div className="font-serif text-[10px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
                 <span className="text-[#1a5c6e]">Up to 10 years</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
