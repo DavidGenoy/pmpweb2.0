@@ -486,7 +486,7 @@ export default function EvexiasService() {
               These independent medical resources are provided for additional patient education and do not represent endorsement of EVEXIAS, EvexiPEL, Primary Medical Physicians, or any specific hormone-therapy treatment.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mt-8 reveal-up" style={{ animationDelay: '0.1s' }}>
+          <div className="flex flex-col sm:flex-col flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mt-8 reveal-up" style={{ animationDelay: '0.1s' }}>
             <a 
               href="https://www.fda.gov/consumers/women/menopause" 
               target="_blank" 
