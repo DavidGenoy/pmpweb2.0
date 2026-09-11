@@ -477,6 +477,47 @@ export default function EvexiasService() {
         </div>
       </section>
 
+      {/* Medical References Section */}
+      <section className="py-12 sm:py-16 border-b border-white/5 bg-primary-950/50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 reveal-up">
+            <h3 className="text-lg sm:text-xl font-serif text-white/90 mb-3">Medical References & Patient Resources</h3>
+            <p className="text-xs sm:text-sm text-white/50 leading-relaxed max-w-2xl mx-auto">
+              These independent medical resources are provided for additional patient education and do not represent endorsement of EVEXIAS, EvexiPEL, Primary Medical Physicians, or any specific hormone-therapy treatment.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mt-8 reveal-up" style={{ animationDelay: '0.1s' }}>
+            <a 
+              href="https://www.fda.gov/consumers/women/menopause" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/70 hover:text-accent-400 text-xs sm:text-sm transition-colors text-center underline underline-offset-4"
+            >
+              U.S. Food and Drug Administration<br/>
+              <span className="text-white/40 no-underline italic">Menopause</span>
+            </a>
+            <a 
+              href="https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2012/08/compounded-bioidentical-menopausal-hormone-therapy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/70 hover:text-accent-400 text-xs sm:text-sm transition-colors text-center underline underline-offset-4"
+            >
+              American College of Obstetricians and Gynecologists<br/>
+              <span className="text-white/40 no-underline italic">Compounded Bioidentical Menopausal Hormone Therapy</span>
+            </a>
+            <a 
+              href="https://www.endocrine.org/clinical-practice-guidelines/compounded-bioidentical-hormone-therapy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/70 hover:text-accent-400 text-xs sm:text-sm transition-colors text-center underline underline-offset-4"
+            >
+              Endocrine Society<br/>
+              <span className="text-white/40 no-underline italic">Compounded Bioidentical Hormone Therapy</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA & Disclaimer */}
       <section className="py-12 sm:py-14 lg:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-accent-500/5 pointer-events-none" />

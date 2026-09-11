@@ -367,12 +367,23 @@ export default function BHRTSection() {
             </div>
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
               <div className="font-serif text-[30px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
-                <span className="text-[#1a5c6e]">Up to 10yr</span>
+                <span className="text-[#1a5c6e]">Up to 10 years</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
                 The menopausal transition and related symptoms can develop gradually and vary widely.
               </div>
             </div>
+          </div>
+          
+          <div className="mt-8 text-center text-[10px] md:text-xs text-[#888]/80 font-light tracking-wide">
+            Sources:{' '}
+            <a href="https://www.mayoclinic.org" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a5c6e] hover:underline underline-offset-4 transition-colors">Mayo Clinic</a>
+            {' · '}
+            <a href="https://www.nia.nih.gov" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a5c6e] hover:underline underline-offset-4 transition-colors">National Institute on Aging</a>
+            {' · '}
+            <a href="https://www.nih.gov" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a5c6e] hover:underline underline-offset-4 transition-colors">NIH</a>
+            {' · '}
+            <a href="https://www.evexias.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a5c6e] hover:underline underline-offset-4 transition-colors">EvexiPEL</a>
           </div>
         </div>
       </div>
