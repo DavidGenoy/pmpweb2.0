@@ -343,34 +343,34 @@ export default function BHRTSection() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
               <div className="font-serif text-[30px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
-                <span className="text-[#1a5c6e]">35</span>
+                <span className="text-[#1a5c6e]">30s–40s</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
-                Age when men may begin noticing testosterone decline
+                Testosterone levels may begin a gradual age-related decline during this period.
               </div>
             </div>
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
               <div className="font-serif text-[30px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
-                <span className="text-[#1a5c6e]">30s</span>
+                <span className="text-[#1a5c6e]">45–55</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
-                When some women may first notice hormone changes
+                Typical age range when the menopausal transition begins for many women.
               </div>
             </div>
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
               <div className="font-serif text-[30px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
-                <span className="text-[#1a5c6e]">2–10%</span>
+                <span className="text-[#1a5c6e]">1–2%</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
-                Possible annual testosterone decline referenced in EvexiPEL material
+                Approximate annual testosterone decline described by current EvexiPEL information.
               </div>
             </div>
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
               <div className="font-serif text-[30px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
-                <span className="text-[#1a5c6e]">10–15yr</span>
+                <span className="text-[#1a5c6e]">Several years</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
-                Symptoms may appear before hot flashes for some women
+                The menopausal transition and related symptoms can develop gradually and vary widely.
               </div>
             </div>
           </div>
