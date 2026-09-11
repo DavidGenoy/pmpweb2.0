@@ -367,7 +367,7 @@ export default function BHRTSection() {
             </div>
             <div className="bg-[#f8f6f1] rounded-[14px] p-4 md:p-6 text-center">
               <div className="font-serif text-[30px] md:text-4xl font-semibold text-[#0a2540] leading-none mb-1">
-                <span className="text-[#1a5c6e]">Several years</span>
+                <span className="text-[#1a5c6e]">Up to 10yr</span>
               </div>
               <div className="text-[9.5px] md:text-xs text-[#888] leading-[1.4] font-light">
                 The menopausal transition and related symptoms can develop gradually and vary widely.
