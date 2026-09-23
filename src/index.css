@@ -27,6 +27,10 @@
   --color-v3-ink: #000000;
   --color-v3-accent: #00ff00; /* Neon Green */
   --color-v3-blue: #0000ff;
+
+  /* Membership tier accents: restrained, desaturated, used sparingly on the PMP navy/teal base */
+  --color-member-silver: #c5ced8;
+  --color-member-gold: #c9ab6e;
 }
 
 @layer base {

@@ -4,7 +4,7 @@
  */
 
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import ParticleBackground from "./components/ParticleBackground";
 import ScrollManager from "./components/ScrollManager";
 import Navbar from "./components/Navbar";
@@ -17,6 +17,10 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
 import EvexiasService from "./pages/EvexiasService";
 import NotFound from "./pages/NotFound";
+
+const MembershipFoundationPreview = import.meta.env.DEV
+  ? lazy(() => import("./pages/MembershipFoundationPreview"))
+  : null;
 
 function ScrollToTopOnPathChange() {
   const { pathname, state } = useLocation();
@@ -51,6 +55,16 @@ export default function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/providers/moises-issa-md" element={<ProviderMoisesIssa />} />
           <Route path="/services/evexias-hormone-pellet-therapy" element={<EvexiasService />} />
+          {import.meta.env.DEV && MembershipFoundationPreview && (
+            <Route
+              path="/dev/membership-foundation"
+              element={
+                <Suspense fallback={null}>
+                  <MembershipFoundationPreview />
+                </Suspense>
+              }
+            />
+          )}
           {/* Wildcard route for 404 Page Not Found */}
           <Route path="*" element={<NotFound />} />
         </Routes>
