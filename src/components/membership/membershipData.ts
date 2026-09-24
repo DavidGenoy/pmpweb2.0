@@ -26,6 +26,8 @@ export interface MembershipFamilyAddOn {
 export interface MembershipPlan {
   id: MembershipPlanId;
   name: string;
+  // Display only. Future payments must use server-side prices keyed by plan id,
+  // never an amount sent from the browser.
   monthlyPrice: number;
   positioning: string;
   tagline: string;
@@ -256,6 +258,13 @@ export const MEMBERSHIP_CTA_REASSURANCE: readonly string[] = [
 ];
 
 export const MEMBERSHIP_ELIGIBILITY_NOTE = "Membership eligibility restrictions apply.";
+
+const PLAN_IDS: readonly MembershipPlanId[] = ["silver", "gold"];
+
+// Strict allowlist for untrusted input such as the enrollment `?plan=` value.
+export function parseMembershipPlanId(value: string | null | undefined): MembershipPlanId | null {
+  return PLAN_IDS.find((id) => id === value) ?? null;
+}
 
 export function getMembershipPlan(id: MembershipPlanId): MembershipPlan {
   return id === "gold" ? GOLD_PLAN : SILVER_PLAN;

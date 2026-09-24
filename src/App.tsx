@@ -18,6 +18,7 @@ import AboutUs from "./pages/AboutUs";
 import EvexiasService from "./pages/EvexiasService";
 import NotFound from "./pages/NotFound";
 import MembershipPlans from "./pages/MembershipPlans";
+import MembershipEnroll from "./pages/MembershipEnroll";
 
 const MembershipFoundationPreview = import.meta.env.DEV
   ? lazy(() => import("./pages/MembershipFoundationPreview"))
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/providers/moises-issa-md" element={<ProviderMoisesIssa />} />
           <Route path="/services/evexias-hormone-pellet-therapy" element={<EvexiasService />} />
           <Route path="/membership-plans" element={<MembershipPlans />} />
+          <Route path="/membership/enroll" element={<MembershipEnroll />} />
           {import.meta.env.DEV && MembershipFoundationPreview && (
             <Route
               path="/dev/membership-foundation"

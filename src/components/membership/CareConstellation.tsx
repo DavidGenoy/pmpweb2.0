@@ -92,10 +92,38 @@ export default function CareConstellation({ anchors, intensity = 0.5, className 
     let cancelled = false;
     let inView = false;
     let cancelScheduled: (() => void) | null = null;
+    let cancelRetry: (() => void) | null = null;
+    let retries = 0;
 
-    const fail = () => {
+    // Once the page is visible (immediately if it already is), run `cb`.
+    const whenVisible = (cb: () => void) => {
+      if (document.visibilityState === "visible") {
+        const timer = setTimeout(cb, 1000);
+        return () => clearTimeout(timer);
+      }
+      const onChange = () => {
+        if (document.visibilityState !== "visible") return;
+        document.removeEventListener("visibilitychange", onChange);
+        cb();
+      };
+      document.addEventListener("visibilitychange", onChange);
+      return () => document.removeEventListener("visibilitychange", onChange);
+    };
+
+    // Missing WebGL falls back to CSS for good. A lost context (iOS drops them
+    // for backgrounded pages) is rebuilt once the page is visible again; after two
+    // consecutive losses without a successful rebuild, the CSS fallback stays.
+    const fail = (reason?: "context-lost") => {
       controllerRef.current = null;
-      if (!cancelled) setStatus("fallback");
+      if (cancelled) return;
+      setStatus("fallback");
+      if (reason === "context-lost" && retries < 2) {
+        retries++;
+        cancelRetry = whenVisible(() => {
+          cancelRetry = null;
+          if (!cancelled) start();
+        });
+      }
     };
 
     const start = () => {
@@ -122,6 +150,7 @@ export default function CareConstellation({ anchors, intensity = 0.5, className 
               releaseContext(webgl.gl);
               return fail();
             }
+            retries = 0;
             controllerRef.current = controller;
             controller.setInView(inView);
             setStatus("ready");
@@ -148,6 +177,7 @@ export default function CareConstellation({ anchors, intensity = 0.5, className 
     return () => {
       cancelled = true;
       cancelScheduled?.();
+      cancelRetry?.();
       observer.disconnect();
       controllerRef.current?.dispose();
       controllerRef.current = null;

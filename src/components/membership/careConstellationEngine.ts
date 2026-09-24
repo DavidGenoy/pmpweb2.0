@@ -46,7 +46,9 @@ export interface ConstellationEngineOptions {
   anchors: ConstellationAnchor[];
   // Opacity of the free-flowing field (card perimeters are unaffected).
   intensity: number;
-  onFailure: () => void;
+  // "context-lost" can be recovered by recreating the engine later (iOS drops
+  // WebGL contexts for backgrounded pages); the caller decides whether to retry.
+  onFailure: (reason: "context-lost") => void;
 }
 
 export interface ConstellationController {
@@ -363,6 +365,7 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
   let holderHeight = 1;
   let viewportW = window.innerWidth;
   let viewportH = window.innerHeight;
+  let maxScroll = Infinity;
   const anchors: AnchorState[] = options.anchors.map((a) => ({
     kind: a.kind,
     weight: a.weight,
@@ -380,10 +383,10 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
     { anchor: -1, strength: 0, cap: 0, claim: 0 },
   ];
 
-  // iOS rubber-banding can report scroll positions outside the page.
+  // iOS rubber-banding can report scroll positions outside the page. The limit
+  // is cached with the rest of the geometry so frames never read layout.
   function scrollTop(): number {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    return Math.min(Math.max(window.scrollY, 0), Math.max(max, 0));
+    return Math.min(Math.max(window.scrollY, 0), maxScroll);
   }
 
   // Active cards: a primary chosen with hysteresis, plus at most one companion
@@ -518,6 +521,7 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
   }
 
   function measure() {
+    maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
     const layerPos = pagePosition(layer);
     layerTop = layerPos.y;
     layerLeft = layerPos.x;
@@ -625,7 +629,7 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
     event.preventDefault();
     contextLost = true;
     controller.dispose();
-    onFailure();
+    onFailure("context-lost");
   }
 
   const hostObserver = new ResizeObserver(resizeCanvas);
@@ -653,7 +657,10 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
 
   // Development-only inspection hook for automated checks; compiled out of production builds.
   if (import.meta.env.DEV) {
-    (window as Window & { __pmpConstellation?: unknown }).__pmpConstellation = {
+    const w = window as Window & { __pmpConstellation?: unknown; __pmpConstellationStats?: { created: number; disposed: number } };
+    w.__pmpConstellationStats ??= { created: 0, disposed: 0 };
+    w.__pmpConstellationStats.created++;
+    w.__pmpConstellation = {
       primary: () => primary,
       slots: () => slots.map((s) => ({ ...s })),
       drawCount: () => drawCount,
@@ -696,6 +703,10 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
       // Release the GL context immediately; iOS caps live contexts per page.
       if (!contextLost) renderer.forceContextLoss();
       canvas.remove();
+      if (import.meta.env.DEV) {
+        const stats = (window as Window & { __pmpConstellationStats?: { disposed: number } }).__pmpConstellationStats;
+        if (stats) stats.disposed++;
+      }
     },
   };
 
