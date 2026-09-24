@@ -15,11 +15,21 @@ import {
   SILVER_PLAN,
 } from "./membership/membershipData";
 
+type StageKey = "intro" | "plans" | "cta";
+
+// Kept a little quieter than the dedicated plans page.
+const STAGES: Record<StageKey, { formation: ConstellationFormation; intensity: number }> = {
+  intro: { formation: "dispersed", intensity: 0.55 },
+  plans: { formation: "cards", intensity: 0.8 },
+  cta: { formation: "dispersed", intensity: 0.45 },
+};
+
 export default function MembershipSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  // Gold sits lower than Silver on wider screens so it takes over second;
-  // Silver -> Gold passes through the "flow" formation automatically.
-  const stage = useScrollStage<ConstellationFormation>(sectionRef, "dispersed");
+  const silverRef = useRef<HTMLDivElement>(null);
+  const goldRef = useRef<HTMLDivElement>(null);
+  const anchorRefs = useRef([silverRef, goldRef]).current;
+  const stage = STAGES[useScrollStage<StageKey>(sectionRef, "intro")];
   const labsNote = MEMBERSHIP_FOOTNOTES["routine-labs"];
 
   return (
@@ -27,53 +37,49 @@ export default function MembershipSection() {
       id="membership"
       ref={sectionRef}
       aria-labelledby="membership-heading"
-      className="relative isolate overflow-x-clip bg-primary-900 py-24 md:py-32"
+      className="relative isolate overflow-x-clip bg-member-mist bg-[radial-gradient(90%_60%_at_50%_0%,var(--color-member-aqua),transparent_70%)] py-24 text-primary-900 [--membership-scrim:var(--color-member-mist)] md:py-32"
     >
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent"
       />
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
-      />
-      <CareConstellation formation={stage} intensity={0.85} />
+      <CareConstellation formation={stage.formation} intensity={stage.intensity} anchorRefs={anchorRefs} />
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-        <header data-stage="dispersed" className={`reveal-up mx-auto max-w-2xl text-center ${TEXT_SCRIM}`}>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent-400">PMP Membership</p>
+        <header data-stage="intro" className={`reveal-up mx-auto max-w-2xl text-center ${TEXT_SCRIM}`}>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent-700">PMP Membership</p>
           <h2
             id="membership-heading"
-            className="mt-4 text-balance font-serif text-[2.35rem] font-medium leading-[1.08] text-white sm:text-5xl lg:text-6xl"
+            className="mt-4 text-balance font-serif text-[2.35rem] font-medium leading-[1.08] text-primary-900 sm:text-5xl lg:text-6xl"
           >
             Primary care, made simpler.
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-primary-900/70 sm:text-lg">
             Flexible monthly membership options with clear pricing, convenient access, and care across Primary
             Medical Physicians.
           </p>
         </header>
 
-        <div className="mx-auto mt-12 grid max-w-[26rem] gap-5 md:mt-16 md:max-w-none md:grid-cols-2 md:items-start md:gap-6 lg:gap-10">
-          <div data-stage="silver" className="reveal-up">
+        {/* Matched pair from md up: same top line, stretched to equal height. */}
+        <div
+          data-stage="plans"
+          className="mx-auto mt-12 grid max-w-[26rem] gap-7 md:mt-16 md:max-w-none md:grid-cols-2 md:gap-8 lg:gap-12"
+        >
+          <div ref={silverRef} className="reveal-up h-full">
             <MembershipTeaserCard plan={SILVER_PLAN} href={`${MEMBERSHIP_PLANS_PATH}#silver`} />
           </div>
-          <div data-stage="gold" className="reveal-up md:mt-16">
-            <MembershipTeaserCard
-              plan={GOLD_PLAN}
-              href={`${MEMBERSHIP_PLANS_PATH}#gold`}
-              className="shadow-[0_30px_70px_-30px_rgba(201,171,110,0.35)]"
-            />
+          <div ref={goldRef} className="reveal-up h-full">
+            <MembershipTeaserCard plan={GOLD_PLAN} href={`${MEMBERSHIP_PLANS_PATH}#gold`} />
           </div>
         </div>
 
         <div
-          data-stage="unified"
-          className={`reveal-up mx-auto mt-12 flex max-w-2xl flex-col items-center text-center md:mt-16 ${TEXT_SCRIM}`}
+          data-stage="cta"
+          className={`reveal-up mx-auto mt-14 flex max-w-2xl flex-col items-center text-center md:mt-16 ${TEXT_SCRIM}`}
         >
           <Link
             to={MEMBERSHIP_PLANS_PATH}
-            className="inline-flex min-h-[52px] w-full max-w-[26rem] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent-500 px-5 py-4 text-[15px] font-semibold min-[360px]:text-base sm:px-8 text-primary-900 transition-[background-color,transform] duration-200 touch-manipulation hover:bg-accent-400 active:scale-[0.98] motion-reduce:transition-none sm:w-auto"
+            className="inline-flex min-h-[52px] w-full max-w-[26rem] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent-500 px-5 py-4 text-[15px] font-bold text-primary-900 shadow-sm transition-[background-color,box-shadow,transform] duration-200 touch-manipulation hover:bg-accent-400 hover:shadow-md active:scale-[0.98] motion-reduce:transition-none min-[360px]:text-base sm:w-auto sm:px-8"
           >
             Compare Membership Plans
             <ArrowRight aria-hidden="true" className="h-5 w-5" />
@@ -81,7 +87,7 @@ export default function MembershipSection() {
 
           <MembershipReassurance items={MEMBERSHIP_REASSURANCE} className="mt-6" />
 
-          <p className="mt-4 max-w-md text-xs leading-relaxed text-white/45">
+          <p className="mt-4 max-w-md text-[13px] leading-relaxed text-primary-900/65">
             {MEMBERSHIP_ELIGIBILITY_NOTE}
             <br />
             {labsNote.marker}

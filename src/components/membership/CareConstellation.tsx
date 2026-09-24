@@ -18,6 +18,8 @@ interface CareConstellationProps {
   range?: ProgressRange;
   // Element whose scroll position drives the morph; defaults to the parent section.
   progressTargetRef?: RefObject<HTMLElement | null>;
+  // Silver and Gold card elements the "cards" formation outlines.
+  anchorRefs?: readonly RefObject<HTMLElement | null>[];
   intensity?: number;
   // Formation shift as fractions of half the canvas width/height (+x right, +y up).
   offsetX?: number;
@@ -50,18 +52,16 @@ function releaseContext(gl: WebGL2RenderingContext) {
   gl.getExtension("WEBGL_lose_context")?.loseContext();
 }
 
+// Light-theme CSS decoration shown until (or instead of) WebGL.
 const glowStyle: CSSProperties = {
-  backgroundImage: [
-    "radial-gradient(60% 45% at 50% 45%, rgba(0, 168, 150, 0.12), transparent 70%)",
-    "radial-gradient(45% 35% at 50% 55%, rgba(2, 195, 154, 0.05), transparent 70%)",
-  ].join(", "),
+  backgroundImage: "radial-gradient(60% 45% at 50% 45%, rgba(0, 168, 150, 0.06), transparent 70%)",
 };
 
 const dotMask = "radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 80%)";
 const dotStyle: CSSProperties = {
   backgroundImage: [
-    "radial-gradient(circle, rgba(197, 206, 216, 0.28) 1px, transparent 1.6px)",
-    "radial-gradient(circle, rgba(2, 195, 154, 0.22) 1px, transparent 1.6px)",
+    "radial-gradient(circle, rgba(93, 110, 132, 0.22) 1px, transparent 1.6px)",
+    "radial-gradient(circle, rgba(0, 168, 150, 0.22) 1px, transparent 1.6px)",
   ].join(", "),
   backgroundSize: "34px 34px, 55px 55px",
   backgroundPosition: "0 0, 17px 23px",
@@ -75,6 +75,7 @@ export default function CareConstellation({
   formation,
   range = "traverse",
   progressTargetRef,
+  anchorRefs,
   intensity = 1,
   offsetX = 0,
   offsetY = 0,
@@ -88,9 +89,9 @@ export default function CareConstellation({
 
   // Latest props for the engine's asynchronous creation; declared before the
   // init effect so it is up to date when that effect runs.
-  const initialOptions = useRef({ formation, range, progressTargetRef, intensity, offsetX, offsetY });
+  const initialOptions = useRef({ formation, range, progressTargetRef, anchorRefs, intensity, offsetX, offsetY });
   useEffect(() => {
-    initialOptions.current = { formation, range, progressTargetRef, intensity, offsetX, offsetY };
+    initialOptions.current = { formation, range, progressTargetRef, anchorRefs, intensity, offsetX, offsetY };
   });
 
   useEffect(() => {
@@ -124,6 +125,7 @@ export default function CareConstellation({
               tier: detectDeviceTier(),
               reducedMotion: prefersReducedMotion(),
               formation: opts.formation,
+              anchors: (opts.anchorRefs ?? []).map((ref) => ref.current).filter((el): el is HTMLElement => !!el),
               intensity: opts.intensity,
               offsetX: opts.offsetX,
               offsetY: opts.offsetY,

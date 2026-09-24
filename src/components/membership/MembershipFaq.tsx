@@ -14,7 +14,9 @@ interface MembershipFaqProps {
 
 // Panels open instantly via the `hidden` attribute (no height animation, which
 // is what made earlier accordions stutter in Safari); only the revealed content
-// fades in. Several panels may be open at once.
+// fades in. Several panels may be open at once. The [&:hover] overrides cancel
+// the site-wide button:hover scale, which is not gated to hover-capable devices
+// and would otherwise stick on the last-tapped row on touch screens.
 export default function MembershipFaq({ items, headingLevel = 3 }: MembershipFaqProps) {
   const [open, setOpen] = useState<ReadonlySet<string>>(() => new Set());
   const Heading = `h${headingLevel}` as const;
@@ -28,7 +30,7 @@ export default function MembershipFaq({ items, headingLevel = 3 }: MembershipFaq
     });
 
   return (
-    <div className="divide-y divide-white/10 overflow-hidden rounded-3xl border border-white/10 bg-primary-800/80">
+    <div className="divide-y divide-primary-900/10 overflow-hidden rounded-3xl border border-primary-900/10 bg-white shadow-[0_18px_44px_-30px_rgba(10,25,47,0.3)]">
       {items.map((item) => {
         const isOpen = open.has(item.id);
         const buttonId = `membership-faq-${item.id}-button`;
@@ -42,13 +44,13 @@ export default function MembershipFaq({ items, headingLevel = 3 }: MembershipFaq
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(item.id)}
-                className="flex min-h-14 w-full touch-manipulation items-center justify-between gap-4 px-5 py-4 text-left text-base font-medium text-white/90 hover:scale-100 hover:bg-white/[0.03] hover:shadow-none focus-visible:ring-inset active:bg-white/[0.05] sm:px-7 sm:py-5 sm:text-lg"
+                className="flex min-h-14 w-full touch-manipulation items-center justify-between gap-4 px-5 py-4 text-left text-base font-medium text-primary-900 hover:bg-member-mist [&:hover]:scale-100 [&:hover]:shadow-none focus-visible:ring-inset focus-visible:ring-offset-0 active:bg-member-aqua sm:px-7 sm:py-5 sm:text-lg"
               >
                 <span className="min-w-0">{item.question}</span>
                 <span
                   aria-hidden="true"
                   className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border transition-transform duration-200 motion-reduce:transition-none ${
-                    isOpen ? "rotate-45 border-accent-500 bg-accent-500 text-primary-900" : "border-white/15 text-accent-400"
+                    isOpen ? "rotate-45 border-accent-500 bg-accent-500 text-primary-900" : "border-primary-900/15 text-accent-700"
                   }`}
                 >
                   <Plus className="h-4 w-4" />
@@ -60,7 +62,7 @@ export default function MembershipFaq({ items, headingLevel = 3 }: MembershipFaq
               role="region"
               aria-labelledby={buttonId}
               hidden={!isOpen}
-              className="animate-membership-reveal px-5 pb-6 text-[15px] leading-relaxed text-white/70 motion-reduce:animate-none sm:px-7 sm:text-base"
+              className="animate-membership-reveal px-5 pb-6 text-[15px] leading-relaxed text-primary-900/75 motion-reduce:animate-none sm:px-7 sm:text-base"
             >
               {item.answer}
             </div>

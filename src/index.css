@@ -28,9 +28,17 @@
   --color-v3-accent: #00ff00; /* Neon Green */
   --color-v3-blue: #0000ff;
 
-  /* Membership tier accents: restrained, desaturated, used sparingly on the PMP navy/teal base */
+  /* Same hue as accent-500, darkened so small green text on white meets WCAG AA (5.4:1) */
+  --color-accent-700: #00786b;
+
+  /* Membership (light theme): tier accents for lines/fills, "-ink" shades for text,
+     and near-white aqua surfaces tinted from the PMP green */
   --color-member-silver: #c5ced8;
+  --color-member-silver-ink: #5d6e84;
   --color-member-gold: #c9ab6e;
+  --color-member-gold-ink: #8a6a2c;
+  --color-member-mist: #f5fafa;
+  --color-member-aqua: #eaf6f4;
 
   /* Fade-in for membership disclosure panels; layout changes instantly, no height animation */
   --animate-membership-reveal: membership-reveal 220ms ease-out;

@@ -20,11 +20,11 @@ export default function MembershipDisclosure({
   return (
     <aside
       aria-label="Membership eligibility and plan details"
-      className={`space-y-4 text-sm leading-relaxed text-white/55 ${className}`}
+      className={`space-y-4 text-sm leading-relaxed text-primary-900/75 ${className}`}
     >
       {showEligibility && (
         <div className="space-y-1">
-          <p className="font-semibold text-white/80">Eligibility</p>
+          <p className="font-semibold text-primary-900">Eligibility</p>
           <p>{MEMBERSHIP_ELIGIBILITY.summary}.</p>
           <p>{MEMBERSHIP_ELIGIBILITY.exclusion}</p>
         </div>
@@ -34,7 +34,7 @@ export default function MembershipDisclosure({
         const note = MEMBERSHIP_FOOTNOTES[id];
         return (
           <p key={id} id={footnoteAnchorId(id)} className="scroll-mt-28">
-            <span aria-hidden="true" className="mr-1 text-white/80">
+            <span aria-hidden="true" className="mr-1 text-primary-900">
               {note.marker}
             </span>
             {note.text}
