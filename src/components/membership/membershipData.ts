@@ -6,6 +6,8 @@ export interface MembershipFootnote {
   id: MembershipFootnoteId;
   marker: string;
   text: string;
+  // First sentence of `text`, for compact placements that link to full details.
+  summary: string;
 }
 
 export interface MembershipBenefit {
@@ -25,13 +27,17 @@ export interface MembershipPlan {
   name: string;
   monthlyPrice: number;
   positioning: string;
+  tagline: string;
   benefits: MembershipBenefit[];
+  // Abbreviated benefits for compact placements such as the home-page teaser.
+  highlights: MembershipBenefit[];
   memberVisitFee?: number;
   additionalVisitPrice?: number;
   familyAddOn?: MembershipFamilyAddOn;
 }
 
 export const MEMBERSHIP_ENROLL_PATH = "/membership/enroll";
+export const MEMBERSHIP_PLANS_PATH = "/membership-plans";
 
 export const MEMBERSHIP_ELIGIBILITY = {
   minimumAge: 18,
@@ -44,6 +50,7 @@ export const MEMBERSHIP_FOOTNOTES: Record<MembershipFootnoteId, MembershipFootno
   "routine-labs": {
     id: "routine-labs",
     marker: "*",
+    summary: "Gold includes eligible routine laboratory testing as defined by Primary Medical Physicians.",
     text: "Gold includes eligible routine laboratory testing as defined by Primary Medical Physicians. Specialty or send-out testing, genetics, pathology, imaging, medications, vaccines, and third-party services are not included unless expressly stated. The complete included-lab list will be published before enrollment opens.",
   },
 };
@@ -75,7 +82,14 @@ export const SILVER_PLAN: MembershipPlan = {
   name: "Silver",
   monthlyPrice: 69.99,
   positioning: "Preventive Care + Member Savings",
+  tagline: "Preventive + Savings",
   additionalVisitPrice: SILVER_ADDITIONAL_VISIT,
+  highlights: [
+    { text: "Annual preventive visit included" },
+    { text: `${formatUSD(SILVER_ADDITIONAL_VISIT)} additional primary care visits` },
+    { text: "Discounted laboratory services" },
+    { text: "Discounted in-office procedures" },
+  ],
   benefits: [
     { text: "Complete annual preventive visit included" },
     { text: `Additional primary care visits: ${formatUSD(SILVER_ADDITIONAL_VISIT)} each` },
@@ -92,8 +106,15 @@ export const GOLD_PLAN: MembershipPlan = {
   name: "Gold",
   monthlyPrice: 129.99,
   positioning: "Ongoing Access + Included Routine Labs",
+  tagline: "Ongoing Access",
   memberVisitFee: GOLD_MEMBER_VISIT_FEE,
   familyAddOn: GOLD_FAMILY_ADD_ON,
+  highlights: [
+    { text: "Unlimited primary care visits" },
+    { text: "Routine labs included", footnote: "routine-labs" },
+    { text: `${formatUSD(GOLD_MEMBER_VISIT_FEE)} member visit fee` },
+    { text: "Family membership options" },
+  ],
   benefits: [
     { text: "Unlimited eligible primary care visits" },
     {
@@ -124,6 +145,14 @@ export const GOLD_PLAN: MembershipPlan = {
 };
 
 export const MEMBERSHIP_PLANS: readonly MembershipPlan[] = [SILVER_PLAN, GOLD_PLAN];
+
+export const MEMBERSHIP_REASSURANCE: readonly string[] = [
+  "No enrollment fee",
+  `Adults ${MEMBERSHIP_ELIGIBILITY.minimumAge}+`,
+  "Available across PMP locations",
+];
+
+export const MEMBERSHIP_ELIGIBILITY_NOTE = "Membership eligibility restrictions apply.";
 
 export function getMembershipPlan(id: MembershipPlanId): MembershipPlan {
   return id === "gold" ? GOLD_PLAN : SILVER_PLAN;

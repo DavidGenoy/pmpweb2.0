@@ -6,6 +6,7 @@ import Specialists from "../components/Specialists";
 import Insurances from "../components/Insurances";
 import Services from "../components/Services";
 import HealowSection from "../components/HealowSection";
+import MembershipSection from "../components/MembershipSection";
 import Testimonials from "../components/Testimonials";
 // import MammographyModal from "../components/MammographyModal";
 import HealthSunModal from "../components/HealthSunModal";
@@ -66,6 +67,7 @@ export default function Home() {
       <Specialists />
       <Insurances />
       <Services />
+      <MembershipSection />
       <HealowSection />
       <Testimonials />
       {/* <MammographyModal /> Temporarily disabled for HealthSun Notice */}

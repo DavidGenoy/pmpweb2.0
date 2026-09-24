@@ -14,7 +14,7 @@ export default function MembershipPrice({ amount, size = "lg", className = "" }:
   const s = SIZE[size];
 
   return (
-    <p className={`flex items-baseline text-white ${className}`}>
+    <p className={`flex items-baseline whitespace-nowrap text-white ${className}`}>
       <span className="sr-only">{`$${dollars}.${cents} per month`}</span>
       <span aria-hidden="true" className="flex items-baseline">
         <span className={`${s.cents} font-medium text-white/70 self-start mt-1 mr-0.5`}>$</span>
@@ -22,7 +22,7 @@ export default function MembershipPrice({ amount, size = "lg", className = "" }:
           {dollars}
         </span>
         <span className={`${s.cents} font-medium text-white/80 self-start mt-1 tabular-nums`}>.{cents}</span>
-        <span className={`${s.period} ml-2 text-white/50`}>/month</span>
+        <span className={`${s.period} ml-2 text-white/50`}>/&nbsp;month</span>
       </span>
     </p>
   );
