@@ -24,6 +24,7 @@ export default function Navbar() {
     { name: "Providers", href: "#providers" },
     { name: "Locations", href: "#locations" },
     { name: "Services", href: "#services" },
+    { name: "Membership Plans", href: "/membership-plans" },
     { name: "Patient Portal", href: "https://health.healow.com/PMP", external: true },
     { name: "Healow App", href: "#healow" },
     /* Vitamins menu item added after Patient Portal */
@@ -69,10 +70,14 @@ export default function Navbar() {
           : "bg-transparent py-5"
       } ios-navbar-fix`}
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      {/* The inline desktop nav needs ~1,390px of content width, so it starts at
+          1440px; below that the menu button is used. From 1440px a wider container
+          and slimmer padding move the phone and Book Appointment toward the edge.
+          All padding steps use min-[] variants so they apply in width order. */}
+      <div className="max-w-[1600px] mx-auto px-4 min-[640px]:px-6 min-[1024px]:px-8 min-[1280px]:px-10 min-[1440px]:px-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-3 group">
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex shrink-0 items-center gap-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-accent-500/20 blur-lg rounded-full group-hover:bg-accent-500/40 transition-colors" />
               <img 
@@ -85,7 +90,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav - adjusted spacing and whitespace-nowrap to fit 1 row */}
-          <nav className="hidden lg:flex items-center gap-2 xl:gap-3 2xl:gap-4">
+          <nav className="hidden min-[1440px]:flex items-center gap-[9px] 2xl:gap-[11px]">
             {navLinks.map((link) => (
               <ChromaticLink
                 key={link.name}
@@ -106,7 +111,7 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+          <div className="hidden min-[1440px]:flex items-center gap-2 shrink-0">
             <ChromaticLink
               href="tel:9543999014"
               className="flex items-center gap-1 xl:gap-1.5 text-[12px] xl:text-[14px] 2xl:text-sm font-medium text-white/70 hover:text-accent-400 transition-colors whitespace-nowrap"
@@ -127,8 +132,10 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden p-2 text-white"
+            className="min-[1440px]:hidden p-2 text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -146,7 +153,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-0 w-full bg-primary-900 shadow-xl border-t border-white/10 lg:hidden"
+            className="absolute top-full left-0 w-full bg-primary-900 shadow-xl border-t border-white/10 min-[1440px]:hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-2">
               {navLinks.map((link) => (

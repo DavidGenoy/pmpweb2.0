@@ -61,13 +61,13 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <MembershipSection />
       <BHRTSection />
       <Locations />
       <Providers />
       <Specialists />
       <Insurances />
       <Services />
-      <MembershipSection />
       <HealowSection />
       <Testimonials />
       {/* <MammographyModal /> Temporarily disabled for HealthSun Notice */}

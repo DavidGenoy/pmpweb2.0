@@ -162,23 +162,27 @@ export default function CareConstellation({ anchors, intensity = 0.5, className 
       });
     };
 
-    // One observer both triggers the lazy load shortly before the section is
-    // reached and pauses the render loop once it is well out of view.
-    const observer = new IntersectionObserver(
+    // Load shortly before the section is reached, but only animate while it is
+    // actually on screen (e.g. not while the visitor is still on the hero above it).
+    const loadObserver = new IntersectionObserver(
       ([entry]) => {
-        inView = entry.isIntersecting;
-        if (inView && !cancelScheduled) start();
-        controllerRef.current?.setInView(inView);
+        if (entry.isIntersecting && !cancelScheduled) start();
       },
       { rootMargin: "40% 0px 40% 0px" },
     );
-    observer.observe(layer);
+    const viewObserver = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      controllerRef.current?.setInView(inView);
+    });
+    loadObserver.observe(layer);
+    viewObserver.observe(layer);
 
     return () => {
       cancelled = true;
       cancelScheduled?.();
       cancelRetry?.();
-      observer.disconnect();
+      loadObserver.disconnect();
+      viewObserver.disconnect();
       controllerRef.current?.dispose();
       controllerRef.current = null;
     };
