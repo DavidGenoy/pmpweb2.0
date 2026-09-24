@@ -4,19 +4,13 @@ import MembershipBadge from "./MembershipBadge";
 import MembershipPrice from "./MembershipPrice";
 import { MEMBERSHIP_TIER_STYLES } from "./membershipTheme";
 import { MEMBERSHIP_FOOTNOTES, type MembershipPlan } from "./membershipData";
+import { PRESS_HANDLERS } from "./pressFeedback";
 
 interface MembershipTeaserCardProps {
   plan: MembershipPlan;
   href: string;
   className?: string;
 }
-
-type PressEvent = { currentTarget: HTMLElement };
-
-// Same immediate touch feedback pattern used elsewhere on the site (Footer,
-// Services): toggle a class on touch so iOS shows the pressed state at once.
-const pressStart = (e: PressEvent) => e.currentTarget.classList.add("is-pressed");
-const pressEnd = (e: PressEvent) => e.currentTarget.classList.remove("is-pressed");
 
 export default function MembershipTeaserCard({ plan, href, className = "" }: MembershipTeaserCardProps) {
   const styles = MEMBERSHIP_TIER_STYLES[plan.id];
@@ -27,10 +21,7 @@ export default function MembershipTeaserCard({ plan, href, className = "" }: Mem
   return (
     <article
       aria-labelledby={titleId}
-      onTouchStart={pressStart}
-      onTouchMove={pressEnd}
-      onTouchEnd={pressEnd}
-      onTouchCancel={pressEnd}
+      {...PRESS_HANDLERS}
       className={`group relative flex h-full min-w-0 flex-col rounded-3xl border p-6 sm:p-8 transition-[transform,border-color] duration-200 ease-out active:scale-[0.985] [&.is-pressed]:scale-[0.985] [&.is-pressed]:duration-100 motion-reduce:transition-none has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-accent-500 has-[a:focus-visible]:ring-offset-2 has-[a:focus-visible]:ring-offset-white ${styles.surface} ${styles.shadow} ${styles.cardBorder} ${styles.pressed} ${className}`}
     >
       <span

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
-import type { ConstellationController, ProgressRange } from "./careConstellationEngine";
-import type { ConstellationFormation } from "./constellationFormations";
+import type { AnchorKind, ConstellationAnchor, ConstellationController } from "./careConstellationEngine";
 import {
   detectDeviceTier,
   prefersReducedMotion,
@@ -8,22 +7,22 @@ import {
   whenIdleAfterLoad,
 } from "./motionCapability";
 
-export type { ConstellationFormation } from "./constellationFormations";
+export type { AnchorKind } from "./careConstellationEngine";
+
+export interface ConstellationAnchorRef {
+  ref: RefObject<HTMLElement | null>;
+  // "silver" / "gold" for plan cards (tier colour + PMP green), "green" otherwise.
+  kind: AnchorKind;
+  // 1 for plan cards; lower for information cards so they stay subtler.
+  weight: number;
+}
 
 interface CareConstellationProps {
-  // Target formation (changes morph smoothly). Omit to morph with scroll progress.
-  formation?: ConstellationFormation;
-  // "traverse": 0 as the section enters the viewport, 1 as it leaves.
-  // "contain": 0 when its top reaches the viewport top, 1 when its bottom reaches the bottom (pinned/sticky stages).
-  range?: ProgressRange;
-  // Element whose scroll position drives the morph; defaults to the parent section.
-  progressTargetRef?: RefObject<HTMLElement | null>;
-  // Silver and Gold card elements the "cards" formation outlines.
-  anchorRefs?: readonly RefObject<HTMLElement | null>[];
+  // Cards the particles may gather around. They share one bounded particle
+  // pool; at most one card (or one same-row pair) is emphasised at a time.
+  anchors?: readonly ConstellationAnchorRef[];
+  // Opacity of the free-flowing field.
   intensity?: number;
-  // Formation shift as fractions of half the canvas width/height (+x right, +y up).
-  offsetX?: number;
-  offsetY?: number;
   className?: string;
 }
 
@@ -70,17 +69,8 @@ const dotStyle: CSSProperties = {
 };
 
 // Decorative only. Place as the first child of a `relative isolate` section and
-// give the section's content `relative z-10`.
-export default function CareConstellation({
-  formation,
-  range = "traverse",
-  progressTargetRef,
-  anchorRefs,
-  intensity = 1,
-  offsetX = 0,
-  offsetY = 0,
-  className = "",
-}: CareConstellationProps) {
+// keep the section's content positioned above it.
+export default function CareConstellation({ anchors, intensity = 0.5, className = "" }: CareConstellationProps) {
   const layerRef = useRef<HTMLDivElement>(null);
   const slotRef = useRef<HTMLDivElement>(null);
   const controllerRef = useRef<ConstellationController | null>(null);
@@ -89,9 +79,9 @@ export default function CareConstellation({
 
   // Latest props for the engine's asynchronous creation; declared before the
   // init effect so it is up to date when that effect runs.
-  const initialOptions = useRef({ formation, range, progressTargetRef, anchorRefs, intensity, offsetX, offsetY });
+  const initialOptions = useRef({ anchors, intensity });
   useEffect(() => {
-    initialOptions.current = { formation, range, progressTargetRef, anchorRefs, intensity, offsetX, offsetY };
+    initialOptions.current = { anchors, intensity };
   });
 
   useEffect(() => {
@@ -120,15 +110,12 @@ export default function CareConstellation({
             const controller = createCareConstellation({
               ...webgl,
               host: slot,
-              progressSource: opts.progressTargetRef?.current ?? layer,
-              range: opts.range,
               tier: detectDeviceTier(),
               reducedMotion: prefersReducedMotion(),
-              formation: opts.formation,
-              anchors: (opts.anchorRefs ?? []).map((ref) => ref.current).filter((el): el is HTMLElement => !!el),
+              anchors: (opts.anchors ?? []).flatMap(({ ref, kind, weight }): ConstellationAnchor[] =>
+                ref.current ? [{ el: ref.current, kind, weight }] : [],
+              ),
               intensity: opts.intensity,
-              offsetX: opts.offsetX,
-              offsetY: opts.offsetY,
               onFailure: fail,
             });
             if (!controller) {
@@ -172,16 +159,8 @@ export default function CareConstellation({
   }, [reducedMotion, status]);
 
   useEffect(() => {
-    controllerRef.current?.setFormation(formation);
-  }, [formation, status]);
-
-  useEffect(() => {
     controllerRef.current?.setIntensity(intensity);
   }, [intensity, status]);
-
-  useEffect(() => {
-    controllerRef.current?.setOffset(offsetX, offsetY);
-  }, [offsetX, offsetY, status]);
 
   return (
     <div

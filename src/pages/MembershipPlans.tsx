@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   ArrowRight,
@@ -13,12 +13,11 @@ import {
   UserCheck,
   Users,
 } from "lucide-react";
-import CareConstellation, { type ConstellationFormation } from "../components/membership/CareConstellation";
+import CareConstellation, { type ConstellationAnchorRef } from "../components/membership/CareConstellation";
 import MembershipPlanCard from "../components/membership/MembershipPlanCard";
 import MembershipFaq, { type MembershipFaqItem } from "../components/membership/MembershipFaq";
 import MembershipReassurance from "../components/membership/MembershipReassurance";
-import { useScrollStage } from "../components/membership/useScrollStage";
-import { useMediaQuery } from "../components/membership/motionCapability";
+import { PRESSABLE_CARD, PRESS_HANDLERS } from "../components/membership/pressFeedback";
 import { MEMBERSHIP_TEXT_SCRIM, PMP_PRIMARY_CTA } from "../components/membership/membershipTheme";
 import {
   GOLD_PLAN,
@@ -41,23 +40,6 @@ const PAGE_TITLE = "Primary Care Membership Plans | Primary Medical Physicians";
 const PAGE_DESCRIPTION =
   "Explore Silver and Gold primary care membership plans from Primary Medical Physicians, with clear monthly pricing, defined benefits, and access across PMP locations.";
 const PAGE_URL = "https://primarymedicalphysicians.com/membership-plans";
-
-type StageKey = "hero" | "plans" | "compare" | "family" | "reading" | "final";
-
-// One constellation for the whole page. On the plans it outlines the real
-// Silver/Gold cards; reading-heavy sections drop to a quiet, sparse field.
-const STAGES: Record<
-  StageKey,
-  { formation: ConstellationFormation; intensity: number; offsetY?: number }
-> = {
-  hero: { formation: "flow", intensity: 0.8, offsetY: -0.55 },
-  plans: { formation: "cards", intensity: 1 },
-  compare: { formation: "dispersed", intensity: 0.4 },
-  family: { formation: "family", intensity: 0.9 },
-  reading: { formation: "dispersed", intensity: 0.35 },
-  // Lifted above the closing headline so no particles sit behind the words.
-  final: { formation: "unified", intensity: 0.6, offsetY: 0.5 },
-};
 
 const FAMILY = GOLD_PLAN.familyAddOn!;
 const LABS_ID = footnoteAnchorId("routine-labs");
@@ -311,10 +293,20 @@ function SectionHeader({
   );
 }
 
-function Panel({ children, className = "" }: { children: ReactNode; className?: string }) {
+function Panel({
+  children,
+  className = "",
+  panelRef,
+}: {
+  children: ReactNode;
+  className?: string;
+  panelRef?: RefObject<HTMLDivElement | null>;
+}) {
   return (
     <div
-      className={`rounded-3xl border border-primary-900/10 bg-white p-6 shadow-[0_18px_44px_-30px_rgba(10,25,47,0.28)] sm:p-8 ${className}`}
+      ref={panelRef}
+      {...PRESS_HANDLERS}
+      className={`rounded-3xl border border-primary-900/10 bg-white p-6 shadow-[0_18px_44px_-30px_rgba(10,25,47,0.28)] sm:p-8 ${PRESSABLE_CARD} ${className}`}
     >
       {children}
     </div>
@@ -339,41 +331,54 @@ const TIER_LABEL = {
 } as const;
 
 export default function MembershipPlans() {
-  const pageRef = useRef<HTMLElement>(null);
+  const factsRef = useRef<HTMLUListElement>(null);
   const silverRef = useRef<HTMLDivElement>(null);
   const goldRef = useRef<HTMLDivElement>(null);
-  const anchorRefs = useRef([silverRef, goldRef]).current;
-  const stageKey = useScrollStage<StageKey>(pageRef, "hero");
-  const wide = useMediaQuery("(min-width: 1024px)");
-  const stage = STAGES[stageKey];
+  const tableRef = useRef<HTMLDivElement>(null);
+  const familyRef = useRef<HTMLDivElement>(null);
+  const labsRef = useRef<HTMLDivElement>(null);
+  const discountsRef = useRef<HTMLDivElement>(null);
+  const eligibilityRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLOListElement>(null);
+  const insuranceRef = useRef<HTMLDivElement>(null);
+  const cancellationRef = useRef<HTMLDivElement>(null);
+  const finalRef = useRef<HTMLDivElement>(null);
+
+  // One shared particle pool for the page. Plan cards get their tier colour
+  // plus PMP green at full weight; major information cards get a subtler
+  // PMP-green-only perimeter; the quick facts and final CTA only a faint one.
+  // Hidden elements (the desktop table on phones) are ignored by the engine.
+  const anchors = useRef<ConstellationAnchorRef[]>([
+    { ref: factsRef, kind: "green", weight: 0.25 },
+    { ref: silverRef, kind: "silver", weight: 1 },
+    { ref: goldRef, kind: "gold", weight: 1 },
+    { ref: tableRef, kind: "green", weight: 0.45 },
+    { ref: familyRef, kind: "green", weight: 0.6 },
+    { ref: labsRef, kind: "green", weight: 0.5 },
+    { ref: discountsRef, kind: "green", weight: 0.45 },
+    { ref: eligibilityRef, kind: "green", weight: 0.5 },
+    { ref: stepsRef, kind: "green", weight: 0.45 },
+    { ref: insuranceRef, kind: "green", weight: 0.5 },
+    { ref: cancellationRef, kind: "green", weight: 0.5 },
+    { ref: finalRef, kind: "green", weight: 0.3 },
+  ]).current;
 
   usePageMetadata();
   useInitialHashScroll();
 
-  const familyOffsetX = stageKey === "family" && wide ? 0.5 : 0;
-  // Wide screens: keep the hero stream in the open band below the hero buttons.
-  const offsetY = stageKey === "hero" && wide ? -0.72 : (stage.offsetY ?? 0);
-
   return (
-    <main ref={pageRef} className="relative isolate overflow-x-clip bg-white text-primary-900">
-      <CareConstellation
-        formation={stage.formation}
-        intensity={stage.intensity}
-        offsetX={familyOffsetX}
-        offsetY={offsetY}
-        anchorRefs={anchorRefs}
-      />
+    <main className="relative isolate overflow-x-clip bg-white text-primary-900">
+      <CareConstellation anchors={anchors} intensity={0.45} />
 
       {/* The site header is transparent with white text until scrolled; this
           navy band behind it keeps it legible above the light page. */}
       <div aria-hidden="true" className="relative h-20 bg-primary-900 lg:h-[88px] xl:h-24 2xl:h-[104px]" />
 
       <div className="relative">
-        {/* Hero */}
+        {/* Hero: intro, then the quick facts straight away (no decorative gap). */}
         <section
-          data-stage="hero"
           aria-labelledby="membership-plans-title"
-          className={`${tinted("aqua")} flex min-h-[calc(100vh-5rem)] items-start pb-16 pt-14 supports-[height:100svh]:min-h-[calc(100svh-5rem)] sm:pt-20 lg:items-center lg:pt-10`}
+          className={`${tinted("aqua")} pb-14 pt-12 sm:pb-16 sm:pt-16 lg:pb-20 lg:pt-20`}
         >
           <div className="mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8">
             <div className={`mx-auto max-w-2xl text-center lg:mx-0 lg:text-left ${MEMBERSHIP_TEXT_SCRIM}`}>
@@ -408,31 +413,34 @@ export default function MembershipPlans() {
                 </a>
               </div>
             </div>
+
+            <ul
+              ref={factsRef}
+              aria-label="Membership at a glance"
+              className="mt-10 grid auto-rows-fr grid-cols-2 gap-3 sm:gap-4 lg:mt-14 lg:grid-cols-4"
+            >
+              {TRUST_FACTS.map(({ icon: Icon, label }) => (
+                <li
+                  key={label}
+                  {...PRESS_HANDLERS}
+                  className={`flex h-full flex-col items-start gap-2.5 rounded-2xl border border-primary-900/10 bg-white px-4 py-4 shadow-[0_12px_30px_-24px_rgba(10,25,47,0.35)] sm:flex-row sm:items-center sm:gap-4 sm:px-5 ${PRESSABLE_CARD}`}
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-member-aqua text-accent-700">
+                    <Icon aria-hidden="true" className="h-[18px] w-[18px]" />
+                  </span>
+                  <span className="text-sm font-semibold leading-snug text-primary-900 sm:text-base">{label}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
-        {/* Quick facts */}
-        <section aria-label="Membership at a glance" className="relative mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-          <ul className="-mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-            {TRUST_FACTS.map(({ icon: Icon, label }) => (
-              <li
-                key={label}
-                className="flex min-h-[72px] items-center gap-3 rounded-2xl border border-primary-900/10 bg-white px-4 py-3 shadow-[0_12px_30px_-24px_rgba(10,25,47,0.35)] sm:gap-4 sm:px-5"
-              >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-member-aqua text-accent-700">
-                  <Icon aria-hidden="true" className="h-[18px] w-[18px]" />
-                </span>
-                <span className="text-sm font-semibold leading-snug text-primary-900 sm:text-base">{label}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
         {/* Plans */}
-        <section id="plans" data-stage="plans" aria-labelledby="plans-title" className={`${tinted("mist")} mt-16 scroll-mt-24 py-20 sm:mt-20 sm:py-28`}>
+        <section id="plans" aria-labelledby="plans-title" className={`${tinted("mist")} scroll-mt-24 py-20 sm:py-28`}>
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
             <SectionHeader eyebrow="Membership plans" title="Silver and Gold" id="plans-title" />
-            <div className="mx-auto mt-12 grid max-w-[30rem] gap-8 md:max-w-none md:grid-cols-2 md:gap-8 lg:gap-12">
+            {/* Phones: a 48px gap gives each plan's particles room to settle. */}
+            <div className="mx-auto mt-12 grid max-w-[30rem] gap-12 md:max-w-none md:grid-cols-2 md:gap-8 lg:gap-12">
               <div ref={silverRef} className="h-full">
                 <MembershipPlanCard
                   id="silver"
@@ -467,11 +475,14 @@ export default function MembershipPlans() {
         </section>
 
         {/* Comparison */}
-        <section id="compare" data-stage="compare" aria-labelledby="compare-title" className={`${tinted("white")} scroll-mt-24 py-20 sm:py-28`}>
+        <section id="compare" aria-labelledby="compare-title" className={`${tinted("white")} scroll-mt-24 py-20 sm:py-28`}>
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
             <SectionHeader eyebrow="Plan comparison" title="Compare Silver and Gold" id="compare-title" />
 
-            <div className="mt-12 hidden overflow-hidden rounded-3xl border border-primary-900/10 bg-white shadow-[0_18px_44px_-30px_rgba(10,25,47,0.28)] md:block">
+            <div
+              ref={tableRef}
+              className="mt-12 hidden overflow-hidden rounded-3xl border border-primary-900/10 bg-white shadow-[0_18px_44px_-30px_rgba(10,25,47,0.28)] md:block"
+            >
               <table className="w-full table-fixed border-collapse text-left">
                 <caption className="sr-only">Silver and Gold membership comparison</caption>
                 <colgroup>
@@ -542,16 +553,18 @@ export default function MembershipPlans() {
         </section>
 
         {/* Gold family option */}
-        <section id="family" data-stage="family" aria-labelledby="family-title" className={`${tinted("white")} scroll-mt-24 pb-20 sm:pb-28`}>
+        <section id="family" aria-labelledby="family-title" className={`${tinted("white")} scroll-mt-24 pb-20 sm:pb-28`}>
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-            {/* Soft aqua container, painted beneath the particles so the family cluster shows over it. */}
-            <div className="relative grid items-center gap-10 rounded-[2rem] px-5 py-12 before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[2rem] before:border before:border-accent-500/15 before:bg-member-aqua sm:px-10 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:px-14 [--membership-scrim:var(--color-member-aqua)]">
-              <div>
-                <SectionHeader eyebrow="Gold add-on" title="Gold Family Option" id="family-title" align="left">
-                  <p>Gold members may add up to {FAMILY.maxAdditionalMembers} eligible direct family members.</p>
-                </SectionHeader>
+            {/* Soft aqua container, painted beneath the particle canvas so its green perimeter shows over it. */}
+            <div
+              ref={familyRef}
+              className="relative grid items-center gap-10 rounded-[2rem] px-5 py-12 before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[2rem] before:border before:border-primary-900/[0.06] before:bg-member-aqua sm:px-10 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:px-14 [--membership-scrim:var(--color-member-aqua)]"
+            >
+              <SectionHeader eyebrow="Gold add-on" title="Gold Family Option" id="family-title" align="left">
+                <p>Gold members may add up to {FAMILY.maxAdditionalMembers} eligible direct family members.</p>
+              </SectionHeader>
 
-                <Panel className="reveal-up mt-8">
+              <Panel className="reveal-up">
                   <h3 className="text-sm font-bold uppercase tracking-wider text-primary-900/65">Eligible family members</h3>
                   <ul className="mt-3 space-y-2">
                     {FAMILY.eligibleMembers.map((member) => (
@@ -578,18 +591,15 @@ export default function MembershipPlans() {
                       </dd>
                     </div>
                   </dl>
-                </Panel>
-              </div>
-              {/* Right column is left open for the family cluster in the constellation. */}
-              <div aria-hidden="true" className="hidden lg:block" />
+              </Panel>
             </div>
           </div>
         </section>
 
         {/* Routine labs + discounted services */}
-        <section id={LABS_ID} data-stage="reading" aria-labelledby="labs-title" className={`${tinted("mist")} scroll-mt-24 py-20 sm:py-24`}>
+        <section id={LABS_ID} aria-labelledby="labs-title" className={`${tinted("mist")} scroll-mt-24 py-20 sm:py-24`}>
           <div className="mx-auto grid max-w-6xl gap-6 px-5 sm:px-6 lg:grid-cols-[1.4fr_1fr] lg:px-8">
-            <Panel className="reveal-up">
+            <Panel className="reveal-up" panelRef={labsRef}>
               <h2 id="labs-title" className="font-serif text-3xl font-medium text-primary-900 sm:text-4xl">
                 About Routine Labs
               </h2>
@@ -610,7 +620,7 @@ export default function MembershipPlans() {
               </p>
             </Panel>
 
-            <Panel className="reveal-up">
+            <Panel className="reveal-up" panelRef={discountsRef}>
               <h3 className="font-serif text-2xl font-medium text-primary-900">Discounted services</h3>
               <dl className="mt-5 space-y-5">
                 <div className="border-l-2 border-member-silver-ink/50 pl-4">
@@ -631,9 +641,9 @@ export default function MembershipPlans() {
         </section>
 
         {/* Eligibility */}
-        <section id="eligibility" data-stage="reading" aria-labelledby="eligibility-title" className={`${tinted("white")} scroll-mt-24 py-20 sm:py-24`}>
+        <section id="eligibility" aria-labelledby="eligibility-title" className={`${tinted("white")} scroll-mt-24 py-20 sm:py-24`}>
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-            <Panel className="reveal-up flex flex-col gap-5 border-l-4 border-l-accent-500 sm:flex-row sm:items-start sm:gap-7">
+            <Panel className="reveal-up flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7" panelRef={eligibilityRef}>
               <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-member-aqua text-accent-700">
                 <UserCheck aria-hidden="true" className="h-6 w-6" />
               </span>
@@ -649,14 +659,15 @@ export default function MembershipPlans() {
         </section>
 
         {/* How it works */}
-        <section data-stage="reading" aria-labelledby="how-title" className={`${tinted("mist")} py-20 sm:py-28`}>
+        <section aria-labelledby="how-title" className={`${tinted("mist")} py-20 sm:py-28`}>
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
             <SectionHeader eyebrow="How it works" title="How membership works" id="how-title" />
-            <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ol ref={stepsRef} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {STEPS.map(({ icon: Icon, title, text }, i) => (
                 <li
                   key={title}
-                  className="reveal-up rounded-3xl border border-primary-900/10 bg-white p-6 shadow-[0_14px_34px_-28px_rgba(10,25,47,0.35)]"
+                  {...PRESS_HANDLERS}
+                  className={`reveal-up rounded-3xl border border-primary-900/10 bg-white p-6 shadow-[0_14px_34px_-28px_rgba(10,25,47,0.35)] ${PRESSABLE_CARD}`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="grid h-11 w-11 place-items-center rounded-2xl bg-member-aqua text-accent-700">
@@ -678,18 +689,18 @@ export default function MembershipPlans() {
         </section>
 
         {/* Membership & insurance, cancellation */}
-        <section data-stage="reading" aria-labelledby="terms-title" className={`${tinted("white")} py-20 sm:py-28`}>
+        <section aria-labelledby="terms-title" className={`${tinted("white")} py-20 sm:py-28`}>
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
             <SectionHeader eyebrow="Before you enroll" title="Important membership information" id="terms-title" />
             <div className="mt-12 grid gap-6 lg:grid-cols-2">
-              <Panel className="reveal-up border-t-4 border-t-accent-500">
+              <Panel className="reveal-up" panelRef={insuranceRef}>
                 <div className="flex items-center gap-3">
                   <Info aria-hidden="true" className="h-5 w-5 shrink-0 text-accent-700" />
                   <h3 className="text-xl font-bold text-primary-900">Membership and insurance</h3>
                 </div>
                 <p className="mt-4 text-base leading-relaxed text-primary-900/85">{MEMBERSHIP_INSURANCE_DISCLOSURE}</p>
               </Panel>
-              <Panel className="reveal-up border-t-4 border-t-accent-500">
+              <Panel className="reveal-up" panelRef={cancellationRef}>
                 <div className="flex items-center gap-3">
                   <CalendarClock aria-hidden="true" className="h-5 w-5 shrink-0 text-accent-700" />
                   <h3 className="text-xl font-bold text-primary-900">Cancellation</h3>
@@ -708,7 +719,7 @@ export default function MembershipPlans() {
         </section>
 
         {/* FAQ */}
-        <section id="faq" data-stage="reading" aria-labelledby="faq-title" className={`${tinted("mist")} scroll-mt-24 py-20 sm:py-28`}>
+        <section id="faq" aria-labelledby="faq-title" className={`${tinted("mist")} scroll-mt-24 py-20 sm:py-28`}>
           <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
             <SectionHeader eyebrow="FAQ" title="Frequently asked questions" id="faq-title" />
             <div className="mt-10">
@@ -718,8 +729,8 @@ export default function MembershipPlans() {
         </section>
 
         {/* Final CTA */}
-        <section data-stage="final" aria-labelledby="final-title" className={`${tinted("aqua")} px-5 pb-28 pt-24 sm:px-6 sm:pb-36 sm:pt-32 lg:px-8`}>
-          <div className={`reveal-up mx-auto max-w-3xl text-center ${MEMBERSHIP_TEXT_SCRIM}`}>
+        <section aria-labelledby="final-title" className={`${tinted("aqua")} px-5 pb-24 pt-16 sm:px-6 sm:pb-32 sm:pt-24 lg:px-8`}>
+          <div ref={finalRef} className={`reveal-up mx-auto max-w-3xl text-center ${MEMBERSHIP_TEXT_SCRIM}`}>
             <h2
               id="final-title"
               className="text-balance font-serif text-[2.1rem] font-medium leading-[1.1] text-primary-900 sm:text-5xl lg:text-6xl"

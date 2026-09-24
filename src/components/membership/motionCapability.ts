@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
@@ -14,20 +14,6 @@ export function prefersReducedMotion(): boolean {
 
 export function usePrefersReducedMotion(): boolean {
   return useSyncExternalStore(subscribeReducedMotion, prefersReducedMotion, () => false);
-}
-
-// Re-renders only when the query's match state flips (e.g. crossing a breakpoint).
-export function useMediaQuery(query: string): boolean {
-  const subscribe = useCallback(
-    (onChange: () => void) => {
-      const mql = window.matchMedia(query);
-      mql.addEventListener("change", onChange);
-      return () => mql.removeEventListener("change", onChange);
-    },
-    [query],
-  );
-  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
-  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
 
 export type DeviceTier = "low" | "mid" | "high";

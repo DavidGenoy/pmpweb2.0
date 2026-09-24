@@ -1,10 +1,9 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import CareConstellation, { type ConstellationFormation } from "./membership/CareConstellation";
+import CareConstellation, { type ConstellationAnchorRef } from "./membership/CareConstellation";
 import MembershipTeaserCard from "./membership/MembershipTeaserCard";
 import MembershipReassurance from "./membership/MembershipReassurance";
-import { useScrollStage } from "./membership/useScrollStage";
 import { MEMBERSHIP_TEXT_SCRIM as TEXT_SCRIM } from "./membership/membershipTheme";
 import {
   GOLD_PLAN,
@@ -15,27 +14,18 @@ import {
   SILVER_PLAN,
 } from "./membership/membershipData";
 
-type StageKey = "intro" | "plans" | "cta";
-
-// Kept a little quieter than the dedicated plans page.
-const STAGES: Record<StageKey, { formation: ConstellationFormation; intensity: number }> = {
-  intro: { formation: "dispersed", intensity: 0.55 },
-  plans: { formation: "cards", intensity: 0.8 },
-  cta: { formation: "dispersed", intensity: 0.45 },
-};
-
 export default function MembershipSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const silverRef = useRef<HTMLDivElement>(null);
   const goldRef = useRef<HTMLDivElement>(null);
-  const anchorRefs = useRef([silverRef, goldRef]).current;
-  const stage = STAGES[useScrollStage<StageKey>(sectionRef, "intro")];
+  const anchors = useRef<ConstellationAnchorRef[]>([
+    { ref: silverRef, kind: "silver", weight: 1 },
+    { ref: goldRef, kind: "gold", weight: 1 },
+  ]).current;
   const labsNote = MEMBERSHIP_FOOTNOTES["routine-labs"];
 
   return (
     <section
       id="membership"
-      ref={sectionRef}
       aria-labelledby="membership-heading"
       className="relative isolate overflow-x-clip bg-member-mist bg-[radial-gradient(90%_60%_at_50%_0%,var(--color-member-aqua),transparent_70%)] py-24 text-primary-900 [--membership-scrim:var(--color-member-mist)] md:py-32"
     >
@@ -43,10 +33,11 @@ export default function MembershipSection() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent"
       />
-      <CareConstellation formation={stage.formation} intensity={stage.intensity} anchorRefs={anchorRefs} />
+      {/* The free-flow field is kept a little quieter than on the plans page. */}
+      <CareConstellation anchors={anchors} intensity={0.4} />
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-        <header data-stage="intro" className={`reveal-up mx-auto max-w-2xl text-center ${TEXT_SCRIM}`}>
+        <header className={`reveal-up mx-auto max-w-2xl text-center ${TEXT_SCRIM}`}>
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent-700">PMP Membership</p>
           <h2
             id="membership-heading"
@@ -60,11 +51,9 @@ export default function MembershipSection() {
           </p>
         </header>
 
-        {/* Matched pair from md up: same top line, stretched to equal height. */}
-        <div
-          data-stage="plans"
-          className="mx-auto mt-12 grid max-w-[26rem] gap-7 md:mt-16 md:max-w-none md:grid-cols-2 md:gap-8 lg:gap-12"
-        >
+        {/* Matched pair from md up (same top line, stretched to equal height);
+            on phones a 48px gap gives each plan's particles room to settle. */}
+        <div className="mx-auto mt-12 grid max-w-[26rem] gap-12 md:mt-16 md:max-w-none md:grid-cols-2 md:gap-8 lg:gap-12">
           <div ref={silverRef} className="reveal-up h-full">
             <MembershipTeaserCard plan={SILVER_PLAN} href={`${MEMBERSHIP_PLANS_PATH}#silver`} />
           </div>
@@ -74,7 +63,6 @@ export default function MembershipSection() {
         </div>
 
         <div
-          data-stage="cta"
           className={`reveal-up mx-auto mt-14 flex max-w-2xl flex-col items-center text-center md:mt-16 ${TEXT_SCRIM}`}
         >
           <Link
