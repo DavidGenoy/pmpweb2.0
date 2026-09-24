@@ -31,6 +31,13 @@
   /* Membership tier accents: restrained, desaturated, used sparingly on the PMP navy/teal base */
   --color-member-silver: #c5ced8;
   --color-member-gold: #c9ab6e;
+
+  /* Fade-in for membership disclosure panels; layout changes instantly, no height animation */
+  --animate-membership-reveal: membership-reveal 220ms ease-out;
+  @keyframes membership-reveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
 }
 
 @layer base {

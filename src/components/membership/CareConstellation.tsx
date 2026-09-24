@@ -11,7 +11,7 @@ import {
 export type { ConstellationFormation } from "./constellationFormations";
 
 interface CareConstellationProps {
-  // Fixed formation with ambient motion only. Omit to morph with scroll.
+  // Target formation (changes morph smoothly). Omit to morph with scroll progress.
   formation?: ConstellationFormation;
   // "traverse": 0 as the section enters the viewport, 1 as it leaves.
   // "contain": 0 when its top reaches the viewport top, 1 when its bottom reaches the bottom (pinned/sticky stages).
@@ -19,6 +19,9 @@ interface CareConstellationProps {
   // Element whose scroll position drives the morph; defaults to the parent section.
   progressTargetRef?: RefObject<HTMLElement | null>;
   intensity?: number;
+  // Formation shift as fractions of half the canvas width/height (+x right, +y up).
+  offsetX?: number;
+  offsetY?: number;
   className?: string;
 }
 
@@ -73,6 +76,8 @@ export default function CareConstellation({
   range = "traverse",
   progressTargetRef,
   intensity = 1,
+  offsetX = 0,
+  offsetY = 0,
   className = "",
 }: CareConstellationProps) {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -83,9 +88,9 @@ export default function CareConstellation({
 
   // Latest props for the engine's asynchronous creation; declared before the
   // init effect so it is up to date when that effect runs.
-  const initialOptions = useRef({ formation, range, progressTargetRef, intensity });
+  const initialOptions = useRef({ formation, range, progressTargetRef, intensity, offsetX, offsetY });
   useEffect(() => {
-    initialOptions.current = { formation, range, progressTargetRef, intensity };
+    initialOptions.current = { formation, range, progressTargetRef, intensity, offsetX, offsetY };
   });
 
   useEffect(() => {
@@ -120,6 +125,8 @@ export default function CareConstellation({
               reducedMotion: prefersReducedMotion(),
               formation: opts.formation,
               intensity: opts.intensity,
+              offsetX: opts.offsetX,
+              offsetY: opts.offsetY,
               onFailure: fail,
             });
             if (!controller) {
@@ -165,6 +172,14 @@ export default function CareConstellation({
   useEffect(() => {
     controllerRef.current?.setFormation(formation);
   }, [formation, status]);
+
+  useEffect(() => {
+    controllerRef.current?.setIntensity(intensity);
+  }, [intensity, status]);
+
+  useEffect(() => {
+    controllerRef.current?.setOffset(offsetX, offsetY);
+  }, [offsetX, offsetY, status]);
 
   return (
     <div

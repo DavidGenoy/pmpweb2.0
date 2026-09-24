@@ -3,21 +3,17 @@
 // buffers is a uniform subset of the whole shape. The engine relies on that to
 // lower particle density by shrinking the draw range.
 
-export const FORMATION_ORDER = ["dispersed", "silver", "flow", "gold", "unified"] as const;
+export const FORMATION_ORDER = ["dispersed", "silver", "flow", "gold", "unified", "dual", "family"] as const;
 export type ConstellationFormation = (typeof FORMATION_ORDER)[number];
 
-// Largest radius any centred formation reaches; the engine scales the group so
-// this always fits inside the canvas, including narrow portrait phones.
-export const FORMATION_EXTENT = 1.9;
+// Largest radius any formation reaches; the engine scales the group so this
+// always fits inside the canvas, including narrow portrait phones.
+export const FORMATION_EXTENT = 2.05;
 
-export interface FormationBuffers {
-  dispersed: Float32Array;
-  silver: Float32Array;
-  flow: Float32Array;
-  gold: Float32Array;
-  unified: Float32Array;
-  seeds: Float32Array;
-}
+// Formations that scroll-progress mode steps through, in order.
+export const PROGRESS_SEQUENCE: readonly ConstellationFormation[] = ["dispersed", "silver", "flow", "gold", "unified"];
+
+export type FormationBuffers = Record<ConstellationFormation, Float32Array> & { seeds: Float32Array };
 
 function mulberry32(seed: number) {
   let a = seed >>> 0;
@@ -114,19 +110,59 @@ function unified(rand: Rand): Vec3 {
   return [x * r, y * r, z * r];
 }
 
+// Silver (x < 0) and Gold (x > 0) side by side: a single orbit beside a pair of
+// interlocking orbits. The shader tints each side by the sign of x.
+function dual(rand: Rand): Vec3 {
+  if (rand() < 0.44) {
+    const [x, y, z] = rand() < 0.8 ? ringPoint(rand, 0.72, 0.05, 66 * DEG, -10 * DEG) : corePoint(rand, 0.22);
+    return [x - 1.08, y, z];
+  }
+  const pick = rand();
+  const [x, y, z] =
+    pick < 0.42
+      ? ringPoint(rand, 0.76, 0.045, 52 * DEG, 30 * DEG)
+      : pick < 0.82
+        ? ringPoint(rand, 0.88, 0.05, 58 * DEG, -32 * DEG)
+        : corePoint(rand, 0.26);
+  return [x + 1.08, y, z];
+}
+
+// A member core with up to three linked family satellites.
+const SATELLITES = [90, 210, 330].map((deg) => [Math.cos(deg * DEG) * 1.45, Math.sin(deg * DEG) * 1.45]);
+
+function family(rand: Rand): Vec3 {
+  const pick = rand();
+  if (pick < 0.38) return corePoint(rand, 0.55);
+  const [sx, sy] = SATELLITES[Math.floor(rand() * 3)];
+  if (pick < 0.76) {
+    const [x, y, z] = corePoint(rand, 0.27);
+    return [sx + x, sy + y, z];
+  }
+  // Soft filaments from the core to each satellite.
+  const t = 0.3 + rand() * 0.5;
+  return [sx * t + gaussian(rand) * 0.035, sy * t + gaussian(rand) * 0.035, gaussian(rand) * 0.05];
+}
+
 export function buildFormations(count: number, seed = 20260923): FormationBuffers {
-  const generators = { dispersed, silver, flow, gold, unified };
+  const generators: Record<ConstellationFormation, (rand: Rand) => Vec3> = {
+    dispersed,
+    silver,
+    flow,
+    gold,
+    unified,
+    dual,
+    family,
+  };
   const buffers = {
-    dispersed: new Float32Array(count * 3),
-    silver: new Float32Array(count * 3),
-    flow: new Float32Array(count * 3),
-    gold: new Float32Array(count * 3),
-    unified: new Float32Array(count * 3),
+    ...(Object.fromEntries(FORMATION_ORDER.map((name) => [name, new Float32Array(count * 3)])) as Record<
+      ConstellationFormation,
+      Float32Array
+    >),
     seeds: new Float32Array(count * 4),
   };
 
   for (const name of FORMATION_ORDER) {
-    const rand = mulberry32(seed + name.length * 7919 + name.charCodeAt(0));
+    const rand = mulberry32(seed + name.length * 7919 + name.charCodeAt(0) * 31 + name.charCodeAt(1));
     const target = buffers[name];
     for (let i = 0; i < count; i++) target.set(generators[name](rand), i * 3);
   }

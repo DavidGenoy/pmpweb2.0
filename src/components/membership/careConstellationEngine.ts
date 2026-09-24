@@ -15,7 +15,7 @@ import {
 } from "three";
 import {
   FORMATION_EXTENT,
-  FORMATION_ORDER,
+  PROGRESS_SEQUENCE,
   buildFormations,
   formationIndex,
   type ConstellationFormation,
@@ -34,6 +34,9 @@ export interface ConstellationEngineOptions {
   reducedMotion: boolean;
   formation?: ConstellationFormation;
   intensity: number;
+  // Formation offset as fractions of half the canvas width/height (+x right, +y up).
+  offsetX: number;
+  offsetY: number;
   onFailure: () => void;
 }
 
@@ -41,6 +44,8 @@ export interface ConstellationController {
   setInView(inView: boolean): void;
   setReducedMotion(reduced: boolean): void;
   setFormation(formation: ConstellationFormation | undefined): void;
+  setIntensity(intensity: number): void;
+  setOffset(offsetX: number, offsetY: number): void;
   dispose(): void;
 }
 
@@ -50,9 +55,16 @@ const TIER_SETTINGS: Record<DeviceTier, { count: number; minCount: number; maxDp
   high: { count: 3200, minCount: 900, maxDpr: 1.75, size: 2.3 },
 };
 
-const LAST_FORMATION = FORMATION_ORDER.length - 1;
 const CAMERA_Z = 7.5;
 const FOV = 35;
+const MORPH_SECONDS = 1.6;
+const BASE_OPACITY = 0.8;
+
+// Direct moves that should pass through an intermediate formation.
+const VIA: Partial<Record<string, ConstellationFormation>> = {
+  "silver>gold": "flow",
+  "gold>silver": "flow",
+};
 
 // sRGB values passed straight to the shader (Vector3, not Color) so three's
 // colour management doesn't linearise them; custom shaders output as-is.
@@ -63,39 +75,60 @@ const COLORS = {
   gold: new Vector3(0.79, 0.67, 0.43),
 };
 
+const i = (name: ConstellationFormation) => `${formationIndex(name)}.0`;
+
 const vertexShader = /* glsl */ `
-  uniform float uMorph;
+  uniform float uFrom;
+  uniform float uTo;
+  uniform float uT;
   uniform float uTime;
   uniform float uMotion;
   uniform float uPixelRatio;
   uniform float uSize;
+  uniform vec2 uOffset;
   uniform vec2 uField;
+  uniform vec3 uTeal;
+  uniform vec3 uSilver;
+  uniform vec3 uGold;
 
   attribute vec3 aSilver;
   attribute vec3 aFlow;
   attribute vec3 aGold;
   attribute vec3 aUnified;
+  attribute vec3 aDual;
+  attribute vec3 aFamily;
   attribute vec4 aSeed;
 
   varying float vPick;
   varying float vDepth;
+  varying vec3 vTint;
 
   vec3 formationAt(float i) {
-    if (i < 0.5) return vec3(position.xy * uField, position.z);
-    if (i < 1.5) return aSilver;
-    if (i < 2.5) return vec3(aFlow.x * uField.x * 0.94, aFlow.yz);
-    if (i < 3.5) return aGold;
-    return aUnified;
+    if (i < ${i("dispersed")} + 0.5) return vec3(position.xy * uField, position.z);
+    if (i < ${i("silver")} + 0.5) return aSilver;
+    if (i < ${i("flow")} + 0.5) return vec3(aFlow.x * uField.x * 0.94, aFlow.yz);
+    if (i < ${i("gold")} + 0.5) return aGold;
+    if (i < ${i("unified")} + 0.5) return aUnified;
+    if (i < ${i("dual")} + 0.5) return aDual;
+    return aFamily;
+  }
+
+  vec3 tintAt(float i) {
+    if (i > ${i("silver")} - 0.5 && i < ${i("silver")} + 0.5) return uSilver;
+    if (i > ${i("gold")} - 0.5 && i < ${i("gold")} + 0.5) return uGold;
+    if (i > ${i("dual")} - 0.5 && i < ${i("dual")} + 0.5) return aDual.x < 0.0 ? uSilver : uGold;
+    if (i > ${i("family")} - 0.5) return uGold;
+    return uTeal;
   }
 
   void main() {
-    // Each particle starts its move at a staggered point within the segment but
-    // always finishes by its end, so every formation is exact at rest.
-    float seg = min(floor(uMorph), 3.0);
+    // Each particle starts its move at a staggered point but always finishes by
+    // the end of the transition, so every formation is exact at rest.
     float span = 0.4 * uMotion;
-    float f = clamp((uMorph - seg - aSeed.x * span) / (1.0 - span), 0.0, 1.0);
+    float f = clamp((uT - aSeed.x * span) / (1.0 - span), 0.0, 1.0);
     f = f * f * (3.0 - 2.0 * f);
-    vec3 p = mix(formationAt(seg), formationAt(seg + 1.0), f);
+    vec3 p = mix(formationAt(uFrom), formationAt(uTo), f);
+    p.xy += uOffset;
 
     float phase = aSeed.w * 6.2831853;
     p += uMotion * 0.04 * vec3(
@@ -109,6 +142,7 @@ const vertexShader = /* glsl */ `
     gl_PointSize = uSize * (0.55 + aSeed.z * 0.9) * uPixelRatio * (${CAMERA_Z.toFixed(1)} / -mv.z);
 
     vPick = aSeed.y;
+    vTint = mix(tintAt(uFrom), tintAt(uTo), f);
     vDepth = smoothstep(${(CAMERA_Z + 3.5).toFixed(1)}, ${(CAMERA_Z - 3.5).toFixed(1)}, -mv.z);
   }
 `;
@@ -116,16 +150,16 @@ const vertexShader = /* glsl */ `
 const fragmentShader = /* glsl */ `
   uniform vec3 uTeal;
   uniform vec3 uMist;
-  uniform vec3 uTint;
   uniform float uOpacity;
 
   varying float vPick;
   varying float vDepth;
+  varying vec3 vTint;
 
   void main() {
     float d = length(gl_PointCoord - 0.5);
     float a = 1.0 - smoothstep(0.16, 0.5, d);
-    vec3 col = mix(uTint, mix(uTeal, uMist, step(0.78, vPick)), step(0.42, vPick));
+    vec3 col = mix(vTint, mix(uTeal, uMist, step(0.78, vPick)), step(0.42, vPick));
     float alpha = a * uOpacity * (0.35 + 0.65 * vDepth);
     if (alpha < 0.004) discard;
     gl_FragColor = vec4(col * alpha, alpha);
@@ -137,12 +171,17 @@ function smoothstep(e0: number, e1: number, x: number): number {
   return t * t * (3 - 2 * t);
 }
 
-// Maps scroll progress to a morph value with short rests on each formation.
-function progressToMorph(progress: number): number {
-  const u = Math.min(1, Math.max(0, progress)) * LAST_FORMATION;
-  const seg = Math.min(Math.floor(u), LAST_FORMATION - 1);
+// Maps scroll progress to a position along PROGRESS_SEQUENCE with short rests
+// on each formation.
+function progressToSequence(progress: number): number {
+  const last = PROGRESS_SEQUENCE.length - 1;
+  const u = Math.min(1, Math.max(0, progress)) * last;
+  const seg = Math.min(Math.floor(u), last - 1);
   return seg + smoothstep(0.18, 0.82, u - seg);
 }
+
+const damp = (current: number, target: number, rate: number, dt: number) =>
+  current + (target - current) * (1 - Math.exp(-dt * rate));
 
 export function createCareConstellation(options: ConstellationEngineOptions): ConstellationController | null {
   const { canvas, gl, host, progressSource, range, tier, onFailure } = options;
@@ -161,8 +200,8 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
 
   let renderer: WebGLRenderer;
   try {
-    // The context was created (with alpha, no depth/stencil, low-power) by the
-    // caller before this module was downloaded; three reads its attributes.
+    // The context was created (with alpha, no depth/stencil, no antialias,
+    // low-power) by the caller before this module was downloaded.
     renderer = new WebGLRenderer({ canvas, context: gl, depth: false, stencil: false });
   } catch {
     return null;
@@ -181,19 +220,25 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
   geometry.setAttribute("aFlow", new BufferAttribute(formations.flow, 3));
   geometry.setAttribute("aGold", new BufferAttribute(formations.gold, 3));
   geometry.setAttribute("aUnified", new BufferAttribute(formations.unified, 3));
+  geometry.setAttribute("aDual", new BufferAttribute(formations.dual, 3));
+  geometry.setAttribute("aFamily", new BufferAttribute(formations.family, 3));
   geometry.setAttribute("aSeed", new BufferAttribute(formations.seeds, 4));
 
   const uniforms = {
-    uMorph: { value: 0 },
+    uFrom: { value: 0 },
+    uTo: { value: 0 },
+    uT: { value: 1 },
     uTime: { value: 0 },
     uMotion: { value: options.reducedMotion ? 0 : 1 },
     uPixelRatio: { value: 1 },
     uSize: { value: settings.size },
+    uOffset: { value: new Vector2(0, 0) },
     uField: { value: new Vector2(3, 2) },
     uTeal: { value: COLORS.teal },
     uMist: { value: COLORS.mist },
-    uTint: { value: COLORS.teal.clone() },
-    uOpacity: { value: 0.8 * options.intensity },
+    uSilver: { value: COLORS.silver },
+    uGold: { value: COLORS.gold },
+    uOpacity: { value: BASE_OPACITY * options.intensity },
   };
 
   const material = new ShaderMaterial({
@@ -217,10 +262,27 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
   let inView = false;
   let pageVisible = document.visibilityState !== "hidden";
   let reducedMotion = options.reducedMotion;
-  let staticFormation = options.formation;
   let rafId = 0;
   let lastFrame = 0;
   let hasRendered = false;
+
+  // Formation mode: move from -> to over MORPH_SECONDS; a newer request waits
+  // for the current move to finish so positions never jump.
+  let requested: ConstellationFormation | undefined = options.formation;
+  let fromName: ConstellationFormation = "dispersed";
+  let toName: ConstellationFormation = options.formation ?? "dispersed";
+  let t = toName === "dispersed" ? 1 : 0;
+  let sequencePos = 0;
+
+  let intensity = options.intensity;
+  // Offset is tracked as fractions of the half canvas size and eased toward its
+  // goal; the formation scale shrinks with it so shifted shapes never clip.
+  const offsetGoal = new Vector2(options.offsetX, options.offsetY);
+  const offsetNow = offsetGoal.clone();
+  let halfW = 1;
+  let halfH = 1;
+  let fit = 1;
+  let fitGoal = 1;
 
   let drawCount = settings.count;
   let sampleFrames = 0;
@@ -231,10 +293,6 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
   let viewportW = window.innerWidth;
   let viewportH = window.innerHeight;
 
-  function staticMorph(): number {
-    return formationIndex(staticFormation ?? "unified");
-  }
-
   function readProgress(): number {
     const scrollY = window.scrollY;
     const p =
@@ -244,17 +302,48 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
     return Math.min(1, Math.max(0, p));
   }
 
-  function targetMorph(): number {
-    if (reducedMotion || staticFormation) return staticMorph();
-    return progressToMorph(readProgress());
+  function nextStep(from: ConstellationFormation, target: ConstellationFormation): ConstellationFormation {
+    return VIA[`${from}>${target}`] ?? target;
   }
 
-  function updateTint(morph: number) {
-    const s = Math.max(0, 1 - Math.abs(morph - 1));
-    const g = Math.max(0, 1 - Math.abs(morph - 3));
-    const tint = uniforms.uTint.value;
-    tint.copy(COLORS.teal).multiplyScalar(1 - s - g);
-    tint.addScaledVector(COLORS.silver, s).addScaledVector(COLORS.gold, g);
+  function applyMorph() {
+    uniforms.uFrom.value = formationIndex(fromName);
+    uniforms.uTo.value = formationIndex(toName);
+    uniforms.uT.value = t;
+  }
+
+  function updateFitGoal() {
+    const ox = Math.min(Math.abs(offsetGoal.x), 0.6);
+    const oy = Math.min(Math.abs(offsetGoal.y), 0.6);
+    fitGoal = Math.min(1, (halfW * (0.92 - ox)) / FORMATION_EXTENT, (halfH * (0.95 - oy)) / FORMATION_EXTENT);
+  }
+
+  function applyLayout() {
+    points.scale.setScalar(fit);
+    uniforms.uField.value.set((halfW * 1.02) / fit, (halfH * 1.02) / fit);
+    uniforms.uOffset.value.set((offsetNow.x * halfW) / fit, (offsetNow.y * halfH) / fit);
+  }
+
+  function advance(dt: number) {
+    if (requested) {
+      if (t >= 1 && requested !== toName) {
+        fromName = toName;
+        toName = nextStep(fromName, requested);
+        t = 0;
+      }
+      t = Math.min(1, t + dt / MORPH_SECONDS);
+    } else {
+      sequencePos = damp(sequencePos, progressToSequence(readProgress()), 2.4, dt);
+      const seg = Math.min(Math.floor(sequencePos), PROGRESS_SEQUENCE.length - 2);
+      fromName = PROGRESS_SEQUENCE[seg];
+      toName = PROGRESS_SEQUENCE[seg + 1];
+      t = sequencePos - seg;
+    }
+    applyMorph();
+    uniforms.uOpacity.value = damp(uniforms.uOpacity.value, BASE_OPACITY * intensity, 2, dt);
+    offsetNow.set(damp(offsetNow.x, offsetGoal.x, 2.2, dt), damp(offsetNow.y, offsetGoal.y, 2.2, dt));
+    fit = damp(fit, fitGoal, 2.2, dt);
+    applyLayout();
   }
 
   function render() {
@@ -265,12 +354,17 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
     }
   }
 
+  // Reduced motion: jump straight to the resting state and draw one frame.
   function renderStatic() {
     if (disposed) return;
-    const morph = staticMorph();
-    uniforms.uMorph.value = morph;
+    fromName = toName = requested ?? "unified";
+    t = 1;
+    applyMorph();
     uniforms.uMotion.value = 0;
-    updateTint(morph);
+    uniforms.uOpacity.value = BASE_OPACITY * intensity;
+    offsetNow.copy(offsetGoal);
+    fit = fitGoal;
+    applyLayout();
     render();
   }
 
@@ -295,11 +389,11 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 
-    const halfH = CAMERA_Z * Math.tan((FOV * Math.PI) / 360);
-    const halfW = halfH * camera.aspect;
-    const fit = Math.min(1, (halfW * 0.92) / FORMATION_EXTENT, (halfH * 0.95) / FORMATION_EXTENT);
-    points.scale.setScalar(fit);
-    uniforms.uField.value.set((halfW * 1.02) / fit, (halfH * 1.02) / fit);
+    halfH = CAMERA_Z * Math.tan((FOV * Math.PI) / 360);
+    halfW = halfH * camera.aspect;
+    updateFitGoal();
+    fit = fitGoal;
+    applyLayout();
 
     if (reducedMotion) renderStatic();
   }
@@ -337,12 +431,9 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
     const dt = lastFrame ? Math.min((now - lastFrame) / 1000, 0.1) : 1 / 60;
     lastFrame = now;
 
-    const target = targetMorph();
-    const current = uniforms.uMorph.value;
-    uniforms.uMorph.value = current + (target - current) * (1 - Math.exp(-dt * 2.4));
+    advance(dt);
     uniforms.uTime.value += dt;
     uniforms.uMotion.value = Math.min(1, uniforms.uMotion.value + dt);
-    updateTint(uniforms.uMorph.value);
     points.rotation.y += dt * 0.03;
 
     render();
@@ -389,8 +480,7 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
 
   measureSource();
   resizeCanvas();
-  uniforms.uMorph.value = targetMorph();
-  updateTint(uniforms.uMorph.value);
+  applyMorph();
   // Compile now rather than inside the first scroll-synced animation frame.
   renderer.compile(scene, camera);
   if (reducedMotion) renderStatic();
@@ -408,7 +498,16 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
       syncLoop();
     },
     setFormation(value) {
-      staticFormation = value;
+      requested = value;
+      if (reducedMotion) renderStatic();
+    },
+    setIntensity(value) {
+      intensity = value;
+      if (reducedMotion) renderStatic();
+    },
+    setOffset(x, y) {
+      offsetGoal.set(x, y);
+      updateFitGoal();
       if (reducedMotion) renderStatic();
     },
     dispose() {
@@ -433,3 +532,4 @@ export function createCareConstellation(options: ConstellationEngineOptions): Co
 
   return controller;
 }
+

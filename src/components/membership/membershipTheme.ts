@@ -37,3 +37,8 @@ export const MEMBERSHIP_TIER_STYLES: Record<MembershipPlanId, TierStyle> = {
     price: "text-white",
   },
 };
+
+// Soft navy scrim behind free-standing text so particles fade out there
+// instead of passing behind the words. Applied to a positioned text block.
+export const MEMBERSHIP_TEXT_SCRIM =
+  "relative before:pointer-events-none before:absolute before:inset-x-0 before:-inset-y-8 sm:before:-inset-x-10 before:-z-10 before:bg-[radial-gradient(closest-side,var(--color-primary-900)_55%,transparent)]";

@@ -14,6 +14,9 @@ import {
 
 interface MembershipPlanCardProps {
   plan: MembershipPlan;
+  // Defaults to the plan's full benefit list.
+  benefits?: MembershipBenefit[];
+  id?: string;
   headingLevel?: 2 | 3 | 4;
   ctaLabel?: string;
   // undefined renders the default enroll link; null renders no CTA.
@@ -43,7 +46,7 @@ function BenefitText({ benefit }: { benefit: MembershipBenefit }) {
       {benefit.text}
       <a
         href={`#${footnoteAnchorId(note.id)}`}
-        className="ml-0.5 rounded-sm text-white/70 underline-offset-2 hover:text-white hover:underline"
+        className="-my-2 inline-block rounded-sm py-2 pl-px pr-1.5 text-white/70 underline-offset-2 hover:text-white hover:underline"
       >
         <span aria-hidden="true">{note.marker}</span>
         <span className="sr-only"> (see routine labs details)</span>
@@ -54,6 +57,8 @@ function BenefitText({ benefit }: { benefit: MembershipBenefit }) {
 
 export default function MembershipPlanCard({
   plan,
+  benefits = plan.benefits,
+  id,
   headingLevel = 3,
   ctaLabel,
   cta,
@@ -65,6 +70,7 @@ export default function MembershipPlanCard({
 
   return (
     <article
+      id={id}
       aria-labelledby={titleId}
       className={`relative flex h-full min-w-0 flex-col overflow-hidden rounded-3xl border p-6 sm:p-8 transition-colors duration-300 ${styles.surface} ${styles.cardBorder} ${className}`}
     >
@@ -85,7 +91,7 @@ export default function MembershipPlanCard({
       </header>
 
       <div className="mt-8 space-y-6">
-        {toRuns(plan.benefits).map((run, i) => {
+        {toRuns(benefits).map((run, i) => {
           if (run.group === "family") {
             const [title, ...rest] = run.items;
             const groupId = `membership-plan-${plan.id}-family`;
@@ -130,7 +136,7 @@ export default function MembershipPlanCard({
           {cta ?? (
             <Link
               to={getEnrollPath(plan.id)}
-              className={`flex w-full items-center justify-center rounded-full px-6 py-3.5 text-base font-semibold transition-colors duration-200 touch-manipulation ${styles.cta}`}
+              className={`flex min-h-[52px] w-full items-center justify-center rounded-full px-6 py-3.5 text-base font-semibold transition-[background-color,border-color,transform] duration-200 touch-manipulation active:scale-[0.98] motion-reduce:transition-none ${styles.cta}`}
             >
               {ctaLabel ?? `Choose ${plan.name}`}
             </Link>

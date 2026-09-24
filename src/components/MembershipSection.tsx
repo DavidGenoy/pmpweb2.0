@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import CareConstellation, { type ConstellationFormation } from "./membership/CareConstellation";
 import MembershipTeaserCard from "./membership/MembershipTeaserCard";
+import MembershipReassurance from "./membership/MembershipReassurance";
+import { useScrollStage } from "./membership/useScrollStage";
+import { MEMBERSHIP_TEXT_SCRIM as TEXT_SCRIM } from "./membership/membershipTheme";
 import {
   GOLD_PLAN,
   MEMBERSHIP_ELIGIBILITY_NOTE,
@@ -12,45 +15,11 @@ import {
   SILVER_PLAN,
 } from "./membership/membershipData";
 
-// The constellation follows whichever `data-stage` block crosses the middle of
-// the viewport. Later blocks win while two overlap (Gold sits lower than Silver
-// on wider screens), and the last stage is kept while between blocks. Silver ->
-// Gold passes through the "flow" formation on its own as the morph interpolates.
-function useActiveStage(rootRef: RefObject<HTMLElement | null>) {
-  const [stage, setStage] = useState<ConstellationFormation>("dispersed");
-
-  useEffect(() => {
-    const root: HTMLElement | null = rootRef.current;
-    if (!root) return;
-    const blocks = Array.from(root.querySelectorAll<HTMLElement>("[data-stage]"));
-    const inBand = new Set<Element>();
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) inBand.add(entry.target);
-          else inBand.delete(entry.target);
-        }
-        const current = blocks.filter((b) => inBand.has(b)).pop();
-        if (current) setStage(current.dataset.stage as ConstellationFormation);
-      },
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    blocks.forEach((b) => observer.observe(b));
-    return () => observer.disconnect();
-  }, [rootRef]);
-
-  return stage;
-}
-
-// Soft navy scrim behind free-standing text so particles fade out there
-// instead of passing behind the words.
-const TEXT_SCRIM =
-  "relative before:pointer-events-none before:absolute before:inset-x-0 before:-inset-y-8 sm:before:-inset-x-10 before:-z-10 before:bg-[radial-gradient(closest-side,var(--color-primary-900)_55%,transparent)]";
-
 export default function MembershipSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const stage = useActiveStage(sectionRef);
+  // Gold sits lower than Silver on wider screens so it takes over second;
+  // Silver -> Gold passes through the "flow" formation automatically.
+  const stage = useScrollStage<ConstellationFormation>(sectionRef, "dispersed");
   const labsNote = MEMBERSHIP_FOOTNOTES["routine-labs"];
 
   return (
@@ -110,14 +79,7 @@ export default function MembershipSection() {
             <ArrowRight aria-hidden="true" className="h-5 w-5" />
           </Link>
 
-          <ul className="mt-6 flex flex-wrap justify-center gap-x-2.5 gap-y-1 text-sm text-white/65">
-            {MEMBERSHIP_REASSURANCE.map((item, i) => (
-              <li key={item} className="flex items-center gap-2.5">
-                {i > 0 && <span aria-hidden="true" className="text-white/30">·</span>}
-                {item}
-              </li>
-            ))}
-          </ul>
+          <MembershipReassurance items={MEMBERSHIP_REASSURANCE} className="mt-6" />
 
           <p className="mt-4 max-w-md text-xs leading-relaxed text-white/45">
             {MEMBERSHIP_ELIGIBILITY_NOTE}
